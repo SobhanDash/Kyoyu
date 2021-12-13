@@ -1,0 +1,67 @@
+.login_bg {
+  background: var(--black-5);
+  font-size: 15px;
+  overflow: hidden;
+  height: 100vh;
+  position: relative;
+  background-image: url("../../images/blob1.svg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.maincontainer {
+  width: 30%;
+  background-color: var(--black-1);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.maincontainer::after {
+  position: absolute;
+  animation: moveGradient 4s alternate infinite;
+  z-index: -1;
+  background: linear-gradient(
+    60deg,
+    var(--secondary-2),
+    var(--primary),
+    var(--ternary-2),
+    var(--secondary-1)
+  );
+  border-radius: calc(2 * var(--border-width));
+  background-position: 0 50%;
+  content: "";
+  background-size: 300% 300%;
+  top: calc(-1 * var(--border-width));
+  left: calc(-1 * var(--border-width));
+  width: calc(100% + var(--border-width) * 2);
+  height: calc(100% + var(--border-width) * 2);
+}
+
+@keyframes moveGradient {
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+@media screen and (max-width: 900px) {
+  .maincontainer {
+    width: 50%;
+  }
+}

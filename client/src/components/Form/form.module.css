@@ -1,0 +1,106 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 50px 0 0 0;
+  color: var(--white-2);
+  text-align: center;
+}
+
+.welcome {
+  color: var(--grey-4);
+}
+
+.dull {
+  color: var(--grey-1);
+}
+
+.form_header {
+  padding-bottom: 2rem;
+  font-size: 1.3rem;
+}
+
+.form_main {
+  padding: 2rem;
+}
+
+.form_main label,
+.register_form_main label {
+  display: block;
+  text-align: left;
+  text-transform: capitalize;
+  margin-bottom: 0.5rem;
+}
+
+.form_main input,
+.register_form_main input {
+  display: block;
+  width: 15rem;
+  padding: 0.5rem;
+  border: none;
+  outline: none;
+  background: transparent;
+  border-bottom: 10px solid;
+  border-radius: 1rem;
+  border-image-slice: 1;
+  border-width: 2px;
+  border-image-source: linear-gradient(
+    to left,
+    var(--primary),
+    var(--secondary-1)
+  );
+  color: var(--white-1);
+}
+
+.username,
+.name,
+.mobileNo,
+.email,
+.password,
+.confirmPassword {
+  padding: 0.55rem;
+}
+
+.form_footer {
+  padding: 2rem;
+  margin-top: 1rem;
+}
+
+.login_btn,
+.register_btn {
+  padding: 0.5rem;
+  border-radius: 0.7rem;
+  width: 6rem;
+  border: none;
+  outline: none;
+  background: linear-gradient(150deg, var(--primary), var(--secondary-1));
+  color: var(--white-2);
+  font-size: 1rem;
+}
+
+.login_btn:hover,
+.register_btn:hover {
+  transform: scale(1.1);
+  transition: 0.2s ease-in-out;
+}
+
+.register_link {
+  color: var(--white-1);
+  text-decoration: none;
+  padding: 0.5rem;
+}
+
+.register_form_header {
+  font-size: 1.3rem;
+}
+
+.register_form_footer {
+  padding: 2rem;
+}
+
+.register_link {
+  color: var(--white-1);
+  text-decoration: none;
+  padding: 0.5rem;
+}
