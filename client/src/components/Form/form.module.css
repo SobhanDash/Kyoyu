@@ -70,11 +70,11 @@
 .login_btn,
 .register_btn {
   padding: 0.5rem;
-  border-radius: 0.7rem;
+  border-radius: 0.3rem;
   width: 6rem;
   border: none;
   outline: none;
-  background: linear-gradient(150deg, var(--primary), var(--secondary-1));
+  background: linear-gradient(150deg, var(--primary), var(--ternary-2));
   color: var(--white-2);
   font-size: 1rem;
 }

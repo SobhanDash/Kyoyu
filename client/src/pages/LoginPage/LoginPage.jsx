@@ -15,10 +15,7 @@ const LoginPage = () => {
       <div className={css.login_bg}>
         <section className={css.container}>
           <section className={css.maincontainer}>
-            <div className={`${css.half} ${css.left}`}></div>
-            <div className={`${css.half} ${css.right}`}>
-              <Loginform />
-            </div>
+            <Loginform />
           </section>
         </section>
       </div>

@@ -1,0 +1,8 @@
+.index_container {
+  background: var(--black-2);
+  font-size: 15px;
+  height: 100vh;
+  display: grid;
+  grid-template-columns: 0.6fr 2fr;
+  overflow-x: hidden;
+}
