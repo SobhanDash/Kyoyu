@@ -1,0 +1,142 @@
+.sidebar {
+  width: 20rem;
+  height: 100vh;
+  position: fixed;
+  padding: 1rem;
+  background-color: var(--black-5);
+  color: var(--white-1);
+  box-shadow: -1px 0 5px 2px var(--black-2);
+}
+
+.logo {
+  text-align: center;
+  padding: 0 2rem 2rem;
+}
+
+.profile {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 1.4rem;
+}
+
+.profile_img {
+  display: flex;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  border: 2px solid var(--primary);
+  margin-bottom: 0.5rem;
+  justify-content: center;
+  align-items: center;
+}
+
+.profile_img img {
+  width: 70px;
+  height: 70px;
+  object-fit: cover;
+  object-position: center;
+  border-radius: 50%;
+}
+
+.name {
+  display: flex;
+  align-items: center;
+  padding: 0 1rem;
+}
+
+.name h1 {
+  font-size: 1.1rem;
+}
+
+.box {
+  text-align: center;
+}
+
+.box h3 {
+  font-weight: 500;
+  font-size: 0.9rem;
+}
+
+.about {
+  display: flex;
+  justify-content: space-around;
+  margin: 1rem auto 1.5rem auto;
+}
+
+.menu a {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  font-size: 1rem;
+  text-decoration: none;
+  line-height: 50px;
+  color: var(--white-1);
+}
+
+.menu .icon {
+  margin: 0.5rem 3rem 0.5rem 2rem;
+  font-size: 20px;
+}
+
+.menu a:hover::before,
+.menu .active::before {
+  content: "";
+  position: absolute;
+  right: 0;
+  width: 4px;
+  height: 20px;
+  background-image: linear-gradient(var(--ternary-2), var(--secondary-1));
+}
+
+.menu a:hover,
+.menu .active {
+  color: var(--primary);
+}
+
+.links {
+  display: flex;
+  justify-content: space-around;
+  margin-left: 4vh;
+}
+
+@media screen and (max-width: 1200px) {
+  .sidebar {
+    position: relative;
+    width: 50%;
+    /* height: auto; */
+  }
+
+  .logo {
+    text-align: start;
+    padding: 1rem 0 1rem 0;
+    display: none;
+  }
+  .logo h1 {
+    font-size: .7rem;
+  }
+  .profile_img {
+    width: 50px;
+    height: 50px;
+  }
+  .profile_img img {
+    width: 40px;
+    height: 40px;
+  }
+  .pro_username {
+    display: none;
+  }
+  .name {
+    display: none;
+  }
+  .about {
+    display: none;
+  }
+  .icon_func {
+    display: none;
+  }
+  .menu .icon {
+    margin: 0.5rem 0rem 0.5rem 0rem;
+  }
+}
