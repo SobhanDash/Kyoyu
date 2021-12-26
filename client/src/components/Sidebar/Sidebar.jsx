@@ -13,6 +13,7 @@ import {
 import css from "./Sidebar.module.css";
 import useForm from "../Form/useForm";
 import nodpImg from "../../images/nodp.jpg";
+import logo from "../../images/logo2.svg";
 
 const feed = <FontAwesomeIcon icon={faTh} />;
 const explore = <FontAwesomeIcon icon={faSearch} />;
@@ -42,7 +43,7 @@ const Sidebar = ({ setShow, isProfile }) => {
     <>
       <div className={css.sidebar}>
         <div className={css.logo}>
-          <h1>Kyoyu</h1>
+          <img src={logo} alt="logo" />
         </div>
         {/* profile img */}
         <div className={css.profile}>
@@ -100,14 +101,14 @@ const Sidebar = ({ setShow, isProfile }) => {
               <div className={css.icon_func}>Add Post</div>
             </Link>
           )}
-          <Link to="/">
+          {/* <Link to="/">
             <span className={css.icon}>{notification}</span>
             <div className={css.icon_func}>Notification</div>
           </Link>
           <Link to="/">
             <span className={css.icon}>{message}</span>
             <div className={css.icon_func}>Message</div>
-          </Link>
+          </Link> */}
           <a href="/" onClick={onLogout}>
             <span className={css.icon}>{logout}</span>
             <div className={css.icon_func}>Log Out</div>

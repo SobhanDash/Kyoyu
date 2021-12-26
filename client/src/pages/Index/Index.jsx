@@ -22,7 +22,6 @@ const Index = () => {
     <>
       {/* <Modal show={show} setShow={setShow} /> */}
       <div className={css.index_container}>
-        {/* <Navbar /> */}
         <div className={css.sidebar}>
           <Sidebar setShow={setShow} />
         </div>
