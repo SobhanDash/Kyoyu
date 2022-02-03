@@ -1,0 +1,52 @@
+.fbackdrop {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  z-index: 1000;
+  background-color: rgba(0, 0, 0, 0.774);
+}
+
+.featcont {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1000;
+  min-height: 10rem;
+  min-width: 25rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--black-5);
+  box-shadow: 2px 1px 48px -9px rgba(0, 0, 0, 0.73);
+  border-radius: 1rem;
+}
+
+.fbutton {
+  width: 100%;
+  color: var(--white-1);
+  padding: 1rem;
+  margin-bottom: 0.5rem;
+  text-align: center;
+  font-weight: 700;
+  font-size: 1rem;
+  border: none;
+  background: none;
+  cursor: pointer;
+  border-bottom: 2px solid var(--secondary-3);
+}
+
+.delete {
+  color: var(--ternary-3);
+}
+
+.cancel{
+  border-bottom: none;
+}
+
+.fbutton:hover{
+  opacity: 0.8;
+}

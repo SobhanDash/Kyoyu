@@ -109,10 +109,10 @@ const Sidebar = ({ setShow, isProfile }) => {
             <span className={css.icon}>{message}</span>
             <div className={css.icon_func}>Message</div>
           </Link> */}
-          <a href="/" onClick={onLogout}>
+          <Link to="/" onClick={onLogout}>
             <span className={css.icon}>{logout}</span>
             <div className={css.icon_func}>Log Out</div>
-          </a>
+          </Link>
         </div>
       </div>
     </>

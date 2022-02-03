@@ -1,20 +1,28 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import { Link, useHistory, useLocation } from "react-router-dom";
 import css from "./container.module.css";
 import useForm from "../../components/Form/useForm";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faHeart,
   faComment,
-  faShareAlt,
+  faEllipsisV,
 } from "@fortawesome/free-solid-svg-icons";
 import nodpImg from "../../images/nodp.jpg";
+import PostItem from "../PostItem/PostItem";
+import FeatModal from "../Modal/FeatModal";
 
-const like = <FontAwesomeIcon icon={faHeart} />;
+const likeHeart = <FontAwesomeIcon icon={faHeart} />;
 const comment = <FontAwesomeIcon icon={faComment} />;
-const share = <FontAwesomeIcon icon={faShareAlt} />;
+const more = <FontAwesomeIcon icon={faEllipsisV} />;
 
 const Container = () => {
   const { getProfile, profile, getPost, userposts } = useForm();
+  const [fshow, setFShow] = useState(false);
+  function handleModalClose() {
+    setFShow(!fshow);
+  }
+  const [isLiked, setIsLike] = useState(false);
 
   // useEffect(() => {
   //   getProfile();
@@ -27,46 +35,13 @@ const Container = () => {
         {profile.posts.length !== 0 &&
           userposts.map((post) => {
             return (
-              <>
-                <section className={css.post_container}>
-                  <div className={css.user}>
-                    <div className={css.profile_img}>
-                      {profile.profilePic !== null ? (
-                        <img src={profile.profilePic} alt="" />
-                      ) : (
-                        <img src={nodpImg} alt={profile.username} />
-                      )}
-                    </div>
-                    <div className={css.username}>
-                      <span>{profile.username}</span>
-                    </div>
-                  </div>
-                  <div className={css.post}>
-                    <img src={post.image} alt={post.caption} />
-                    <div className={css.post_icons}>
-                      <div className={css.post_icon}>
-                        <a href="/">
-                          <span className={`${css.icon} ${css.active}`}>
-                            {like}
-                          </span>
-                          2.25k
-                        </a>
-                        <a href="/">
-                          <span className={css.icon}>{comment}</span>
-                          330
-                        </a>
-                      </div>
-                      <a href="/">
-                        <span className={css.icon}>{share}</span>
-                        174
-                      </a>
-                    </div>
-                  </div>
-                  <figcaption className={css.img_caption}>
-                    {profile.username} <span>{post.caption}</span>
-                  </figcaption>
-                </section>
-              </>
+              <PostItem
+                key={post.id}
+                username={profile.username}
+                caption={post.caption}
+                dp={profile.profilePic}
+                pic={post.image}
+              />
             );
           })}
 
@@ -81,26 +56,36 @@ const Container = () => {
           </div>
           <div className={css.post}>
             <img src="https://picsum.photos/200/300" alt="temp" />
+            <figcaption className={css.img_caption}>
+              anderson_009 <span> Lorem ipsum dolor sit amet.</span>
+            </figcaption>
             <div className={css.post_icons}>
               <div className={css.post_icon}>
-                <a href="/">
-                  <span className={`${css.icon} ${css.active}`}>{like}</span>
-                  2.25k
-                </a>
-                <a href="/">
-                  <span className={css.icon}>{comment}</span>
-                  330
-                </a>
+                <button
+                  type="button"
+                  onClick={() => {
+                    console.log("click1");
+                    setIsLike(!isLiked);
+                  }}
+                  className={css.icon}
+                >
+                  <i className={isLiked ? css.active : " "}>{likeHeart}</i>
+
+                  {/* <span className={css.icon}>{likes.length}</span> */}
+                  <span className={css.ispan}>102</span>
+                </button>
+                <button className={css.icon}>
+                  <i>{comment}</i>
+                  <span className={css.ispan}>12</span>
+                  {/* <span className={css.icon}>{comments.length}</span> */}
+                </button>
               </div>
-              <a href="/">
-                <span className={css.icon}>{share}</span>
-                174
-              </a>
+              <span className={css.icon} onClick={() => setFShow(!fshow)}>
+                {more}
+                <FeatModal fshow={fshow} fn={handleModalClose} />
+              </span>
             </div>
           </div>
-          <figcaption className={css.img_caption}>
-            anderson_009 <span> Lorem ipsum dolor sit amet.</span>
-          </figcaption>
         </section>
 
         <section className={css.post_container}>
@@ -113,27 +98,37 @@ const Container = () => {
             </div>
           </div>
           <div className={css.post}>
-            <img src="https://picsum.photos/300/200" alt="temp" />
+            <img src="https://picsum.photos/200/300" alt="temp" />
+            <figcaption className={css.img_caption}>
+              anderson_009 <span> Lorem ipsum dolor sit amet.</span>
+            </figcaption>
             <div className={css.post_icons}>
               <div className={css.post_icon}>
-                <a href="/">
-                  <span className={`${css.icon}`}>{like}</span>
-                  2.25k
-                </a>
-                <a href="/">
-                  <span className={css.icon}>{comment}</span>
-                  330
-                </a>
+                <button
+                  type="button"
+                  onClick={() => {
+                    console.log("click2");
+                    setIsLike(!isLiked);
+                  }}
+                  className={css.icon}
+                >
+                  <i className={isLiked ? css.active : " "}>{likeHeart}</i>
+
+                  {/* <span className={css.icon}>{likes.length}</span> */}
+                  <span className={css.ispan}>102</span>
+                </button>
+                <button className={css.icon}>
+                  <i>{comment}</i>
+                  <span className={css.ispan}>12</span>
+                  {/* <span className={css.icon}>{comments.length}</span> */}
+                </button>
               </div>
-              <a href="/">
-                <span className={css.icon}>{share}</span>
-                174
-              </a>
+              <span className={css.icon} onClick={() => setFShow(!fshow)}>
+                {more}
+                <FeatModal fshow={fshow} fn={handleModalClose} />
+              </span>
             </div>
           </div>
-          <figcaption className={css.img_caption}>
-            anderson_009 <span> Lorem ipsum dolor sit amet.</span>
-          </figcaption>
         </section>
       </section>
     </>
