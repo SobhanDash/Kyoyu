@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import css from "./post.module.css";
 import nodpImg from "../../images/nodp.jpg";
-import useForm from "../../components/Form/useForm";
+import useForm from "../../services/useForm";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faHeart,

@@ -1,6 +1,6 @@
 import React from "react";
 import css from "./form.module.css";
-import useForm from "./useForm";
+import useForm from "../../services/useForm";
 
 const Register = () => {
   const { handleRegisterChange, handleRegister } = useForm();

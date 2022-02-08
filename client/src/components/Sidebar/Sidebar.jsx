@@ -11,7 +11,7 @@ import {
   faSignOutAlt,
 } from "@fortawesome/free-solid-svg-icons";
 import css from "./Sidebar.module.css";
-import useForm from "../Form/useForm";
+import useForm from "../../services/useForm";
 import nodpImg from "../../images/nodp.jpg";
 import logo from "../../images/logo2.svg";
 
@@ -45,66 +45,83 @@ const Sidebar = ({ setShow, isProfile }) => {
         <div className={css.logo}>
           <img src={logo} alt="logo" />
         </div>
-        {/* profile img */}
-        <div className={css.profile}>
-          <div className={css.profile_img}>
-            {/* {profile.profilePic !== null ? (
+        {/* profile details */}
+        {!isProfile && (
+          <div className={css.sideProf}>
+            {/* profile img */}
+            <div className={css.profile}>
+              <div className={css.profile_img}>
+                {/* {profile.profilePic !== null ? (
               <img src={profile.profilePic} alt={profile.username} />
             ) : (
               <img src={nodpImg} alt={profile.username} />
             )} */}
-            <img src={nodpImg} alt={profile.username} />
+                <img src={nodpImg} alt={profile.username} />
+              </div>
+              <div className={css.name}>
+                <h1>{profile.name}</h1>
+              </div>
+              <div className={css.pro_username}>
+                <span>@{profile.username}</span>
+              </div>
+            </div>
+            {/* about */}
+            <div className={css.about}>
+              <div className={css.box}>
+                <h3>{profile.posts.length}</h3>
+                <span>Posts</span>
+              </div>
+              <div className={css.box}>
+                <h3>{profile.followers.length}</h3>
+                <span>Followers</span>
+              </div>
+              <div className={css.box}>
+                <h3>{profile.following.length}</h3>
+                <span>Following</span>
+              </div>
+            </div>
           </div>
-          <div className={css.name}>
-            <h1>{profile.name}</h1>
-          </div>
-          <div className={css.pro_username}>
-            <span>@{profile.username}</span>
-          </div>
-        </div>
-        {/* about */}
-        <div className={css.about}>
-          <div className={css.box}>
-            <h3>{profile.posts.length}</h3>
-            <span>Posts</span>
-          </div>
-          <div className={css.box}>
-            <h3>{profile.followers.length}</h3>
-            <span>Followers</span>
-          </div>
-          <div className={css.box}>
-            <h3>{profile.following.length}</h3>
-            <span>Following</span>
-          </div>
-        </div>
+        )}
         {/* menu */}
         <div className={css.menu}>
           <Link to="/" className={location.pathname === "/" ? css.active : ""}>
             <span className={css.icon}>{feed}</span>
             <div className={css.icon_func}>Feed</div>
           </Link>
-          <Link
-            to="/profile"
-            className={
-              location.pathname === "/profile" ||
-              location.pathname === "/editProfile"
-                ? css.active
-                : ""
-            }
-          >
-            <span className={css.icon}>{profileIcon}</span>
-            <div className={css.icon_func}>Profile</div>
-          </Link>
+          {location.pathname === "/profile" ? (
+            <Link
+              to="/editProfile"
+              className={
+                location.pathname === "/profile" ||
+                location.pathname === "/editProfile"
+                  ? css.active
+                  : ""
+              }
+            >
+              <span className={css.icon}>{profileIcon}</span>
+              <div className={css.icon_func}>Edit Profile</div>
+            </Link>
+          ) : (
+            <Link
+              to="/profile"
+              className={
+                location.pathname === "/profile" ||
+                location.pathname === "/editProfile"
+                  ? css.active
+                  : ""
+              }
+            >
+              <span className={css.icon}>{profileIcon}</span>
+              <div className={css.icon_func}>Profile</div>
+            </Link>
+          )}
           {!isProfile && (
             <Link to={location.pathname} onClick={() => setShow(true)}>
               <span className={css.icon}>{addPost}</span>
               <div className={css.icon_func}>Add Post</div>
             </Link>
           )}
-          {/* <Link to="/">
-            <span className={css.icon}>{notification}</span>
-            <div className={css.icon_func}>Notification</div>
-          </Link>
+          {/* 
           <Link to="/">
             <span className={css.icon}>{message}</span>
             <div className={css.icon_func}>Message</div>

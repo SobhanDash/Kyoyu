@@ -20,7 +20,7 @@ const Index = () => {
 
   return (
     <>
-      {/* <Modal show={show} setShow={setShow} /> */}
+      <Modal show={show} setShow={setShow} />
       <div className={css.index_container}>
         <div className={css.sidebar}>
           <Sidebar setShow={setShow} />

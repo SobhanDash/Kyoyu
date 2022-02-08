@@ -1,12 +1,12 @@
 :root {
   --primary: #824dfe;
   --secondary-1: #4017e8;
-  --secondary-2: #fda3fc;
-  --secondary-3: #677ab3;
-  
+  --secondary-2: #677ab3;
+
   --ternary-1: #001220;
   --ternary-2: #5416a5;
   --ternary-3: #ec1010;
+  --ternary-4: #fda3fc;
 
   --black-1: #15161c;
   --black-2: #1e1e2a;
