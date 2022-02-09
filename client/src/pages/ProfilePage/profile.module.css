@@ -1,4 +1,5 @@
-.profileContainer {
+.profileContainer,
+.editProfileContainer {
   min-height: 100vh;
   display: grid;
   grid-template-columns: 1fr 4fr;
@@ -151,27 +152,30 @@
   background: transparent;
 }
 
-/* 
-.editProfile {
-  margin-top: 3vh;
+.maincontainer {
+  width: 30%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
 }
 
-.editProfile button {
-  width: 70%;
-  font-size: 1.3rem;
-  padding: 0.5vw 1vw;
-  border: 0.12vw solid grey;
-  border-radius: 0.5vw;
-  cursor: pointer;
+@media screen and (max-width: 1000px) {
+  .profileContainer,
+  .editProfileContainer {
+    min-height: 100vh;
+    width: 100%;
+    display: grid;
+    grid-template-columns: none;
+    /* background-color: var(--black-2); */
+  }
+  .profileData {
+    margin-top: none;
+    min-height: 100vh;
+  }
 }
-
-.editProfile button:hover {
-  background-color: rgb(218, 218, 218);
+@media screen and (max-width: 900px) {
+  .maincontainer {
+    width: 100%;
+  }
 }
-
-
-
-.editProfile_container {
-  min-height: 100vh;
-  background-color: var(--black-2);
-} */

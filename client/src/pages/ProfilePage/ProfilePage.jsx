@@ -12,14 +12,13 @@ const camera = <FontAwesomeIcon icon={faCamera} />;
 const editIcon = <FontAwesomeIcon icon={faEdit} />;
 
 const ProfilePage = () => {
-  // const [isProfile, setIsProfile] = useState(true);
+  const [isProfile, setIsProfile] = useState(true);
   const { getProfile, profile, getPost, userposts } = useForm();
 
   return (
     <section className={css.profileContainer}>
       <div>
-        {/* <Sidebar isProfile={isProfile} /> */}
-        <Sidebar />
+        <Sidebar isProfile={isProfile} />
       </div>
       <div className={css.profileData}>
         {/* Profile Image */}
