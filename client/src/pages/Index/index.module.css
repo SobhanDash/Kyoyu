@@ -5,4 +5,16 @@
   display: grid;
   grid-template-columns: 0.6fr 2fr;
   overflow-x: hidden;
+  -ms-overflow-style: none;  
+  scrollbar-width: none;
+}
+
+.index_container::-webkit-scrollbar{
+  display: none;
+}
+
+@media screen and (max-width: 1000px) {
+  .index_container {
+    grid-template-columns: none;
+  }
 }

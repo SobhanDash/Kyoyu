@@ -53,13 +53,6 @@ const ProfilePage = () => {
           </div>
         </div>
 
-        {/* Edit Profile
-        <div className={css.editProfile}>
-          <Link to="/editProfile">
-            <div className={css.editBtn}>Edit Profile</div>
-          </Link>
-        </div> */}
-
         {/* Posts */}
         <div className={css.posts}>
           <h4>

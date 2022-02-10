@@ -129,7 +129,7 @@
 }
 
 input[type="file"] {
-    display: none;
+  display: none;
 }
 
 .customLabel {
@@ -149,7 +149,7 @@ input[type="file"] {
   align-items: center;
 }
 
-.customLabel span{
+.customLabel span {
   margin-right: 5px;
 }
 
@@ -165,4 +165,13 @@ input[type="file"] {
   letter-spacing: 1px;
   font-size: 1rem;
   font-weight: 500;
+}
+
+@media screen and (max-width: 1000px) {
+  .modal {
+    min-width: 80vw;
+  }
+  .customLabel {
+    flex-wrap: wrap;
+  }
 }

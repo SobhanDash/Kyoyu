@@ -55,7 +55,7 @@ const Modal = ({ show, setShow }) => {
           value={cap}
           type="text"
           name="caption"
-          placeholder="Enter Caption"
+          placeholder="What's on your Mind"
           onChange={(e) => setCap(e.target.value)}
         />
         <button className={css.uploadBtn}>Upload</button>

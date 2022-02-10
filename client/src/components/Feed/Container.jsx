@@ -13,7 +13,7 @@ import PostItem from "../PostItem/PostItem";
 import FeatModal from "../Modal/FeatModal";
 
 const likeHeart = <FontAwesomeIcon icon={faHeart} />;
-const comment = <FontAwesomeIcon icon={faComment} />;
+const commentIcon = <FontAwesomeIcon icon={faComment} />;
 const more = <FontAwesomeIcon icon={faEllipsisV} />;
 
 const Container = () => {
@@ -75,7 +75,7 @@ const Container = () => {
                   <span className={css.ispan}>102</span>
                 </button>
                 <button className={css.icon}>
-                  <i>{comment}</i>
+                  <Link to="/post">{commentIcon}</Link>
                   <span className={css.ispan}>12</span>
                   {/* <span className={css.icon}>{comments.length}</span> */}
                 </button>
@@ -118,7 +118,7 @@ const Container = () => {
                   <span className={css.ispan}>102</span>
                 </button>
                 <button className={css.icon}>
-                  <i>{comment}</i>
+                  <Link to="/post">{commentIcon}</Link>
                   <span className={css.ispan}>12</span>
                   {/* <span className={css.icon}>{comments.length}</span> */}
                 </button>

@@ -16,8 +16,6 @@
   margin: 50px 0 0 0;
   color: var(--white-2);
   text-align: center;
-  height: 100vh;
-  width: 100vw;
 }
 
 .welcome {
@@ -33,7 +31,8 @@
   font-size: 1.3rem;
 }
 
-.form_main, .eform_main {
+.form_main,
+.eform_main {
   padding: 2rem;
 }
 
@@ -67,7 +66,7 @@
   color: var(--white-1);
 }
 
-.eform_main input{
+.eform_main input {
   width: 30rem;
 }
 
@@ -124,10 +123,10 @@
 }
 
 @media screen and (max-width: 1000px) {
-  .eform{
+  .eform {
     min-height: 100vh;
   }
-  .eform_main input{
-  width: 15em;
-}
+  .eform_main input {
+    width: 15em;
+  }
 }

@@ -1,3 +1,99 @@
+.pcontainer {
+  background: var(--black-2);
+  font-size: 15px;
+  height: 100vh;
+  display: grid;
+  grid-template-columns: 0.6fr 2fr;
+  overflow-x: hidden;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.pcontainer::-webkit-scrollbar {
+  display: none;
+}
+.commentSection {
+  display: flex;
+  justify-content: start;
+  width: 590px;
+  padding: 1rem;
+  margin-top: -3.5rem;
+  margin-bottom: 4.5rem;
+  border-radius: 10px;
+  flex-direction: column;
+}
+
+.cname {
+  color: var(--white-1);
+  font-size: 1.5rem;
+  font-weight: 500;
+  text-align: left;
+  margin-bottom: 1.5rem;
+}
+
+.cinputdiv {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.cip {
+  display: block;
+  width: 80%;
+  padding: 1rem;
+  outline: none;
+  background: transparent;
+  border: 10px solid;
+  border-radius: 1rem;
+  border-image-slice: 1;
+  border-width: 2px;
+  border-image-source: linear-gradient(
+    to left,
+    var(--primary),
+    var(--secondary-1)
+  );
+  color: var(--white-1);
+  font-size: 1rem;
+}
+
+.cpost{
+  padding: 0.5rem;
+  border-radius: 0.3rem;
+  width: 6rem;
+  border: none;
+  outline: none;
+  background: linear-gradient(150deg, var(--primary), var(--ternary-2));
+  color: var(--white-2);
+  font-size: 1rem;
+}
+
+@media screen and (max-width: 1000px) {
+  .pcontainer {
+    grid-template-columns: none;
+  }
+  .profileContainer,
+  .editProfileContainer {
+    min-height: 100vh;
+    width: 100%;
+    display: grid;
+    grid-template-columns: none;
+  }
+}
+
+@media screen and (max-width: 650px) {
+  .post_container,
+  .commentSection {
+    width: 95vw;
+  }
+  .post img {
+    width: 80vw;
+  }
+  .cip {
+  display: block;
+  width: 65%;
+  }
+}
+
+/* ------------------------------------------------- */
 .feed {
   display: flex;
   justify-content: center;
@@ -143,7 +239,6 @@
   padding-left: 0.5rem;
   font-size: 15px;
 }
-
 
 @media screen and (max-width: 650px) {
   .post_container {

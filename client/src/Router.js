@@ -11,6 +11,9 @@ const ProfilePage = React.lazy(() => import("./pages/ProfilePage/ProfilePage"));
 const EditProfilePage = React.lazy(() =>
   import("./pages/ProfilePage/EditProfile")
 );
+const CommentsPage = React.lazy(() =>
+  import("./pages/CommentsPage/CommentsPage")
+);
 
 const IndexComponent = WithPageTitle({
   component: IndexPage,
@@ -40,6 +43,10 @@ const EditProfileComponent = WithPageTitle({
   component: EditProfilePage,
   title: "Edit Profile",
 });
+const CommentsComponent = WithPageTitle({
+  component: CommentsPage,
+  title: "Edit Profile",
+});
 
 const RouteConfig = () => {
   return (
@@ -49,6 +56,7 @@ const RouteConfig = () => {
       <Route exact path="/register" component={RegisterComponent} />
       <Route exact path="/profile" component={ProfileComponent} />
       <Route exact path="/editProfile" component={EditProfileComponent} />
+      <Route exact path="/post" component={CommentsComponent} />
     </Switch>
   );
 };

@@ -9,9 +9,10 @@ import {
   faEllipsisV,
 } from "@fortawesome/free-solid-svg-icons";
 import FeatModal from "../Modal/FeatModal";
+import { Link } from "react-router-dom";
 
 const likeHeart = <FontAwesomeIcon icon={faHeart} />;
-const comment = <FontAwesomeIcon icon={faComment} />;
+const commentIcon = <FontAwesomeIcon icon={faComment} />;
 const more = <FontAwesomeIcon icon={faEllipsisV} />;
 
 const PostItem = ({ username, caption, dp, pic }) => {
@@ -53,7 +54,7 @@ const PostItem = ({ username, caption, dp, pic }) => {
                 {/* <span className={css.ispan}>{likes.length}</span> */}
               </button>
               <button>
-                <i className={css.icon}>{comment}</i>
+                <Link to="/post/:id">{commentIcon}</Link>
                 {/* <span className={css.ispan}>{comments.length}</span> */}
               </button>
             </div>

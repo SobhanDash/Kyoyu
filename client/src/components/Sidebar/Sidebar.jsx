@@ -88,6 +88,7 @@ const Sidebar = ({ setShow, isProfile }) => {
             <span className={css.icon}>{feed}</span>
             <div className={css.icon_func}>Feed</div>
           </Link>
+
           {location.pathname === "/profile" ? (
             <Link
               to="/editProfile"
@@ -117,6 +118,7 @@ const Sidebar = ({ setShow, isProfile }) => {
           )}
           {!isProfile && (
             <Link to={location.pathname} onClick={() => setShow(true)}>
+              {/* <Link to="" onClick={() => setShow(true)}> */}
               <span className={css.icon}>{addPost}</span>
               <div className={css.icon_func}>Add Post</div>
             </Link>

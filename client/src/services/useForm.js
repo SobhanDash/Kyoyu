@@ -41,6 +41,10 @@ const useForm = () => {
     password: "",
   });
 
+  const [comm, setComm] = useState({
+    comment: "",
+  });
+
   // const [errors, setErrors] = useState({});
 
   const handleChange = (e) => {
@@ -125,6 +129,14 @@ const useForm = () => {
     }
   };
 
+  const handleComment = (e) => {
+    const {name, value} = e.target
+    setComm({
+      ...comm,
+      [name]: value
+    })
+  };
+
   const getProfile = useCallback(async () => {
     const token = window.localStorage.getItem("token");
     if (token) {
@@ -189,6 +201,7 @@ const useForm = () => {
     handleRegisterChange,
     handleLogin,
     handleRegister,
+    handleComment,
     values,
     rvalues,
     emailValues,
