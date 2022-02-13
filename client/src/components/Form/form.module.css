@@ -122,6 +122,47 @@
   padding: 2rem;
 }
 
+.cinputdiv {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.cip {
+  display: block;
+  width: 80%;
+  padding: 0.5rem;
+  outline: none;
+  background: transparent;
+  border: 10px solid;
+  border-radius: 1rem;
+  border-image-slice: 1;
+  border-width: 2px;
+  border-image-source: linear-gradient(
+    to left,
+    var(--primary),
+    var(--secondary-1)
+  );
+  color: var(--white-1);
+  font-size: 1rem;
+}
+
+.cpost {
+  padding: 0.5rem;
+  border-radius: 0.3rem;
+  width: 6rem;
+  border: none;
+  outline: none;
+  background: linear-gradient(150deg, var(--primary), var(--ternary-2));
+  color: var(--white-2);
+  font-size: 1rem;
+}
+
+.comment_form_cancel_button {
+  margin-left: 10px;
+  width: 2rem !important;
+}
+
 @media screen and (max-width: 1000px) {
   .eform {
     min-height: 100vh;

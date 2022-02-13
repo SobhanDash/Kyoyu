@@ -11,13 +11,18 @@ import {
 import nodpImg from "../../images/nodp.jpg";
 import PostItem from "../PostItem/PostItem";
 import FeatModal from "../Modal/FeatModal";
-
+import {
+  getComments as getCommentsApi,
+  profileApi,
+  userpostsApi,
+} from "../Comments/api";
 const likeHeart = <FontAwesomeIcon icon={faHeart} />;
 const commentIcon = <FontAwesomeIcon icon={faComment} />;
 const more = <FontAwesomeIcon icon={faEllipsisV} />;
 
 const Container = () => {
-  const { getProfile, profile, getPost, userposts } = useForm();
+  const { getProfile, profile, getPost, userposts, setProfile, setUserPosts } =
+    useForm();
   const [fshow, setFShow] = useState(false);
   function handleModalClose() {
     setFShow(!fshow);
@@ -28,15 +33,24 @@ const Container = () => {
   //   getProfile();
   //   getPost();
   // }, [getProfile, getPost]);
+  useEffect(() => {
+    profileApi().then((data) => {
+      setProfile(...data);
+    });
+    userpostsApi().then((d) => {
+      setUserPosts(d);
+    });
+  }, []);
 
   return (
     <>
       <section className={css.feed}>
+        {console.log(userposts)}
         {profile.posts.length !== 0 &&
           userposts.map((post) => {
             return (
               <PostItem
-                key={post.id}
+                postid={post.id}
                 username={profile.username}
                 caption={post.caption}
                 dp={profile.profilePic}
@@ -45,7 +59,7 @@ const Container = () => {
             );
           })}
 
-        <section className={css.post_container}>
+        {/* <section className={css.post_container}>
           <div className={css.user}>
             <div className={css.profile_img}>
               <img src={nodpImg} alt="username" />
@@ -55,7 +69,7 @@ const Container = () => {
             </div>
           </div>
           <div className={css.post}>
-            <img src="https://picsum.photos/200/300" alt="temp" />
+            <img src="https://picsum.photos/id/1008/200/300" alt="temp" />
             <figcaption className={css.img_caption}>
               anderson_009 <span> Lorem ipsum dolor sit amet.</span>
             </figcaption>
@@ -71,13 +85,13 @@ const Container = () => {
                 >
                   <i className={isLiked ? css.active : " "}>{likeHeart}</i>
 
-                  {/* <span className={css.icon}>{likes.length}</span> */}
+                   <span className={css.icon}>{likes.length}</span> 
                   <span className={css.ispan}>102</span>
                 </button>
                 <button className={css.icon}>
                   <Link to="/post">{commentIcon}</Link>
                   <span className={css.ispan}>12</span>
-                  {/* <span className={css.icon}>{comments.length}</span> */}
+                   <span className={css.icon}>{comments.length}</span>
                 </button>
               </div>
               <span className={css.icon} onClick={() => setFShow(!fshow)}>
@@ -98,7 +112,7 @@ const Container = () => {
             </div>
           </div>
           <div className={css.post}>
-            <img src="https://picsum.photos/200/300" alt="temp" />
+            <img src="https://picsum.photos/id/1005/200/300" alt="temp" />
             <figcaption className={css.img_caption}>
               anderson_009 <span> Lorem ipsum dolor sit amet.</span>
             </figcaption>
@@ -114,13 +128,13 @@ const Container = () => {
                 >
                   <i className={isLiked ? css.active : " "}>{likeHeart}</i>
 
-                  {/* <span className={css.icon}>{likes.length}</span> */}
+                  <span className={css.icon}>{likes.length}</span> 
                   <span className={css.ispan}>102</span>
                 </button>
                 <button className={css.icon}>
                   <Link to="/post">{commentIcon}</Link>
                   <span className={css.ispan}>12</span>
-                  {/* <span className={css.icon}>{comments.length}</span> */}
+                  <span className={css.icon}>{comments.length}</span> 
                 </button>
               </div>
               <span className={css.icon} onClick={() => setFShow(!fshow)}>
@@ -129,7 +143,7 @@ const Container = () => {
               </span>
             </div>
           </div>
-        </section>
+        </section> */}
       </section>
     </>
   );

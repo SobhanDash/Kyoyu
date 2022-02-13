@@ -54,9 +54,13 @@ const RouteConfig = () => {
       <Route exact path="/" component={IndexComponent} />
       <Route exact path="/login" component={LoginComponent} />
       <Route exact path="/register" component={RegisterComponent} />
-      <Route exact path="/profile" component={ProfileComponent} />
+      <Route exact path="/profile/:id/:username" component={ProfileComponent} />
       <Route exact path="/editProfile" component={EditProfileComponent} />
-      <Route exact path="/post" component={CommentsComponent} />
+      <Route
+        exact
+        path="/post/:id/:username/:postid"
+        component={CommentsComponent}
+      />
     </Switch>
   );
 };

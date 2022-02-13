@@ -1,6 +1,6 @@
 import React from "react";
 import css from "./form.module.css";
-import useForm from "../../services/useForm"
+import useForm from "../../services/useForm";
 
 const Login = () => {
   const { handleChange, handleLogin } = useForm();

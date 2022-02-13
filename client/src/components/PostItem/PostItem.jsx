@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import css from "./post.module.css";
-import nodpImg from "../../images/nodp.jpg";
 import useForm from "../../services/useForm";
+import nodpImg from "../../images/nodp.jpg";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faHeart,
@@ -15,7 +15,7 @@ const likeHeart = <FontAwesomeIcon icon={faHeart} />;
 const commentIcon = <FontAwesomeIcon icon={faComment} />;
 const more = <FontAwesomeIcon icon={faEllipsisV} />;
 
-const PostItem = ({ username, caption, dp, pic }) => {
+const PostItem = ({ postid, username, caption, dp, pic }) => {
   const [fshow, setFShow] = useState(false);
   const [isLiked, setIsLike] = useState(false);
   function handleModalClose() {
@@ -53,8 +53,8 @@ const PostItem = ({ username, caption, dp, pic }) => {
                 <i className={isLiked ? css.active : " "}>{likeHeart}</i>
                 {/* <span className={css.ispan}>{likes.length}</span> */}
               </button>
-              <button>
-                <Link to="/post/:id">{commentIcon}</Link>
+              <button className={css.icon}>
+                <Link to="/post">{commentIcon}</Link>
                 {/* <span className={css.ispan}>{comments.length}</span> */}
               </button>
             </div>
@@ -64,9 +64,7 @@ const PostItem = ({ username, caption, dp, pic }) => {
             </span>
           </div>
         </div>
-        <figcaption className={css.img_caption}>
-          {username} <span>{caption}</span>
-        </figcaption>
+        
       </section>
     </>
   );

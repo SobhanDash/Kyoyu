@@ -1,6 +1,12 @@
 import { useCallback, useState } from "react";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
+import {
+  getComments as getCommentsApi,
+  createComment as createCommentApi,
+  updateComment as updateCommentApi,
+  deleteComment as deleteCommentApi,
+} from "../components/Comments/api.js";
 
 const useForm = () => {
   const [values, setValues] = useState({
@@ -105,7 +111,7 @@ const useForm = () => {
 
   const handleRegister = async (e) => {
     e.preventDefault();
-    //TODO: validation for password and confiirmPassword
+    //TODO: validation for password and confirmPassword
     //TODO: encrypt pass and confirmPass
     // const erpassword = "Encrypt the password";
     try {
@@ -127,14 +133,6 @@ const useForm = () => {
     } catch (err) {
       window.localStorage.setItem("error", err);
     }
-  };
-
-  const handleComment = (e) => {
-    const {name, value} = e.target
-    setComm({
-      ...comm,
-      [name]: value
-    })
   };
 
   const getProfile = useCallback(async () => {
@@ -196,12 +194,56 @@ const useForm = () => {
     console.log(res);
   };
 
+  // COMMENTS
+  const [backendComments, setBackendComments] = useState([]);
+  const [activeComment, setActiveComment] = useState(null);
+
+  const getReplies = (commentId) =>
+    backendComments
+      .filter((backendComment) => backendComment.parentId === commentId)
+      .sort(
+        (a, b) =>
+          new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+      );
+  const addComment = (text, parentId) => {
+    createCommentApi(text, parentId).then((comment) => {
+      setBackendComments([comment, ...backendComments]);
+      setActiveComment(null);
+    });
+  };
+
+  const updateComment = (text, commentId) => {
+    updateCommentApi(text).then(() => {
+      const updatedBackendComments = backendComments.map((backendComment) => {
+        if (backendComment.id === commentId) {
+          return { ...backendComment, body: text };
+        }
+        return backendComment;
+      });
+      setBackendComments(updatedBackendComments);
+      setActiveComment(null);
+    });
+  };
+  const deleteComment = (commentId) => {
+    if (window.confirm("Are you sure you want to remove comment?")) {
+      deleteCommentApi().then(() => {
+        const updatedBackendComments = backendComments.filter(
+          (backendComment) => backendComment.id !== commentId
+        );
+        setBackendComments(updatedBackendComments);
+      });
+    }
+  };
+  const rootComments = backendComments.filter(
+    (backendComment) => backendComment.parentId === null
+  );
+
   return {
     handleChange,
     handleRegisterChange,
     handleLogin,
     handleRegister,
-    handleComment,
+
     values,
     rvalues,
     emailValues,
@@ -209,9 +251,21 @@ const useForm = () => {
     passwordValues,
     getProfile,
     profile,
+    setProfile,
     getPost,
     userposts,
+    setUserPosts,
     addPost,
+
+    activeComment,
+    setActiveComment,
+    backendComments,
+    setBackendComments,
+    getReplies,
+    addComment,
+    deleteComment,
+    updateComment,
+    rootComments,
   };
 };
 

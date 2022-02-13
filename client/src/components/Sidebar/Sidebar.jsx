@@ -14,7 +14,13 @@ import css from "./Sidebar.module.css";
 import useForm from "../../services/useForm";
 import nodpImg from "../../images/nodp.jpg";
 import logo from "../../images/logo2.svg";
-
+//
+import {
+  getComments as getCommentsApi,
+  profileApi,
+  userpostsApi,
+} from "../Comments/api";
+//
 const feed = <FontAwesomeIcon icon={faTh} />;
 const explore = <FontAwesomeIcon icon={faSearch} />;
 const addPost = <FontAwesomeIcon icon={faPlus} />;
@@ -26,13 +32,23 @@ const logout = <FontAwesomeIcon icon={faSignOutAlt} />;
 const Sidebar = ({ setShow, isProfile }) => {
   const history = useHistory();
   const location = useLocation();
-  const { getProfile, profile } = useForm();
+  const { getProfile, profile, setProfile, setUserPosts } = useForm();
 
   // const token = localStorage.getItem("token");
 
   // useEffect(() => {
   //   getProfile();
   // }, [getProfile]);
+  //
+  useEffect(() => {
+    profileApi().then((data) => {
+      setProfile(...data);
+    });
+    userpostsApi().then((d) => {
+      setUserPosts(d);
+    });
+  }, []);
+  //
 
   const onLogout = () => {
     localStorage.removeItem("token");
@@ -52,10 +68,10 @@ const Sidebar = ({ setShow, isProfile }) => {
             <div className={css.profile}>
               <div className={css.profile_img}>
                 {/* {profile.profilePic !== null ? (
-              <img src={profile.profilePic} alt={profile.username} />
-            ) : (
-              <img src={nodpImg} alt={profile.username} />
-            )} */}
+                      <img src={profile.profilePic} alt={profile.username} />
+                    ) : (
+                      <img src={nodpImg} alt={profile.username} />
+                    )} */}
                 <img src={nodpImg} alt={profile.username} />
               </div>
               <div className={css.name}>
