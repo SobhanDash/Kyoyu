@@ -23,8 +23,6 @@ const Comment = ({
     activeComment &&
     activeComment.id === comment.id &&
     activeComment.type === "replying";
-  // const fiveMinutes = 300000;
-  // const timePassed = new Date() - new Date(comment.createdAt) > fiveMinutes;
   const canDelete = currentUserId === comment.userId && replies.length === 0;
   const canReply = Boolean(currentUserId);
   const canEdit = currentUserId === comment.userId;

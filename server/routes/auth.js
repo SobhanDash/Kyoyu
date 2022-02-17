@@ -135,7 +135,7 @@ router.post(
       };
       const authToken = jwt.sign(data, secret);
       success = true;
-      res.json({ success, authToken, status: 200 });
+      return res.json({ success, authToken, status: 200 });
     } catch (err) {
       success = false;
       console.log(`Error in login route ${err}`);
@@ -152,11 +152,11 @@ router.get("/profile", fetchUser, async (req, res) => {
     const user = await User.findOne(userId);
     // TODO: Might add followers and following
     success = true;
-    res.json({ success, user, status: 200 });
+    return res.json({ success, user, status: 200 });
   } catch (err) {
     success = false;
     console.log(`Error in getting profile ${err}`);
-    res.json({ success, error: `Internal Server Error`, status: 500 });
+    return res.json({ success, error: `Internal Server Error`, status: 500 });
   }
 });
 
@@ -192,7 +192,7 @@ router.put(
     } catch (err) {
       success = false;
       console.log(`Error in addfollowing route ${err}`);
-      res.json({ success, error: `Internal Server Error`, status: 500 });
+      return res.json({ success, error: `Internal Server Error`, status: 500 });
     }
   }
 );

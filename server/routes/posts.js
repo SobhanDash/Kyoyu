@@ -7,7 +7,7 @@ const Post = require("../models/Post");
 const fetchUser = require("../middleware/fetchuser");
 const { post } = require("../models/Post");
 
-// ROUTE-1: Get all the posts for the feed using: GET "/api/notes/getposts". Login required
+// ROUTE-1: Get all the posts for the feed using: GET "/api/post/getposts". Login required
 router.get("/getposts", fetchUser, async (req, res) => {
   let success = false;
   const defaultposts = [
@@ -42,12 +42,12 @@ router.get("/getposts", fetchUser, async (req, res) => {
     const user = await User.find({ _id: req.user.id });
     if (posts.length === 0) {
       success = true;
-      res.json({ success, defaultPosts });
+      return res.json({ success, defaultPosts });
     } else {
       let visiblePosts = defaultPosts.concat(posts);
       console.log(visiblePosts);
       success = true;
-      res.json({ success, visiblePosts });
+      return res.json({ success, visiblePosts });
     }
   } catch (err) {
     success = false;
@@ -56,7 +56,7 @@ router.get("/getposts", fetchUser, async (req, res) => {
   }
 });
 
-// ROUTE-2: Get all posts of the user using: GET "/api/notes/fetchallposts". Require Login
+// ROUTE-2: Get all posts of the user using: GET "/api/post/fetchallposts". Require Login
 routerr.get("/fetchallposts", fetchUser, async (req, res) => {
   let success = false;
   const noPosts = "No Posts to Show";
@@ -64,10 +64,10 @@ routerr.get("/fetchallposts", fetchUser, async (req, res) => {
     const posts = await Post.find({ user: req.user.id });
     if (posts.length === 0) {
       success = true;
-      res.json({ success, noPosts });
+      return res.json({ success, noPosts });
     } else {
       success = true;
-      res.json({ success, posts });
+      return res.json({ success, posts });
     }
   } catch (err) {
     success = false;
@@ -76,7 +76,7 @@ routerr.get("/fetchallposts", fetchUser, async (req, res) => {
   }
 });
 
-// ROUTE-3: Add a new post using: POST "/api/notes/addnote". Require Login
+// ROUTE-3: Add a new post using: POST "/api/post/addpost". Require Login
 router.post(
   "/addpost",
   fetchUser,
@@ -91,7 +91,7 @@ router.post(
         return res.json({ success, errors: errors.array(), status: 400 });
       }
       const posts = new Post({
-        iamge,
+        image,
         caption,
         user: req.user.id,
       });
@@ -101,7 +101,7 @@ router.post(
         { $push: { posts: savedPost } }
       );
       success = true;
-      res.json({ success, savedPost, status: 200 });
+      return res.json({ success, savedPost, status: 200 });
     } catch (err) {
       success = false;
       console.log("Error in addposts route:", err);
@@ -137,7 +137,7 @@ router.put("/updatepost/:id", fetchUser, async (req, res) => {
       { new: true }
     );
     success = true;
-    res.json({ success, post, status: 200 });
+    return res.json({ success, post, status: 200 });
   } catch (err) {
     success = false;
     console.log("Error in updatepost route:", err);
@@ -163,7 +163,7 @@ router.delete("/deletepost/:id", fetchUser, async (req, res) => {
       { $pull: { posts: req.params.id } }
     );
     success = true;
-    res.json({ success, post, status: 200 });
+    return res.json({ success, post, status: 200 });
   } catch (err) {
     success = false;
     console.log("Error in deletepost route:", err);

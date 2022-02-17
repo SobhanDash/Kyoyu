@@ -20,6 +20,12 @@ const PostSchema = new Schema(
       type: Date,
       default: Date.now,
     },
+    comments: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Comment",
+      },
+    ],
     createdAt: Number,
     updatedAt: Number,
   },
