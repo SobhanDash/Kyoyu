@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 
-// import Navbar from "../../components/Navbar/Navbar";
 import Sidebar from "../../components/Sidebar/Sidebar";
 import Feed from "../../components/Feed/Container";
 import Modal from "../../components/Modal/Modal";
@@ -9,14 +8,14 @@ import Modal from "../../components/Modal/Modal";
 import css from "./index.module.css";
 
 const Index = () => {
-  // const history = useHistory();
+  const history = useHistory();
   const [show, setShow] = useState(false);
 
-  // useEffect(() => {
-  //   if (!localStorage.getItem("token")) {
-  //     history.push("/login");
-  //   }
-  // }, [history]);
+  useEffect(() => {
+    if (!localStorage.getItem("token")) {
+      history.push("/login");
+    }
+  }, [history]);
 
   return (
     <>

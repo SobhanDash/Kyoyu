@@ -4,11 +4,11 @@ import css from "./login.module.css";
 import Loginform from "../../components/Form/Login";
 
 const LoginPage = () => {
-  // const history = useHistory();
+  const history = useHistory();
 
-  // if (localStorage.getItem("token")) {
-  //   history.push("/");
-  // }
+  if (localStorage.getItem("token")) {
+    history.push("/");
+  }
 
   return (
     <>

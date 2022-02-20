@@ -5,33 +5,37 @@ const { body, validationResult } = require("express-validator");
 const User = require("../models/User");
 const Post = require("../models/Post");
 const fetchUser = require("../middleware/fetchuser");
-const { post } = require("../models/Post");
 
-// ROUTE-1: Get all the posts for the feed using: GET "/api/post/getposts". Login required
+// ROUTE-1: Get all the posts for the feed using: GET "/api/posts/getposts". Login required
 router.get("/getposts", fetchUser, async (req, res) => {
   let success = false;
   const defaultposts = [
     {
+      id: 1,
       image:
         "https://pixabay.com/photos/road-forest-fall-path-trail-trees-1072821/",
       caption: "Beautiful forest road",
     },
     {
+      id: 2,
       image:
         "https://pixabay.com/photos/avenue-trees-path-sunbeams-sunrays-815297/",
       caption: "Amazing Sunbeams",
     },
     {
+      id: 3,
       image:
         "https://pixabay.com/photos/lake-mountain-trees-forest-nature-6632026/",
       caption: "Soothing moutain view",
     },
     {
+      id: 4,
       image:
         "https://pixabay.com/photos/polynesia-french-polynesia-tahiti-3021072/",
       caption: "Beautiful beach site",
     },
     {
+      id: 5,
       image:
         "https://pixabay.com/photos/ice-cream-snow-iceland-plateau-2817112/",
       caption: "Beauty of the iceland",
@@ -42,9 +46,9 @@ router.get("/getposts", fetchUser, async (req, res) => {
     const user = await User.find({ _id: req.user.id });
     if (posts.length === 0) {
       success = true;
-      return res.json({ success, defaultPosts });
+      return res.json({ success, defaultposts });
     } else {
-      let visiblePosts = defaultPosts.concat(posts);
+      let visiblePosts = defaultposts.concat(posts);
       console.log(visiblePosts);
       success = true;
       return res.json({ success, visiblePosts });
@@ -56,27 +60,27 @@ router.get("/getposts", fetchUser, async (req, res) => {
   }
 });
 
-// ROUTE-2: Get all posts of the user using: GET "/api/post/fetchallposts". Require Login
-routerr.get("/fetchallposts", fetchUser, async (req, res) => {
+// ROUTE-2: Get all posts of the user using: GET "/api/posts/fetchallposts". Require Login
+router.get("/fetchallposts", fetchUser, async (req, res) => {
   let success = false;
-  const noPosts = "No Posts to Show";
+  const noPosts = "No posts to show";
   try {
     const posts = await Post.find({ user: req.user.id });
     if (posts.length === 0) {
       success = true;
-      return res.json({ success, noPosts });
+      res.json({ success, noPosts });
     } else {
       success = true;
-      return res.json({ success, posts });
+      res.json({ success, posts });
     }
   } catch (err) {
     success = false;
     console.log("Error in fetchallposts route:", err);
-    res.send({ success, error: `Internal Server Error`, status: 500 });
+    res.send({ success, error: "Internal Server Error", status: 500 });
   }
 });
 
-// ROUTE-3: Add a new post using: POST "/api/post/addpost". Require Login
+// ROUTE-3: Add a new post using: POST "/api/posts/addpost". Require Login
 router.post(
   "/addpost",
   fetchUser,
@@ -85,12 +89,12 @@ router.post(
     let success = false;
     try {
       const { image, caption } = req.body;
-      const errors = validateResult(req);
+      const errors = validationResult(req);
       if (!errors.isEmpty()) {
         success = false;
         return res.json({ success, errors: errors.array(), status: 400 });
       }
-      const posts = new Post({
+      const post = new Post({
         image,
         caption,
         user: req.user.id,
@@ -101,24 +105,21 @@ router.post(
         { $push: { posts: savedPost } }
       );
       success = true;
-      return res.json({ success, savedPost, status: 200 });
+      res.json({ success, savedPost, status: 200 });
     } catch (err) {
       success = false;
       console.log("Error in addposts route:", err);
-      res.send({ success, error: `Internal Server Error`, status: 500 });
+      res.send({ success, error: err.message, status: 500 });
     }
   }
 );
 
-// ROUTE-4: Update an existing note using: PUT "/api/notes/updatenote". Require Login
+// ROUTE-4: Update an existing note using: PUT "/api/posts/updatepost". Require Login
 router.put("/updatepost/:id", fetchUser, async (req, res) => {
   let success = false;
   try {
-    const { image, caption } = req.body;
-    let newPost = { image: "", caption: "" };
-    if (image) {
-      newPost.image = image;
-    }
+    const { caption } = req.body;
+    let newPost = { caption: "" };
     if (caption) {
       newPost.caption = caption;
     }
@@ -144,7 +145,7 @@ router.put("/updatepost/:id", fetchUser, async (req, res) => {
     res.send({ success, error: `Internal Server Error`, status: 500 });
   }
 });
-// ROUTE-5: Delete an existing note using: DELETE "/api/notes/deletenote". Require Login
+// ROUTE-5: Delete an existing note using: DELETE "/api/posts/deletepost". Require Login
 router.delete("/deletepost/:id", fetchUser, async (req, res) => {
   let success = false;
   try {

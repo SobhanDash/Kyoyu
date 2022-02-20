@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import css from "./post.module.css";
-import useForm from "../../services/useForm";
 import nodpImg from "../../images/nodp.jpg";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -54,17 +53,16 @@ const PostItem = ({ postid, username, caption, dp, pic }) => {
                 {/* <span className={css.ispan}>{likes.length}</span> */}
               </button>
               <button className={css.icon}>
-                <Link to="/post">{commentIcon}</Link>
+                <Link to={`/post/${postid}`}>{commentIcon}</Link>
                 {/* <span className={css.ispan}>{comments.length}</span> */}
               </button>
             </div>
             <span className={css.icon} onClick={() => setFShow(!fshow)}>
               {more}
-              <FeatModal fshow={fshow} fn={handleModalClose} />
+              <FeatModal postid={postid} fshow={fshow} fn={handleModalClose} />
             </span>
           </div>
         </div>
-        
       </section>
     </>
   );

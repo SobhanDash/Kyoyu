@@ -13,7 +13,7 @@
 }
 .commentSection {
   display: flex;
-  justify-content: start;
+  justify-content: flex-start;
   width: 590px;
   padding: 1rem;
   margin-top: -3.5rem;

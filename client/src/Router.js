@@ -24,10 +24,6 @@ const LoginComponent = WithPageTitle({
   component: LoginPage,
   title: "Login",
 });
-// const IndexComponent = WithPageTitle({
-//   component: LoginPage,
-//   title: "Login",
-// });
 
 const RegisterComponent = WithPageTitle({
   component: RegisterPage,
@@ -43,6 +39,7 @@ const EditProfileComponent = WithPageTitle({
   component: EditProfilePage,
   title: "Edit Profile",
 });
+
 const CommentsComponent = WithPageTitle({
   component: CommentsPage,
   title: "Edit Profile",
@@ -54,13 +51,9 @@ const RouteConfig = () => {
       <Route exact path="/" component={IndexComponent} />
       <Route exact path="/login" component={LoginComponent} />
       <Route exact path="/register" component={RegisterComponent} />
-      <Route exact path="/profile/:id/:username" component={ProfileComponent} />
+      <Route exact path="/profile" component={ProfileComponent} />
       <Route exact path="/editProfile" component={EditProfileComponent} />
-      <Route
-        exact
-        path="/post/:id/:username/:postid"
-        component={CommentsComponent}
-      />
+      <Route exact path="/post/:postid" component={CommentsComponent} />
     </Switch>
   );
 };

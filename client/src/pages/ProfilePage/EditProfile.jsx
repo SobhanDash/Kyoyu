@@ -5,7 +5,9 @@ import Sidebar from "../../components/Sidebar/Sidebar";
 import css from "./profile.module.css";
 
 const EditProfile = () => {
+  // eslint-disable-next-line no-unused-vars
   const [show, setShow] = useState(false);
+  // eslint-disable-next-line no-unused-vars
   const [isProfile, setIsProfile] = useState(true);
   return (
     <>

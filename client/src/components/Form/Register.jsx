@@ -80,7 +80,7 @@ const Register = () => {
         <footer className={css.register_form_footer}>
           <div>
             <span className={css.dull}>Already Have an account?</span>
-            <a href="/" className={css.register_link}>
+            <a href="/login" className={css.register_link}>
               Log In
             </a>
           </div>

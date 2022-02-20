@@ -137,32 +137,32 @@ export const userpostsApi = async () => {
     {
       image: "https://picsum.photos/id/237/200/300",
       caption: "My puppy",
-      user: "1",
+      id: "1",
     },
     {
       image: "https://picsum.photos/id/1005/200/300",
       caption: "Peace",
-      user: "1",
+      id: "2",
     },
     {
       image: "https://picsum.photos/id/27/200/300",
       caption: "Beach",
-      user: "2",
+      id: "3",
     },
     {
       image: "https://picsum.photos/id/1019/200/300",
       caption: "Clouds",
-      user: "2",
+      id: "4",
     },
     {
       image: "https://picsum.photos/id/1022/200/300",
       caption: "My puppy",
-      user: "3",
+      id: "5",
     },
     {
       image: "https://picsum.photos/id/1008/200/300",
       caption: "Peace",
-      user: "3",
+      id: "6",
     },
   ];
 };

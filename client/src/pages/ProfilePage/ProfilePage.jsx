@@ -1,19 +1,23 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import useForm from "../../services/useForm";
 import Sidebar from "../../components/Sidebar/Sidebar";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTh, faEdit, faCamera } from "@fortawesome/free-solid-svg-icons";
+import { faTh, faCamera } from "@fortawesome/free-solid-svg-icons";
 import nodpImg from "../../images/nodp.jpg";
 import css from "./profile.module.css";
 
 const feed = <FontAwesomeIcon icon={faTh} />;
 const camera = <FontAwesomeIcon icon={faCamera} />;
-const editIcon = <FontAwesomeIcon icon={faEdit} />;
 
 const ProfilePage = () => {
+  // eslint-disable-next-line no-unused-vars
   const [isProfile, setIsProfile] = useState(true);
   const { getProfile, profile, getPost, userposts } = useForm();
+
+  useEffect(() => {
+    getProfile();
+    getPost();
+  }, [getProfile, getPost]);
 
   return (
     <section className={css.profileContainer}>
@@ -24,12 +28,12 @@ const ProfilePage = () => {
         {/* Profile Image */}
         <div className={css.profile}>
           <div className={css.profileImg}>
-            {/* {profile.profilePic !== null ? (
+            {profile.profilePic !== null ? (
               <img src={profile.profilePic} alt="" />
             ) : (
               <img src={nodpImg} alt={profile.username} />
-            )} */}
-            <img src={nodpImg} alt={profile.username} />
+            )}
+            {/* <img src={nodpImg} alt={profile.username} /> */}
           </div>
           <div className={css.name}>
             <h1>{profile.name}</h1>

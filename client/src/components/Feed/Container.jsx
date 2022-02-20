@@ -1,51 +1,20 @@
-import React, { useEffect, useState } from "react";
-import { Link, useHistory, useLocation } from "react-router-dom";
+import React, { useEffect } from "react";
 import css from "./container.module.css";
 import useForm from "../../services/useForm";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faHeart,
-  faComment,
-  faEllipsisV,
-} from "@fortawesome/free-solid-svg-icons";
-import nodpImg from "../../images/nodp.jpg";
 import PostItem from "../PostItem/PostItem";
-import FeatModal from "../Modal/FeatModal";
-import {
-  getComments as getCommentsApi,
-  profileApi,
-  userpostsApi,
-} from "../Comments/api";
-const likeHeart = <FontAwesomeIcon icon={faHeart} />;
-const commentIcon = <FontAwesomeIcon icon={faComment} />;
-const more = <FontAwesomeIcon icon={faEllipsisV} />;
 
 const Container = () => {
-  const { getProfile, profile, getPost, userposts, setProfile, setUserPosts } =
-    useForm();
-  const [fshow, setFShow] = useState(false);
-  function handleModalClose() {
-    setFShow(!fshow);
-  }
-  const [isLiked, setIsLike] = useState(false);
+  const { getProfile, profile, getPost, userposts } = useForm();
 
-  // useEffect(() => {
-  //   getProfile();
-  //   getPost();
-  // }, [getProfile, getPost]);
   useEffect(() => {
-    profileApi().then((data) => {
-      setProfile(...data);
-    });
-    userpostsApi().then((d) => {
-      setUserPosts(d);
-    });
-  }, []);
+    getProfile();
+    getPost();
+  }, [getProfile, getPost]);
 
   return (
     <>
       <section className={css.feed}>
-        {console.log(userposts)}
+        {/* {console.log(userposts)} */}
         {profile.posts.length !== 0 &&
           userposts.map((post) => {
             return (
@@ -58,92 +27,6 @@ const Container = () => {
               />
             );
           })}
-
-        {/* <section className={css.post_container}>
-          <div className={css.user}>
-            <div className={css.profile_img}>
-              <img src={nodpImg} alt="username" />
-            </div>
-            <div className={css.username}>
-              <span>anderson_009</span>
-            </div>
-          </div>
-          <div className={css.post}>
-            <img src="https://picsum.photos/id/1008/200/300" alt="temp" />
-            <figcaption className={css.img_caption}>
-              anderson_009 <span> Lorem ipsum dolor sit amet.</span>
-            </figcaption>
-            <div className={css.post_icons}>
-              <div className={css.post_icon}>
-                <button
-                  type="button"
-                  onClick={() => {
-                    console.log("click1");
-                    setIsLike(!isLiked);
-                  }}
-                  className={css.icon}
-                >
-                  <i className={isLiked ? css.active : " "}>{likeHeart}</i>
-
-                   <span className={css.icon}>{likes.length}</span> 
-                  <span className={css.ispan}>102</span>
-                </button>
-                <button className={css.icon}>
-                  <Link to="/post">{commentIcon}</Link>
-                  <span className={css.ispan}>12</span>
-                   <span className={css.icon}>{comments.length}</span>
-                </button>
-              </div>
-              <span className={css.icon} onClick={() => setFShow(!fshow)}>
-                {more}
-                <FeatModal fshow={fshow} fn={handleModalClose} />
-              </span>
-            </div>
-          </div>
-        </section>
-
-        <section className={css.post_container}>
-          <div className={css.user}>
-            <div className={css.profile_img}>
-              <img src={nodpImg} alt="username" />
-            </div>
-            <div className={css.username}>
-              <span>anderson_009</span>
-            </div>
-          </div>
-          <div className={css.post}>
-            <img src="https://picsum.photos/id/1005/200/300" alt="temp" />
-            <figcaption className={css.img_caption}>
-              anderson_009 <span> Lorem ipsum dolor sit amet.</span>
-            </figcaption>
-            <div className={css.post_icons}>
-              <div className={css.post_icon}>
-                <button
-                  type="button"
-                  onClick={() => {
-                    console.log("click2");
-                    setIsLike(!isLiked);
-                  }}
-                  className={css.icon}
-                >
-                  <i className={isLiked ? css.active : " "}>{likeHeart}</i>
-
-                  <span className={css.icon}>{likes.length}</span> 
-                  <span className={css.ispan}>102</span>
-                </button>
-                <button className={css.icon}>
-                  <Link to="/post">{commentIcon}</Link>
-                  <span className={css.ispan}>12</span>
-                  <span className={css.icon}>{comments.length}</span> 
-                </button>
-              </div>
-              <span className={css.icon} onClick={() => setFShow(!fshow)}>
-                {more}
-                <FeatModal fshow={fshow} fn={handleModalClose} />
-              </span>
-            </div>
-          </div>
-        </section> */}
       </section>
     </>
   );

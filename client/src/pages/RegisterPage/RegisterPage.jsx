@@ -4,11 +4,11 @@ import css from "./register.module.css";
 import Registerform from "../../components/Form/Register";
 
 const LoginPage = () => {
-  // const history = useHistory();
+  const history = useHistory();
 
-  // if (localStorage.getItem("token")) {
-  //   history.push("/");
-  // }
+  if (localStorage.getItem("token")) {
+    history.push("/");
+  }
 
   return (
     <>

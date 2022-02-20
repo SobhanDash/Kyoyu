@@ -40,7 +40,16 @@
 .delete {
   color: var(--ternary-3);
 }
-
+.update{
+  width: 100%;
+  color: var(--white-1);
+  text-align: center;
+  font-weight: 700;
+  font-size: 1rem;
+  border: none;
+  background: none;
+  cursor: pointer;
+}
 .cancel {
   border-bottom: none;
 }

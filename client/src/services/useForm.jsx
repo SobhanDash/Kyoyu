@@ -1,20 +1,22 @@
 import { useCallback, useState } from "react";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import {
-  getComments as getCommentsApi,
   createComment as createCommentApi,
   updateComment as updateCommentApi,
   deleteComment as deleteCommentApi,
 } from "../components/Comments/api.js";
 
-const useForm = () => {
+toast.configure();
+const useForm = (validation) => {
+  const history = useHistory();
+
   const [values, setValues] = useState({
     email: "",
     password: "",
   });
-
-  let history = useHistory();
 
   const [userposts, setUserPosts] = useState([]);
 
@@ -76,8 +78,14 @@ const useForm = () => {
     });
   };
 
+  // HANDLEING LOGIN LOGIC HERE----------------------------------------------------
   const handleLogin = async (e) => {
     e.preventDefault();
+    setErrors(validation(values));
+    if (!errors.email && errors.password) {
+      console.log(values);
+    }
+    // API END-POINT { /api/login }
     try {
       const res = await axios.post("http://localhost:5000/api/auth/login", {
         email: values.email,
@@ -87,13 +95,22 @@ const useForm = () => {
       // console.log(res);
 
       if (res.data.success) {
-        console.log(res.data.authToken);
+        // console.log(res.data.authToken);
         window.localStorage.setItem("token", res.data.authToken);
         history.push("/");
         // window.localStorage.setItem(
         //   "userdata",
         //   `${res.data.userID} ${res.data.userName} ${res.data.authToken}`
         // );
+        toast.success(`${res.data.message}`, {
+          position: "top-right",
+          autoClose: 4000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
       }
 
       setValues({
@@ -102,14 +119,21 @@ const useForm = () => {
       });
     } catch (err) {
       window.localStorage.setItem("error", err);
+      toast.error(`${err}`, {
+        position: "top-right",
+        autoClose: 4000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
     }
   };
 
   const handleRegister = async (e) => {
     e.preventDefault();
-    //TODO: validation for password and confirmPassword
-    //TODO: encrypt pass and confirmPass
-    // const erpassword = "Encrypt the password";
+    setErrors(validation(values));
     try {
       const res = await axios.post("http://localhost:5000/api/auth/register", {
         username: rvalues.username,
@@ -125,9 +149,27 @@ const useForm = () => {
         // console.log(res.data.authToken);
         window.localStorage.setItem("token", res.data.authToken);
         history.push("/");
+        toast.success(`${res.data.message}`, {
+          position: "top-right",
+          autoClose: 4000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
       }
     } catch (err) {
       window.localStorage.setItem("error", err);
+      toast.error(`${err}`, {
+        position: "top-right",
+        autoClose: 4000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
     }
   };
 
@@ -167,11 +209,11 @@ const useForm = () => {
     const { posts } = json;
 
     // console.log(json.posts);
-    console.log("post");
     setUserPosts(posts);
   }, [setUserPosts]);
 
   const addPost = async (url, cap = "") => {
+    // eslint-disable-next-line no-unused-vars
     const token = window.localStorage.getItem("token");
     const postConfig = {
       "auth-token": localStorage.getItem("token"),
@@ -193,7 +235,11 @@ const useForm = () => {
   // COMMENTS
   const [backendComments, setBackendComments] = useState([]);
   const [activeComment, setActiveComment] = useState(null);
-
+  const rootComments = backendComments.filter(
+    (backendComment) => backendComment.parentId === null
+  );
+  // console.log(backendComments);
+  // console.log(rootComments);
   const getReplies = (commentId) => {
     backendComments
       .filter((backendComment) => backendComment.parentId === commentId)
@@ -232,9 +278,6 @@ const useForm = () => {
       });
     }
   };
-  const rootComments = backendComments.filter(
-    (backendComment) => backendComment.parentId === null
-  );
 
   return {
     handleChange,

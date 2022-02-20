@@ -6,7 +6,6 @@ const User = require("../models/User");
 const Post = require("../models/Post");
 const Comment = require("../models/Comment");
 const fetchUser = require("../middleware/fetchuser");
-const { post } = require("../models/Post");
 
 // ROUTE-1: Get all the comments for the post using: GET "/api/post/getcomments". Login required
 router.get("/getcomments", fetchUser, async (req, res) => {

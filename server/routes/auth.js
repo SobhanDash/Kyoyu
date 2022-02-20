@@ -31,7 +31,7 @@ router.post(
       return res.json({ success, errors: errors.array(), status: 400 });
     }
     try {
-      let userEmail = await User.findOne({ email: reqq.body.email });
+      let userEmail = await User.findOne({ email: req.body.email });
       if (userEmail) {
         success = false;
         return res.json({
@@ -79,10 +79,10 @@ router.post(
 
       const authToken = jwt.sign(data, secret);
       success = true;
-      rs.json({ success, authToken, status: 200 });
+      return res.json({ success, authToken, status: 200 });
     } catch (err) {
       success = false;
-      console.log(`Error in registering user ${err}`);
+      console.log(`Error in registering user: ${err}`);
       res.send({
         success,
         error: `Internal Server Error`,
@@ -138,7 +138,7 @@ router.post(
       return res.json({ success, authToken, status: 200 });
     } catch (err) {
       success = false;
-      console.log(`Error in login route ${err}`);
+      console.log(`Error in login route: ${err}`);
       res.send({ success, error: `Internal Server Error`, status: 500 });
     }
   }
@@ -148,14 +148,14 @@ router.post(
 router.get("/profile", fetchUser, async (req, res) => {
   let success = false;
   try {
-    const userID = req.user;
-    const user = await User.findOne(userId);
+    const userId = req.user.id;
+    const user = await User.findById(userId);
     // TODO: Might add followers and following
     success = true;
     return res.json({ success, user, status: 200 });
   } catch (err) {
     success = false;
-    console.log(`Error in getting profile ${err}`);
+    console.log(`Error in profile route: ${err}`);
     return res.json({ success, error: `Internal Server Error`, status: 500 });
   }
 });
@@ -191,7 +191,7 @@ router.put(
       }
     } catch (err) {
       success = false;
-      console.log(`Error in addfollowing route ${err}`);
+      console.log(`Error in addfollowing route: ${err}`);
       return res.json({ success, error: `Internal Server Error`, status: 500 });
     }
   }
@@ -200,7 +200,7 @@ router.put(
 // ROUTE-5: Remove following using: PUT "/api/auth/unfollow". Require Login
 router.put(
   "/unfollow",
-  [body("removeuser", "Enter a valid User"), exists()],
+  [body("removeuser", "Enter a valid User").exists()],
   fetchUser,
   async (req, res) => {
     let success = false;
@@ -216,14 +216,14 @@ router.put(
           $pull: { followers: userId },
         });
         success = true;
-        rs.send({ success, savedUser, status: 200 });
+        res.send({ success, savedUser, status: 200 });
       } else {
         success = false;
         res.send({ success, error: "Not following this user!", status: 400 });
       }
     } catch (err) {
       success = false;
-      console.log(`Error in unfollow route ${err}`);
+      console.log(`Error in unfollow route: ${err}`);
       res.send({ success, error: `Internal server Error`, status: 500 });
     }
   }

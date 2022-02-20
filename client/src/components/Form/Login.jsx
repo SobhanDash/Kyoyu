@@ -1,9 +1,10 @@
 import React from "react";
 import css from "./form.module.css";
 import useForm from "../../services/useForm";
+import validation from "../../utils/validation";
 
 const Login = () => {
-  const { handleChange, handleLogin } = useForm();
+  const { handleChange, handleLogin, errors } = useForm(validation);
 
   return (
     <>
@@ -21,6 +22,7 @@ const Login = () => {
               onChange={handleChange}
               id="email"
               name="email"
+              emailerror={errors.email}
             />
           </div>
           <div className={css.password}>
@@ -31,6 +33,7 @@ const Login = () => {
               onChange={handleChange}
               id="password"
               name="password"
+              passworderror={errors.password}
             />
           </div>
           <button className={css.login_btn} onClick={handleLogin}>

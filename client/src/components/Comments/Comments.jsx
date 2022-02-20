@@ -1,12 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import css from "./comments.module.css";
 import CommentForm from "../Form/CommentForm";
 import Comment from "../Comments/Comment";
-import {
-  getComments as getCommentsApi,
-  profileApi as profile,
-  userpostsApi as userposts,
-} from "../Comments/api";
+import { getComments as getCommentsApi } from "../Comments/api";
 import useForm from "../../services/useForm";
 
 const Comments = ({ commentsUrl, currentUserId }) => {
@@ -25,8 +21,9 @@ const Comments = ({ commentsUrl, currentUserId }) => {
     getCommentsApi().then((data) => {
       setBackendComments(data);
     });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
+  // console.log(rootComments);
   return (
     <div className={css.commentSection}>
       <header className={css.cname}>Comments</header>
