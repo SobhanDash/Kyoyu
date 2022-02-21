@@ -27,25 +27,26 @@ const UserSchema = new Schema(
     followers: [
       {
         type: Schema.Types.ObjectId,
-        ref: "user",
+        ref: "User",
       },
     ],
     following: [
       {
         type: Schema.Types.ObjectId,
-        ref: "user",
+        ref: "User",
       },
     ],
     posts: [
       {
         type: Schema.Types.ObjectId,
-        ref: "post",
+        ref: "Post",
       },
     ],
     about: {
       profilepic: {
         type: String,
-        default: null,
+        default:
+          "https://res.cloudinary.com/kyoyu/image/upload/v1645412082/kyoyu-cloudinary/nodp_feqfob.jpg",
       },
       bio: {
         type: String,

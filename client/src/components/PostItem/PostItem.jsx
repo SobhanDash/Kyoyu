@@ -9,12 +9,14 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import FeatModal from "../Modal/FeatModal";
 import { Link } from "react-router-dom";
+import Modal from "../Modal/Modal";
 
 const likeHeart = <FontAwesomeIcon icon={faHeart} />;
 const commentIcon = <FontAwesomeIcon icon={faComment} />;
 const more = <FontAwesomeIcon icon={faEllipsisV} />;
 
-const PostItem = ({ postid, username, caption, dp, pic }) => {
+const PostItem = ({ postid, username, caption, dp, pic, userid }) => {
+  const [show, setShow] = useState(false);
   const [fshow, setFShow] = useState(false);
   const [isLiked, setIsLike] = useState(false);
   function handleModalClose() {
@@ -22,6 +24,7 @@ const PostItem = ({ postid, username, caption, dp, pic }) => {
   }
   return (
     <>
+      <Modal show={show} setShow={setShow} />
       <section className={css.post_container}>
         <div className={css.user}>
           <div className={css.profile_img}>
@@ -59,7 +62,13 @@ const PostItem = ({ postid, username, caption, dp, pic }) => {
             </div>
             <span className={css.icon} onClick={() => setFShow(!fshow)}>
               {more}
-              <FeatModal postid={postid} fshow={fshow} fn={handleModalClose} />
+              <FeatModal
+                id={postid}
+                userid={userid}
+                fshow={fshow}
+                fn={handleModalClose}
+                setShow={setShow}
+              />
             </span>
           </div>
         </div>

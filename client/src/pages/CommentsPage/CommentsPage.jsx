@@ -43,14 +43,6 @@ const CommentsPage = () => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // useEffect(() => {
-    
-  // }, []);
-
-  // console.log(postid);
-  // console.log(userposts);
-  // console.log(filterData, "FilterData");
-
   //
   // const [isLiked, setIsLike] = useState(false);
   // const [fshow, setFShow] = useState(false);

@@ -1,6 +1,7 @@
-import React from "react";
-import { Switch, Route } from "react-router-dom";
+import React, { useEffect, useContext } from "react";
+import { Switch, Route, useHistory } from "react-router-dom";
 import WithPageTitle from "./services/WithPageTitle";
+import axios from "axios";
 
 const LoginPage = React.lazy(() => import("./pages/LoginPage/LoginPage"));
 const RegisterPage = React.lazy(() =>
@@ -45,7 +46,27 @@ const CommentsComponent = WithPageTitle({
   title: "Edit Profile",
 });
 
-const RouteConfig = () => {
+const RouteConfig = ({ UserContext }) => {
+  const history = useHistory();
+  // eslint-disable-next-line no-unused-vars
+  const { state, dispatch } = useContext(UserContext);
+  const tokenFetch = async () => {
+    const token = window.localStorage.getItem("token");
+    if (token) {
+      const res = await axios.get("http://localhost:5000/api/auth/profile", {
+        headers: { "auth-token": token },
+      });
+      if (res.data.user) {
+        dispatch({ type: "USER", payload: res.data.user });
+      } else {
+        if (!history.location.pathname.startsWith("/reset"))
+          history.push("/login");
+      }
+    }
+  };
+  useEffect(() => {
+    tokenFetch();
+  }, []);
   return (
     <Switch>
       <Route exact path="/" component={IndexComponent} />

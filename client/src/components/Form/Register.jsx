@@ -1,9 +1,10 @@
 import React from "react";
 import css from "./form.module.css";
 import useForm from "../../services/useForm";
+import validation from "../../utils/validation";
 
 const Register = () => {
-  const { handleRegisterChange, handleRegister } = useForm();
+  const { handleRegisterChange, handleRegister } = useForm(validation);
 
   return (
     <>

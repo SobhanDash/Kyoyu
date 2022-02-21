@@ -162,7 +162,7 @@ router.get("/profile", fetchUser, async (req, res) => {
 
 // ROUTE-4: Add following using: PUT "/api/auth/addfollowing". Require Login
 router.put(
-  "/addfollowing",
+  "/follow",
   [body("adduser", "Enter a valid User").exists()],
   fetchUser,
   async (req, res) => {
@@ -191,7 +191,7 @@ router.put(
       }
     } catch (err) {
       success = false;
-      console.log(`Error in addfollowing route: ${err}`);
+      console.log(`Error in follow route: ${err}`);
       return res.json({ success, error: `Internal Server Error`, status: 500 });
     }
   }
@@ -370,7 +370,7 @@ router.put(
       let { image } = req.body;
       let profilePic = "";
 
-      if (reqq.body.image) {
+      if (req.body.image) {
         profilePic = image;
       }
 

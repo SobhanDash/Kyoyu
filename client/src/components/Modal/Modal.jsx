@@ -1,11 +1,16 @@
 import React, { useEffect, useRef, useState } from "react";
 import reactDom from "react-dom";
+import { useHistory } from "react-router-dom";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import axios from "axios";
 
 import useForm from "../../services/useForm";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCloudUploadAlt, faImages } from "@fortawesome/free-solid-svg-icons";
 import css from "./modal.module.css";
 
+toast.configure();
 const cloud = <FontAwesomeIcon icon={faCloudUploadAlt} />;
 const imgIcon = <FontAwesomeIcon icon={faImages} />;
 
@@ -14,16 +19,85 @@ const Modal = ({ show, setShow }) => {
   const [cap, setCap] = useState("");
   // eslint-disable-next-line no-unused-vars
   const [url, setUrl] = useState("");
-  const { getProfile, addPost } = useForm();
+  const { getProfile } = useForm();
   const imageRef = useRef();
+  const history = useHistory();
 
   useEffect(() => {
     getProfile();
   }, [getProfile]);
 
+  // --------------ADD POST--------
+  useEffect(() => {
+    if (url) {
+      fetch("http://localhost:5000/api/posts/addpost", {
+        method: "post",
+        headers: {
+          "Content-Type": "application/json",
+          "auth-token": localStorage.getItem("token"),
+        },
+        body: JSON.stringify({
+          image: url,
+          caption: cap,
+        }),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          console.log(data);
+          if (data.error) {
+            toast.error(data.error, {
+              position: "top-right",
+              autoClose: 4000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+            });
+          } else {
+            toast.success("Created post Successfully", {
+              position: "top-right",
+              autoClose: 4000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+            });
+            history.push("/");
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  }, [url]);
+
   if (!show) {
     return null;
   }
+
+  // const addPost = async (url, cap = "") => {
+  //   // eslint-disable-next-line no-unused-vars
+  //   const token = window.localStorage.getItem("token");
+  //   const postConfig = {
+  //     "auth-token": token,
+  //   };
+  //   const postBody = {
+  //     image: url,
+  //     caption: cap,
+  //   };
+  //   const res = await axios.post(
+  //     "http://localhost:5000/api/posts/addpost",
+  //     postBody,
+  //     {
+  //       headers: postConfig,
+  //     }
+  //   );
+  // };
+  // ----------
+
+  // --------CLOUDINARY UPLOAD----------
   const getImagePreview = (event) => {
     var image = URL.createObjectURL(event.target.files[0]);
     setImage(event.target.files[0]);
@@ -45,15 +119,17 @@ const Modal = ({ show, setShow }) => {
     })
       .then((res) => res.json())
       .then((data) => {
+        console.log(data);
         setUrl(data.url);
-        // console.log(data.url)
-        addPost(data.url, cap);
+        // setCap(data.caption)
+        // addPost(data.url, cap);
         setShow(false);
       })
       .catch((err) => {
         console.log(err);
       });
   };
+  // --------------
 
   return reactDom.createPortal(
     <>
@@ -106,3 +182,16 @@ const Modal = ({ show, setShow }) => {
 };
 
 export default Modal;
+// const mapStateToProps = (state) => {
+//   return {
+//     userposts: state.UserReducer,
+//   };
+// };
+
+// const mapDispatchToProps = (dispatch) => {
+//   return {
+//     FetchPost: () => dispatch(FetchPost()),
+//   };
+// };
+
+// export default connect(mapStateToProps, mapDispatchToProps)(Modal);

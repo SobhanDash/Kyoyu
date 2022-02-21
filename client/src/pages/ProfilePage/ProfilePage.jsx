@@ -12,12 +12,24 @@ const camera = <FontAwesomeIcon icon={faCamera} />;
 const ProfilePage = () => {
   // eslint-disable-next-line no-unused-vars
   const [isProfile, setIsProfile] = useState(true);
-  const { getProfile, profile, getPost, userposts } = useForm();
+  const { getProfile, profile, getPost, userposts, setUserPosts } = useForm();
 
   useEffect(() => {
     getProfile();
-    getPost();
-  }, [getProfile, getPost]);
+  }, []);
+
+  useEffect(() => {
+    fetch("http://localhost:5000/api/posts/getsubpost", {
+      method: "GET",
+      headers: {
+        "auth-token": localStorage.getItem("token"),
+      },
+    })
+      .then((res) => res.json())
+      .then((result) => {
+        setUserPosts(result.posts.reverse());
+      });
+  }, []);
 
   return (
     <section className={css.profileContainer}>

@@ -9,7 +9,7 @@ const fetchUser = (req, res, next) => {
     success = false;
     return res.json({
       success,
-      error: "Pleasr authenicate using a valid token",
+      error: "Please authenticate using a valid token",
       status: 401,
     });
   }

@@ -6,7 +6,7 @@ const PostSchema = new Schema(
   {
     user: {
       type: Schema.Types.ObjectId,
-      ref: "user",
+      ref: "User",
     },
     image: {
       type: String,
@@ -20,6 +20,7 @@ const PostSchema = new Schema(
       type: Date,
       default: Date.now,
     },
+    likes: [{ type: Schema.Types.ObjectId, ref: "User" }],
     comments: [
       {
         type: Schema.Types.ObjectId,
@@ -31,5 +32,5 @@ const PostSchema = new Schema(
   },
   { timestamps: true }
 );
-const Post = mongoose.model("Post", PostSchema)
+const Post = mongoose.model("Post", PostSchema);
 module.exports = Post;

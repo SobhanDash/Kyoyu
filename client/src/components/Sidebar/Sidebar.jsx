@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useContext } from "react";
 import { Link, useHistory, useLocation } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -12,14 +12,16 @@ import css from "./Sidebar.module.css";
 import useForm from "../../services/useForm";
 import nodpImg from "../../images/nodp.jpg";
 import logo from "../../images/logo2.svg";
+import { UserContext } from "../../App";
 
 const feed = <FontAwesomeIcon icon={faTh} />;
-const addPost = <FontAwesomeIcon icon={faPlus} />;
+const addPostIcon = <FontAwesomeIcon icon={faPlus} />;
 const profileIcon = <FontAwesomeIcon icon={faUser} />;
 const logout = <FontAwesomeIcon icon={faSignOutAlt} />;
 const editProfileIcon = <FontAwesomeIcon icon={faCog} />;
 
 const Sidebar = ({ setShow, isProfile }) => {
+  const { state, dispatch } = useContext(UserContext);
   const history = useHistory();
   const location = useLocation();
   const { getProfile, profile } = useForm();
@@ -29,7 +31,8 @@ const Sidebar = ({ setShow, isProfile }) => {
   }, [getProfile]);
 
   const onLogout = () => {
-    localStorage.removeItem("token");
+    localStorage.clear();
+    dispatch({ type: "CLEAR" });
     history.push("/login");
   };
 
@@ -98,7 +101,7 @@ const Sidebar = ({ setShow, isProfile }) => {
           </Link>
           {!isProfile && (
             <Link to={location.pathname} onClick={() => setShow(true)}>
-              <span className={css.icon}>{addPost}</span>
+              <span className={css.icon}>{addPostIcon}</span>
               <div className={css.icon_func}>Add Post</div>
             </Link>
           )}

@@ -82,27 +82,31 @@ const useForm = (validation) => {
   const handleLogin = async (e) => {
     e.preventDefault();
     setErrors(validation(values));
-    if (!errors.email && errors.password) {
+    if (!errors.email && !errors.password) {
       console.log(values);
     }
-    // API END-POINT { /api/login }
+    if (values.email === "" || values.password === "") {
+      toast.error("Enter All Fields", {
+        position: "top-right",
+        autoClose: 4000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+    }
+    // API END-POINT { /api/auth/login }
     try {
       const res = await axios.post("http://localhost:5000/api/auth/login", {
         email: values.email,
         password: values.password,
       });
 
-      // console.log(res);
-
       if (res.data.success) {
-        // console.log(res.data.authToken);
         window.localStorage.setItem("token", res.data.authToken);
         history.push("/");
-        // window.localStorage.setItem(
-        //   "userdata",
-        //   `${res.data.userID} ${res.data.userName} ${res.data.authToken}`
-        // );
-        toast.success(`${res.data.message}`, {
+        toast.success("Welcome Back", {
           position: "top-right",
           autoClose: 4000,
           hideProgressBar: false,
@@ -118,8 +122,8 @@ const useForm = (validation) => {
         password: "",
       });
     } catch (err) {
-      window.localStorage.setItem("error", err);
-      toast.error(`${err}`, {
+      window.localStorage.setItem("Error", err);
+      toast.error("Error with Login", {
         position: "top-right",
         autoClose: 4000,
         hideProgressBar: false,
@@ -134,6 +138,24 @@ const useForm = (validation) => {
   const handleRegister = async (e) => {
     e.preventDefault();
     setErrors(validation(values));
+    if (
+      rvalues.username === "" ||
+      rvalues.name === "" ||
+      rvalues.mobile === "" ||
+      rvalues.email === "" ||
+      rvalues.password === "" ||
+      rvalues.confirmPassword === ""
+    ) {
+      toast.error("Enter All Fields", {
+        position: "top-right",
+        autoClose: 4000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+    }
     try {
       const res = await axios.post("http://localhost:5000/api/auth/register", {
         username: rvalues.username,
@@ -143,13 +165,10 @@ const useForm = (validation) => {
         password: rvalues.password,
       });
 
-      // console.log(res);
-
       if (res.data.success) {
-        // console.log(res.data.authToken);
         window.localStorage.setItem("token", res.data.authToken);
         history.push("/");
-        toast.success(`${res.data.message}`, {
+        toast.success("Welcome!", {
           position: "top-right",
           autoClose: 4000,
           hideProgressBar: false,
@@ -161,7 +180,7 @@ const useForm = (validation) => {
       }
     } catch (err) {
       window.localStorage.setItem("error", err);
-      toast.error(`${err}`, {
+      toast.error("Error while Register", {
         position: "top-right",
         autoClose: 4000,
         hideProgressBar: false,
@@ -173,7 +192,7 @@ const useForm = (validation) => {
     }
   };
 
-  const getProfile = useCallback(async () => {
+  const getProfile = async () => {
     const token = window.localStorage.getItem("token");
     if (token) {
       const res = await axios.get("http://localhost:5000/api/auth/profile", {
@@ -191,45 +210,21 @@ const useForm = (validation) => {
         bio: res.data.user.about.bio,
       });
     }
-  }, [setProfile]);
+  };
 
-  const getPost = useCallback(async () => {
-    const userpost = await fetch(
-      "http://localhost:5000/api/posts/fetchallposts",
-      {
-        method: "GET",
-        headers: {
-          "auth-token": localStorage.getItem("token"),
-        },
-      }
-    );
+  const getPost = async () => {
+    const userpost = await fetch("http://localhost:5000/api/posts/getposts", {
+      method: "GET",
+      headers: {
+        "auth-token": localStorage.getItem("token"),
+      },
+    });
 
     const json = await userpost.json();
 
     const { posts } = json;
 
-    // console.log(json.posts);
-    setUserPosts(posts);
-  }, [setUserPosts]);
-
-  const addPost = async (url, cap = "") => {
-    // eslint-disable-next-line no-unused-vars
-    const token = window.localStorage.getItem("token");
-    const postConfig = {
-      "auth-token": localStorage.getItem("token"),
-    };
-    const postBody = {
-      image: url,
-      caption: cap,
-    };
-    const res = await axios.post(
-      "http://localhost:5000/api/posts/addpost",
-      postBody,
-      {
-        headers: postConfig,
-      }
-    );
-    console.log(res);
+    setUserPosts(posts.reverse());
   };
 
   // COMMENTS
@@ -296,7 +291,6 @@ const useForm = (validation) => {
     getPost,
     userposts,
     setUserPosts,
-    addPost,
 
     activeComment,
     setActiveComment,

@@ -9,20 +9,22 @@ const Container = () => {
   useEffect(() => {
     getProfile();
     getPost();
-  }, [getProfile, getPost]);
+  }, []);
 
   return (
     <>
       <section className={css.feed}>
-        {/* {console.log(userposts)} */}
         {profile.posts.length !== 0 &&
           userposts.map((post) => {
+            // console.log(post);
             return (
               <PostItem
-                postid={post.id}
-                username={profile.username}
+                key={post._id}
+                postid={post._id}
+                userid={post.user._id}
+                username={post.user.username}
                 caption={post.caption}
-                dp={profile.profilePic}
+                dp={post.user.about.profilepic}
                 pic={post.image}
               />
             );

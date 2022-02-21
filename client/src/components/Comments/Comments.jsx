@@ -23,7 +23,7 @@ const Comments = ({ commentsUrl, currentUserId }) => {
     });
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  // console.log(rootComments);
+
   return (
     <div className={css.commentSection}>
       <header className={css.cname}>Comments</header>
