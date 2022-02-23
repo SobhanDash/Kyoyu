@@ -28,7 +28,7 @@ const Sidebar = ({ setShow, isProfile }) => {
 
   useEffect(() => {
     getProfile();
-  }, [getProfile]);
+  }, []);
 
   const onLogout = () => {
     localStorage.clear();

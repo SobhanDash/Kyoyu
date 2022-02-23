@@ -3,7 +3,6 @@ import reactDom from "react-dom";
 import { useHistory } from "react-router-dom";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import axios from "axios";
 
 import useForm from "../../services/useForm";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -19,13 +18,13 @@ const Modal = ({ show, setShow }) => {
   const [cap, setCap] = useState("");
   // eslint-disable-next-line no-unused-vars
   const [url, setUrl] = useState("");
-  const { getProfile } = useForm();
+  const { getPost } = useForm();
   const imageRef = useRef();
   const history = useHistory();
 
-  useEffect(() => {
-    getProfile();
-  }, [getProfile]);
+  // useEffect(() => {
+  //   getPost();
+  // }, [getPost, url]);
 
   // --------------ADD POST--------
   useEffect(() => {
@@ -47,7 +46,7 @@ const Modal = ({ show, setShow }) => {
           if (data.error) {
             toast.error(data.error, {
               position: "top-right",
-              autoClose: 4000,
+              autoClose: 2500,
               hideProgressBar: false,
               closeOnClick: true,
               pauseOnHover: true,
@@ -57,44 +56,27 @@ const Modal = ({ show, setShow }) => {
           } else {
             toast.success("Created post Successfully", {
               position: "top-right",
-              autoClose: 4000,
+              autoClose: 2500,
               hideProgressBar: false,
               closeOnClick: true,
               pauseOnHover: true,
               draggable: true,
               progress: undefined,
             });
-            history.push("/");
+            setTimeout(() => {
+              window.location.reload();
+            }, 3000);
           }
         })
         .catch((err) => {
           console.log(err);
         });
     }
-  }, [url]);
+  }, [url, cap]);
 
   if (!show) {
     return null;
   }
-
-  // const addPost = async (url, cap = "") => {
-  //   // eslint-disable-next-line no-unused-vars
-  //   const token = window.localStorage.getItem("token");
-  //   const postConfig = {
-  //     "auth-token": token,
-  //   };
-  //   const postBody = {
-  //     image: url,
-  //     caption: cap,
-  //   };
-  //   const res = await axios.post(
-  //     "http://localhost:5000/api/posts/addpost",
-  //     postBody,
-  //     {
-  //       headers: postConfig,
-  //     }
-  //   );
-  // };
   // ----------
 
   // --------CLOUDINARY UPLOAD----------
@@ -119,9 +101,8 @@ const Modal = ({ show, setShow }) => {
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
         setUrl(data.url);
-        // setCap(data.caption)
+        // setCap(data.caption);
         // addPost(data.url, cap);
         setShow(false);
       })
@@ -182,16 +163,3 @@ const Modal = ({ show, setShow }) => {
 };
 
 export default Modal;
-// const mapStateToProps = (state) => {
-//   return {
-//     userposts: state.UserReducer,
-//   };
-// };
-
-// const mapDispatchToProps = (dispatch) => {
-//   return {
-//     FetchPost: () => dispatch(FetchPost()),
-//   };
-// };
-
-// export default connect(mapStateToProps, mapDispatchToProps)(Modal);

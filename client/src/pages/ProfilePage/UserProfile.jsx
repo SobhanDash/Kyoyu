@@ -9,7 +9,7 @@ import css from "./profile.module.css";
 const feed = <FontAwesomeIcon icon={faTh} />;
 const camera = <FontAwesomeIcon icon={faCamera} />;
 
-const ProfilePage = () => {
+const UserProfile = () => {
   // eslint-disable-next-line no-unused-vars
   const [isProfile, setIsProfile] = useState(true);
   const { getProfile, profile, userposts, setUserPosts } = useForm();
@@ -98,4 +98,4 @@ const ProfilePage = () => {
   );
 };
 
-export default ProfilePage;
+export default UserProfile;

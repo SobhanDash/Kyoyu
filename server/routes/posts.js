@@ -109,6 +109,7 @@ router.put("/updatepost/:id", fetchUser, async (req, res) => {
     res.send({ success, error: `Internal Server Error`, status: 500 });
   }
 });
+
 // ROUTE-5: Delete an existing note using: DELETE "/api/posts/deletepost". Require Login
 router.delete("/deletepost/:id", fetchUser, async (req, res) => {
   let success = false;
@@ -139,36 +140,42 @@ router.delete("/deletepost/:id", fetchUser, async (req, res) => {
 });
 
 router.put("/like", fetchUser, (req, res) => {
+  let success = false;
   Post.findByIdAndUpdate(
-    req.body.postId,
+    req.body.postid,
     {
-      $push: { likes: req.user._id },
+      $push: { likes: req.user.id },
     },
     {
       new: true,
     }
   ).exec((err, result) => {
     if (err) {
-      return res.status(422).json({ error: err });
+      console.log("Error in like route:", err);
+      return res.json({ success, error: err, status: 422 });
     } else {
-      res.json(result);
+      success = true;
+      res.json({ success, result, status: 200 });
     }
   });
 });
 router.put("/unlike", fetchUser, (req, res) => {
+  let success = false;
   Post.findByIdAndUpdate(
-    req.body.postId,
+    req.body.postid,
     {
-      $pull: { likes: req.user._id },
+      $pull: { likes: req.user.id },
     },
     {
       new: true,
     }
   ).exec((err, result) => {
     if (err) {
-      return res.status(422).json({ error: err });
+      console.log("Error in unlike route:", err);
+      return res.json({ success, error: err, status: 422 });
     } else {
-      res.json(result);
+      success = true;
+      res.json({ success, result, status: 200 });
     }
   });
 });

@@ -15,6 +15,9 @@ const EditProfilePage = React.lazy(() =>
 const CommentsPage = React.lazy(() =>
   import("./pages/CommentsPage/CommentsPage")
 );
+const UserProfilePage = React.lazy(()=>{
+  import("./pages/ProfilePage/UserProfile")
+})
 
 const IndexComponent = WithPageTitle({
   component: IndexPage,
@@ -45,6 +48,10 @@ const CommentsComponent = WithPageTitle({
   component: CommentsPage,
   title: "Edit Profile",
 });
+const UserProfileComponent = WithPageTitle({
+  component: UserProfilePage,
+  title: "User Profile",
+});
 
 const RouteConfig = ({ UserContext }) => {
   const history = useHistory();
@@ -66,6 +73,7 @@ const RouteConfig = ({ UserContext }) => {
   };
   useEffect(() => {
     tokenFetch();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
     <Switch>
@@ -75,6 +83,8 @@ const RouteConfig = ({ UserContext }) => {
       <Route exact path="/profile" component={ProfileComponent} />
       <Route exact path="/editProfile" component={EditProfileComponent} />
       <Route exact path="/post/:postid" component={CommentsComponent} />
+      <Route exact path="/profile/:userid" component={UserProfileComponent} />
+
     </Switch>
   );
 };

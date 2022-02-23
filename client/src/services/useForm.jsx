@@ -9,6 +9,7 @@ import {
   deleteComment as deleteCommentApi,
 } from "../components/Comments/api.js";
 
+
 toast.configure();
 const useForm = (validation) => {
   const history = useHistory();
@@ -88,7 +89,7 @@ const useForm = (validation) => {
     if (values.email === "" || values.password === "") {
       toast.error("Enter All Fields", {
         position: "top-right",
-        autoClose: 4000,
+        autoClose: 2500,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
@@ -108,7 +109,17 @@ const useForm = (validation) => {
         history.push("/");
         toast.success("Welcome Back", {
           position: "top-right",
-          autoClose: 4000,
+          autoClose: 2500,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+      } else {
+        toast.error("Login Failed", {
+          position: "top-right",
+          autoClose: 2500,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,
@@ -116,7 +127,6 @@ const useForm = (validation) => {
           progress: undefined,
         });
       }
-
       setValues({
         email: "",
         password: "",
@@ -125,7 +135,7 @@ const useForm = (validation) => {
       window.localStorage.setItem("Error", err);
       toast.error("Error with Login", {
         position: "top-right",
-        autoClose: 4000,
+        autoClose: 2500,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
@@ -148,7 +158,7 @@ const useForm = (validation) => {
     ) {
       toast.error("Enter All Fields", {
         position: "top-right",
-        autoClose: 4000,
+        autoClose: 2500,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
@@ -170,7 +180,17 @@ const useForm = (validation) => {
         history.push("/");
         toast.success("Welcome!", {
           position: "top-right",
-          autoClose: 4000,
+          autoClose: 2500,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+      } else {
+        toast.error("Registration Failed", {
+          position: "top-right",
+          autoClose: 2500,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,
@@ -178,11 +198,19 @@ const useForm = (validation) => {
           progress: undefined,
         });
       }
+      setRvalues({
+        username: "",
+        name: "",
+        mobile: "",
+        email: "",
+        password: "",
+        confirmPassword: "",
+      });
     } catch (err) {
       window.localStorage.setItem("error", err);
       toast.error("Error while Register", {
         position: "top-right",
-        autoClose: 4000,
+        autoClose: 2500,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
@@ -191,6 +219,7 @@ const useForm = (validation) => {
       });
     }
   };
+
 
   const getProfile = async () => {
     const token = window.localStorage.getItem("token");
@@ -223,8 +252,7 @@ const useForm = (validation) => {
     const json = await userpost.json();
 
     const { posts } = json;
-
-    setUserPosts(posts.reverse());
+    setUserPosts(posts);
   };
 
   // COMMENTS

@@ -1,5 +1,5 @@
 /* eslint-disable eqeqeq */
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect } from "react";
 import axios from "axios";
 import css from "./modal.module.css";
 import reactDom from "react-dom";
@@ -10,23 +10,23 @@ import useForm from "../../services/useForm";
 import { UserContext } from "../../App";
 
 const FeatModal = ({ id, fshow, fn, setShow, userid }) => {
-  const { setUserPosts, userposts } = useForm();
+  const { userposts } = useForm();
   const { state, dispatch } = useContext(UserContext);
   const history = useHistory();
   const location = useLocation();
 
-  useEffect(() => {
-    fetch("http://localhost:5000/api/posts/getposts", {
-      headers: {
-        "auth-token": localStorage.getItem("token"),
-      },
-    })
-      .then((res) => res.json())
-      .then((result) => {
-        // console.log(result);
-        setUserPosts(result.posts);
-      });
-  }, [setUserPosts]);
+  // useEffect(() => {
+  //   fetch("http://localhost:5000/api/posts/getposts", {
+  //     headers: {
+  //       "auth-token": localStorage.getItem("token"),
+  //     },
+  //   })
+  //     .then((res) => res.json())
+  //     .then((result) => {
+  //       // console.log(result);
+  //       setUserPosts(result.posts);
+  //     });
+  // }, [setUserPosts]);
 
   if (!fshow) {
     return null;
@@ -60,23 +60,26 @@ const FeatModal = ({ id, fshow, fn, setShow, userid }) => {
         console.log(item._id, res);
         return item._id !== res._id;
       });
-      console.log(newData);
-      setUserPosts(newData);
-      // console.log(res);
+      dispatch({ type: "USER", payload: newData });
+
       history.push("/");
       toast.success("Post Deleted", {
         position: "top-right",
-        autoClose: 5000,
+        autoClose: 2500,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
       });
+      setTimeout(() => {
+        window.location.reload();
+      }, 3000);
+      
     } catch (error) {
       toast.error(`${error.response.data.message}`, {
         position: "top-right",
-        autoClose: 5000,
+        autoClose: 2500,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
@@ -85,21 +88,6 @@ const FeatModal = ({ id, fshow, fn, setShow, userid }) => {
       });
     }
   };
-  // const deletePost = (postid) => {
-  //   fetch(`http://localhost:5000/api/posts/deletepost/${id}`, {
-  //     method: "delete",
-  //     headers: {
-  //       "auth-token": localStorage.getItem("token"),
-  //     },
-  //   })
-  //     .then((res) => res.json())
-  //     .then((result) => {
-  //       const newData = userposts.filter((item) => {
-  //         return item._id !== result._id;
-  //       });
-  //       setUserPosts(newData);
-  //     });
-  // };
 
   return reactDom.createPortal(
     <>

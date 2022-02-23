@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+/* eslint-disable eqeqeq */
+import React, { useState, useEffect, useContext } from "react";
 import css from "./post.module.css";
 import nodpImg from "../../images/nodp.jpg";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -10,18 +11,95 @@ import {
 import FeatModal from "../Modal/FeatModal";
 import { Link } from "react-router-dom";
 import Modal from "../Modal/Modal";
+import useForm from "../../services/useForm";
+import { UserContext } from "../../App";
+import axios from "axios";
 
 const likeHeart = <FontAwesomeIcon icon={faHeart} />;
 const commentIcon = <FontAwesomeIcon icon={faComment} />;
 const more = <FontAwesomeIcon icon={faEllipsisV} />;
 
-const PostItem = ({ postid, username, caption, dp, pic, userid }) => {
+const PostItem = ({ post, postid, username, caption, dp, pic, userid }) => {
   const [show, setShow] = useState(false);
   const [fshow, setFShow] = useState(false);
   const [isLiked, setIsLike] = useState(false);
+  const { userposts, setUserPosts, profile } = useForm();
+  const { state, dispatch } = useContext(UserContext);
+
+  useEffect(() => {
+    const getPost = async () => {
+      const userpost = await fetch("http://localhost:5000/api/posts/getposts", {
+        method: "GET",
+        headers: {
+          "auth-token": localStorage.getItem("token"),
+        },
+      });
+
+      const json = await userpost.json();
+
+      const { posts } = json;
+      setUserPosts(posts);
+    };
+    getPost();
+  }, []);
+
   function handleModalClose() {
     setFShow(!fshow);
   }
+  const likePost = (id) => {
+    fetch("http://localhost:5000/api/posts/like", {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        "auth-token": localStorage.getItem("token"),
+      },
+      body: JSON.stringify({ postid: id }),
+    })
+      .then((res) => res.json())
+      .then((result) => {
+        const newData = userposts.map((item) => {
+          if (item._id == result._id) {
+            return result;
+          } else {
+            return item;
+          }
+        });
+        setUserPosts(newData);
+        window.location.reload();
+        console.log(result);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const unlikePost = (id) => {
+    fetch("http://localhost:5000/api/posts/unlike", {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        "auth-token": localStorage.getItem("token"),
+      },
+      body: JSON.stringify({ postid: id }),
+    })
+      .then((res) => res.json())
+      .then((result) => {
+        console.log("res", result);
+        const newData = userposts.map((item) => {
+          if (item._id == result._id) {
+            return result;
+          } else {
+            return item;
+          }
+        });
+        setUserPosts(newData);
+        window.location.reload();
+        console.log("unlike", newData);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
   return (
     <>
       <Modal show={show} setShow={setShow} />
@@ -45,19 +123,32 @@ const PostItem = ({ postid, username, caption, dp, pic, userid }) => {
           </figcaption>
           <div className={css.post_icons}>
             <div className={css.post_icon}>
-              <button
-                type="button"
-                onClick={() => {
-                  setIsLike(!isLiked);
-                }}
-                className={css.icon}
-              >
-                <i className={isLiked ? css.active : " "}>{likeHeart}</i>
-                {/* <span className={css.ispan}>{likes.length}</span> */}
-              </button>
+              {post.likes.includes(state._id) ? (
+                <button
+                  type="button"
+                  onClick={() => {
+                    unlikePost(postid);
+                  }}
+                  className={css.icon}
+                >
+                  <i className={css.active}>{likeHeart}</i>
+                  <span className={css.ispan}>{post.likes.length}</span>
+                </button>
+              ) : (
+                <button
+                  type="button"
+                  onClick={() => {
+                    likePost(postid);
+                  }}
+                  className={css.icon}
+                >
+                  <i>{likeHeart}</i>
+                  <span className={css.ispan}>{post.likes.length}</span>
+                </button>
+              )}
               <button className={css.icon}>
                 <Link to={`/post/${postid}`}>{commentIcon}</Link>
-                {/* <span className={css.ispan}>{comments.length}</span> */}
+                <span className={css.ispan}>{post.comments.length}</span>
               </button>
             </div>
             <span className={css.icon} onClick={() => setFShow(!fshow)}>

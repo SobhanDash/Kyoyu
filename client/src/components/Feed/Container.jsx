@@ -10,16 +10,15 @@ const Container = () => {
     getProfile();
     getPost();
   }, []);
-
   return (
     <>
       <section className={css.feed}>
-        {profile.posts.length !== 0 &&
+        {profile &&
           userposts.map((post) => {
-            // console.log(post);
             return (
               <PostItem
                 key={post._id}
+                post={post}
                 postid={post._id}
                 userid={post.user._id}
                 username={post.user.username}
