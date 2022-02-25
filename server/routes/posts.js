@@ -97,7 +97,7 @@ router.put("/updatepost/:id", fetchUser, async (req, res) => {
       res.send({ success, error: "Not Allowed", status: 401 });
     }
     post = await Post.findByIdAndUpdate(
-      req.param.id,
+      req.params.id,
       { $set: newPost },
       { new: true }
     );

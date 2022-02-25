@@ -11,9 +11,9 @@ import {
 import FeatModal from "../Modal/FeatModal";
 import { Link } from "react-router-dom";
 import Modal from "../Modal/Modal";
+import UpdateModal from "../Modal/UpdateModal"
 import useForm from "../../services/useForm";
 import { UserContext } from "../../App";
-import axios from "axios";
 
 const likeHeart = <FontAwesomeIcon icon={faHeart} />;
 const commentIcon = <FontAwesomeIcon icon={faComment} />;
@@ -22,8 +22,9 @@ const more = <FontAwesomeIcon icon={faEllipsisV} />;
 const PostItem = ({ post, postid, username, caption, dp, pic, userid }) => {
   const [show, setShow] = useState(false);
   const [fshow, setFShow] = useState(false);
-  const [isLiked, setIsLike] = useState(false);
-  const { userposts, setUserPosts, profile } = useForm();
+  const [ushow, setUShow] = useState(false);
+  const { userposts, setUserPosts } = useForm();
+  // eslint-disable-next-line no-unused-vars
   const { state, dispatch } = useContext(UserContext);
 
   useEffect(() => {
@@ -41,6 +42,7 @@ const PostItem = ({ post, postid, username, caption, dp, pic, userid }) => {
       setUserPosts(posts);
     };
     getPost();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   function handleModalClose() {
@@ -103,6 +105,7 @@ const PostItem = ({ post, postid, username, caption, dp, pic, userid }) => {
   return (
     <>
       <Modal show={show} setShow={setShow} />
+      <UpdateModal ushow={ushow} setUShow={setUShow} post={post} />
       <section className={css.post_container}>
         <div className={css.user}>
           <div className={css.profile_img}>
@@ -158,7 +161,7 @@ const PostItem = ({ post, postid, username, caption, dp, pic, userid }) => {
                 userid={userid}
                 fshow={fshow}
                 fn={handleModalClose}
-                setShow={setShow}
+                setUShow={setUShow}
               />
             </span>
           </div>

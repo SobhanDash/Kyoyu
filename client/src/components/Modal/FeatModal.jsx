@@ -1,5 +1,5 @@
 /* eslint-disable eqeqeq */
-import React, { useContext, useEffect } from "react";
+import React, { useContext } from "react";
 import axios from "axios";
 import css from "./modal.module.css";
 import reactDom from "react-dom";
@@ -9,43 +9,15 @@ import "react-toastify/dist/ReactToastify.css";
 import useForm from "../../services/useForm";
 import { UserContext } from "../../App";
 
-const FeatModal = ({ id, fshow, fn, setShow, userid }) => {
+const FeatModal = ({ id, fshow, fn, setUShow, userid }) => {
   const { userposts } = useForm();
   const { state, dispatch } = useContext(UserContext);
   const history = useHistory();
   const location = useLocation();
 
-  // useEffect(() => {
-  //   fetch("http://localhost:5000/api/posts/getposts", {
-  //     headers: {
-  //       "auth-token": localStorage.getItem("token"),
-  //     },
-  //   })
-  //     .then((res) => res.json())
-  //     .then((result) => {
-  //       // console.log(result);
-  //       setUserPosts(result.posts);
-  //     });
-  // }, [setUserPosts]);
-
   if (!fshow) {
     return null;
   }
-
-  const updatePost = async (cap = "") => {
-    const postConfig = {
-      "auth-token": localStorage.getItem("token"),
-    };
-    const postBody = {
-      caption: cap,
-    };
-    const res = await axios.put(
-      `http://localhost:5000/api/posts/updatepost/${id}`,
-      postBody,
-      { headers: postConfig }
-    );
-    // console.log(res);
-  };
 
   const handleDeletebtn = async () => {
     try {
@@ -57,7 +29,6 @@ const FeatModal = ({ id, fshow, fn, setShow, userid }) => {
         { headers: postConfig }
       );
       const newData = userposts.filter((item) => {
-        console.log(item._id, res);
         return item._id !== res._id;
       });
       dispatch({ type: "USER", payload: newData });
@@ -75,9 +46,8 @@ const FeatModal = ({ id, fshow, fn, setShow, userid }) => {
       setTimeout(() => {
         window.location.reload();
       }, 3000);
-      
     } catch (error) {
-      toast.error(`${error.response.data.message}`, {
+      toast.error("Something Occured, Try Again!", {
         position: "top-right",
         autoClose: 2500,
         hideProgressBar: false,
@@ -106,7 +76,7 @@ const FeatModal = ({ id, fshow, fn, setShow, userid }) => {
           <Link
             to={location.pathname}
             className={`${css.fbutton}`}
-            onClick={() => setShow(true)}
+            onClick={() => setUShow(true)}
           >
             <button className={`${css.update}`}>Update</button>
           </Link>

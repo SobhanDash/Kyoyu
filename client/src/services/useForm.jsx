@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useState } from "react";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -8,7 +8,6 @@ import {
   updateComment as updateCommentApi,
   deleteComment as deleteCommentApi,
 } from "../components/Comments/api.js";
-
 
 toast.configure();
 const useForm = (validation) => {
@@ -219,7 +218,6 @@ const useForm = (validation) => {
       });
     }
   };
-
 
   const getProfile = async () => {
     const token = window.localStorage.getItem("token");
