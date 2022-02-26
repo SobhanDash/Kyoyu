@@ -77,9 +77,6 @@ const useForm = (validation) => {
   const handleLogin = async (e) => {
     e.preventDefault();
     setErrors(validation(values));
-    if (!errors.email && !errors.password) {
-      console.log(values);
-    }
     if (values.email === "" || values.password === "") {
       toast.error("Enter All Fields", {
         position: "top-right",

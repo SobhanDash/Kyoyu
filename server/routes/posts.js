@@ -3,7 +3,7 @@ const router = express.Router();
 const { body, validationResult } = require("express-validator");
 const User = require("../models/User");
 const Post = require("../models/Post");
-const fetchUser = require("../middleware/fetchuser");
+const fetchUser = require("../middleware/fetchUser");
 
 // ROUTE-1: Get all the posts for the feed using: GET "/api/posts/getposts". Login required
 router.get("/getposts", fetchUser, async (req, res) => {

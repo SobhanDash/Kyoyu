@@ -30,15 +30,15 @@ const CommentForm = ({
     })
       .then((res) => res.json())
       .then((result) => {
-        console.log("result, userposts", result, userposts);
-        // const newData = userposts.map((item) => {
-        //   if (item._id == result._id) {
-        //     return result;
-        //   } else {
-        //     return item;
-        //   }
-        // });
-        // setUserPosts(newData);
+        const newData = userposts.map((item) => {
+          if (item._id == result._id) {
+            return result;
+          } else {
+            return item;
+          }
+        });
+        setUserPosts(newData);
+        window.location.reload();
       })
       .catch((err) => {
         console.log(err);

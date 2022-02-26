@@ -44,7 +44,7 @@
   background: transparent;
   border: 10px solid;
   border-radius: 1rem;
-  border-image-slice: 1;
+  border-image-slice: 1 !important;
   border-width: 2px;
   border-image-source: linear-gradient(
     to left,

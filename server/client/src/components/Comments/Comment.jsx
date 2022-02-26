@@ -4,7 +4,7 @@ import nodpImg from "../../images/nodp.jpg";
 
 
 const Comment = ({ comment, currentUserId }) => {
-  const canDelete = currentUserId === comment.user._id;
+  // const canDelete = currentUserId === comment.user._id;
 
   //  const deleteComment = (commentId) => {
   //    if (window.confirm("Are you sure you want to remove comment?")) {
@@ -16,7 +16,6 @@ const Comment = ({ comment, currentUserId }) => {
   //      });
   //    }
   //  };
-  // console.log(comment.user._id, currentUserId);
 
   return (
     <div key={comment.id} className={css.comment}>

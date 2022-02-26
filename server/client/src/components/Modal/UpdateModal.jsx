@@ -12,13 +12,13 @@ const cloud = <FontAwesomeIcon icon={faCloudUploadAlt} />;
 const imgIcon = <FontAwesomeIcon icon={faImages} />;
 
 const UpdateModal = ({ ushow, setUShow, post }) => {
+  // eslint-disable-next-line no-unused-vars
   const [image, setImage] = useState("");
   const [cap, setCap] = useState("");
   const imageRef = useRef();
   // -----------------UPDATE POST--------------//
   useEffect(() => {
     if (cap) {
-      // console.log(cap);
       fetch(`/api/posts/updatepost/${post._id}`, {
         method: "put",
         headers: {

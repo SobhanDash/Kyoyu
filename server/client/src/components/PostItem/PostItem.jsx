@@ -68,7 +68,6 @@ const PostItem = ({ post, postid, username, caption, dp, pic, userid }) => {
         });
         setUserPosts(newData);
         window.location.reload();
-        console.log(result);
       })
       .catch((err) => {
         console.log(err);
@@ -86,7 +85,6 @@ const PostItem = ({ post, postid, username, caption, dp, pic, userid }) => {
     })
       .then((res) => res.json())
       .then((result) => {
-        console.log("res", result);
         const newData = userposts.map((item) => {
           if (item._id == result._id) {
             return result;
@@ -96,7 +94,6 @@ const PostItem = ({ post, postid, username, caption, dp, pic, userid }) => {
         });
         setUserPosts(newData);
         window.location.reload();
-        console.log("unlike", newData);
       })
       .catch((err) => {
         console.log(err);

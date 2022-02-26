@@ -3,9 +3,10 @@ import css from "./comments.module.css";
 import CommentForm from "../Form/CommentForm";
 import Comment from "../Comments/Comment";
 import { UserContext } from "../../App";
-import useForm from "../../services/useForm";
+
 
 const Comments = ({ profile, userposts, post, setUserPosts }) => {
+  // eslint-disable-next-line no-unused-vars
   const { state, dispatch } = useContext(UserContext);
 
   return (
@@ -20,9 +21,7 @@ const Comments = ({ profile, userposts, post, setUserPosts }) => {
         setUserPosts={setUserPosts}
       />
       <div className={css.comments_container}>
-        {/* {console.log("post.comments", post.comments)} */}
         {post.comments.map((rootComment) => (
-          // console.log(state)
           <Comment
             key={rootComment._id}
             comment={rootComment}
