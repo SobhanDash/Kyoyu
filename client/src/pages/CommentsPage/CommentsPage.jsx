@@ -3,59 +3,42 @@ import css from "./commentsPage.module.css";
 import Sidebar from "../../components/Sidebar/Sidebar";
 import Modal from "../../components/Modal/Modal";
 import { useParams } from "react-router-dom";
-
+import axios from "axios";
 import PostItem from "../../components/PostItem/PostItem";
 import Comments from "../../components/Comments/Comments";
 import useForm from "../../services/useForm";
 
-//
-import { userpostsApi } from "../../components/Comments/api";
-// import FeatModal from "../../components/Modal/FeatModal";
-// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-// import {
-//   faHeart,
-//   faComment,
-//   faEllipsisV,
-// } from "@fortawesome/free-solid-svg-icons";
-// import nodpImg from "../../images/nodp.jpg";
-
-// const likeHeart = <FontAwesomeIcon icon={faHeart} />;
-// const commentIcon = <FontAwesomeIcon icon={faComment} />;
-// const more = <FontAwesomeIcon icon={faEllipsisV} />;
-
-//
-
 const CommentsPage = () => {
   const [show, setShow] = useState(false);
-  const { profile, setUserPosts } = useForm();
+  const { setProfile, getProfile, profile, setUserPosts, userposts } =
+    useForm();
   const { postid } = useParams();
-  const [filterData, setFilterData] = useState([]);
 
   useEffect(() => {
-    userpostsApi().then((d) => {
-      setUserPosts(d);
-      const filterDataItem = d.filter(
-        (filterdata) => filterdata.id === postid
-      );
-      setFilterData(filterDataItem);
-    });
-    
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    const getPost = async () => {
+      const userpost = await fetch("/api/posts/getposts", {
+        method: "GET",
+        headers: {
+          "auth-token": localStorage.getItem("token"),
+        },
+      });
+
+      const json = await userpost.json();
+
+      const { posts } = json;
+      setUserPosts(posts);
+    };
+    getProfile();
+    getPost();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+  const filterData = userposts.filter((item) => {
+    return item._id === postid;
+  });
 
-  //
-  // const [isLiked, setIsLike] = useState(false);
-  // const [fshow, setFShow] = useState(false);
-  // function handleModalClose() {
-  //   setFShow(!fshow);
-  // }
-  //
-
-  // console.log(filterDataItem);
   return (
     <>
       <Modal show={show} setShow={setShow} />
-
       <section className={css.pcontainer}>
         <div>
           <Sidebar setShow={setShow} />
@@ -63,18 +46,26 @@ const CommentsPage = () => {
         {/* temp below */}
         <div className={css.feed}>
           {/* Post Item */}
-          {filterData &&
+          {profile &&
             filterData.map((post) => {
               return (
                 <>
                   <PostItem
-                    postid={post.id}
-                    username={profile.username}
+                    key={post._id}
+                    post={post}
+                    postid={post._id}
+                    userid={post.user._id}
+                    username={post.user.username}
                     caption={post.caption}
-                    dp={profile.profilePic}
+                    dp={post.user.about.profilepic}
                     pic={post.image}
                   />
-                  <Comments commentsUrl="/post" currentUserId={post.id} />
+                  <Comments
+                    post={post}
+                    profile={profile}
+                    userposts={userposts}
+                    setUserPosts={setUserPosts}
+                  />
                 </>
               );
             })}

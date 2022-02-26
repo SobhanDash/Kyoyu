@@ -16,11 +16,10 @@ const Modal = ({ show, setShow }) => {
   const [url, setUrl] = useState("");
   const imageRef = useRef();
 
-
   // --------------ADD POST--------
   useEffect(() => {
     if (url) {
-      fetch("http://localhost:5000/api/posts/addpost", {
+      fetch("/api/posts/addpost", {
         method: "post",
         headers: {
           "Content-Type": "application/json",

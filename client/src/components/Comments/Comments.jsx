@@ -1,45 +1,32 @@
-import React, { useEffect } from "react";
+import React, { useContext } from "react";
 import css from "./comments.module.css";
 import CommentForm from "../Form/CommentForm";
 import Comment from "../Comments/Comment";
-import { getComments as getCommentsApi } from "../Comments/api";
+import { UserContext } from "../../App";
 import useForm from "../../services/useForm";
 
-const Comments = ({ commentsUrl, currentUserId }) => {
-  const {
-    activeComment,
-    setActiveComment,
-    setBackendComments,
-    getReplies,
-    addComment,
-    deleteComment,
-    updateComment,
-    rootComments,
-  } = useForm();
-
-  useEffect(() => {
-    getCommentsApi().then((data) => {
-      setBackendComments(data);
-    });
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+const Comments = ({ profile, userposts, post, setUserPosts }) => {
+  const { state, dispatch } = useContext(UserContext);
 
   return (
     <div className={css.commentSection}>
       <header className={css.cname}>Comments</header>
-      <CommentForm submitLabel="Post" handleSubmit={addComment} />
+      {/* handleSubmit={addComment} */}
+      <CommentForm
+        submitLabel="Post"
+        profile={profile}
+        userposts={userposts}
+        post={post}
+        setUserPosts={setUserPosts}
+      />
       <div className={css.comments_container}>
-        {rootComments.map((rootComment) => (
+        {/* {console.log("post.comments", post.comments)} */}
+        {post.comments.map((rootComment) => (
+          // console.log(state)
           <Comment
-            key={rootComment.id}
+            key={rootComment._id}
             comment={rootComment}
-            replies={getReplies(rootComment.id)}
-            activeComment={activeComment}
-            setActiveComment={setActiveComment}
-            addComment={addComment}
-            deleteComment={deleteComment}
-            updateComment={updateComment}
-            currentUserId={currentUserId}
+            currentUserId={state._id}
           />
         ))}
       </div>

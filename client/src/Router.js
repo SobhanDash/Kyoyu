@@ -15,9 +15,9 @@ const EditProfilePage = React.lazy(() =>
 const CommentsPage = React.lazy(() =>
   import("./pages/CommentsPage/CommentsPage")
 );
-const UserProfilePage = React.lazy(()=>{
-  import("./pages/ProfilePage/UserProfile")
-})
+const UserProfilePage = React.lazy(() => {
+  import("./pages/ProfilePage/UserProfile");
+});
 
 const IndexComponent = WithPageTitle({
   component: IndexPage,
@@ -60,7 +60,7 @@ const RouteConfig = ({ UserContext }) => {
   const tokenFetch = async () => {
     const token = window.localStorage.getItem("token");
     if (token) {
-      const res = await axios.get("http://localhost:5000/api/auth/profile", {
+      const res = await axios.get("/api/auth/profile", {
         headers: { "auth-token": token },
       });
       if (res.data.user) {
@@ -73,7 +73,7 @@ const RouteConfig = ({ UserContext }) => {
   };
   useEffect(() => {
     tokenFetch();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
     <Switch>
@@ -84,7 +84,6 @@ const RouteConfig = ({ UserContext }) => {
       <Route exact path="/editProfile" component={EditProfileComponent} />
       <Route exact path="/post/:postid" component={CommentsComponent} />
       <Route exact path="/profile/:userid" component={UserProfileComponent} />
-
     </Switch>
   );
 };

@@ -3,11 +3,6 @@ import axios from "axios";
 import { useHistory } from "react-router-dom";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import {
-  createComment as createCommentApi,
-  updateComment as updateCommentApi,
-  deleteComment as deleteCommentApi,
-} from "../components/Comments/api.js";
 
 toast.configure();
 const useForm = (validation) => {
@@ -98,7 +93,7 @@ const useForm = (validation) => {
     }
     // API END-POINT { /api/auth/login }
     try {
-      const res = await axios.post("http://localhost:5000/api/auth/login", {
+      const res = await axios.post("/api/auth/login", {
         email: values.email,
         password: values.password,
       });
@@ -166,7 +161,7 @@ const useForm = (validation) => {
       });
     }
     try {
-      const res = await axios.post("http://localhost:5000/api/auth/register", {
+      const res = await axios.post("/api/auth/register", {
         username: rvalues.username,
         name: rvalues.name,
         email: rvalues.email,
@@ -222,7 +217,7 @@ const useForm = (validation) => {
   const getProfile = async () => {
     const token = window.localStorage.getItem("token");
     if (token) {
-      const res = await axios.get("http://localhost:5000/api/auth/profile", {
+      const res = await axios.get("/api/auth/profile", {
         headers: { "auth-token": token },
       });
       setProfile({
@@ -240,7 +235,7 @@ const useForm = (validation) => {
   };
 
   const getPost = async () => {
-    const userpost = await fetch("http://localhost:5000/api/posts/getposts", {
+    const userpost = await fetch("/api/posts/getposts", {
       method: "GET",
       headers: {
         "auth-token": localStorage.getItem("token"),
@@ -251,53 +246,6 @@ const useForm = (validation) => {
 
     const { posts } = json;
     setUserPosts(posts);
-  };
-
-  // COMMENTS
-  const [backendComments, setBackendComments] = useState([]);
-  const [activeComment, setActiveComment] = useState(null);
-  const rootComments = backendComments.filter(
-    (backendComment) => backendComment.parentId === null
-  );
-  // console.log(backendComments);
-  // console.log(rootComments);
-  const getReplies = (commentId) => {
-    backendComments
-      .filter((backendComment) => backendComment.parentId === commentId)
-      .sort(
-        (a, b) =>
-          new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
-      );
-  };
-
-  const addComment = (text, parentId) => {
-    createCommentApi(text, parentId).then((comment) => {
-      setBackendComments([comment, ...backendComments]);
-      setActiveComment(null);
-    });
-  };
-
-  const updateComment = (text, commentId) => {
-    updateCommentApi(text).then(() => {
-      const updatedBackendComments = backendComments.map((backendComment) => {
-        if (backendComment.id === commentId) {
-          return { ...backendComment, body: text };
-        }
-        return backendComment;
-      });
-      setBackendComments(updatedBackendComments);
-      setActiveComment(null);
-    });
-  };
-  const deleteComment = (commentId) => {
-    if (window.confirm("Are you sure you want to remove comment?")) {
-      deleteCommentApi().then(() => {
-        const updatedBackendComments = backendComments.filter(
-          (backendComment) => backendComment.id !== commentId
-        );
-        setBackendComments(updatedBackendComments);
-      });
-    }
   };
 
   return {
@@ -317,16 +265,6 @@ const useForm = (validation) => {
     getPost,
     userposts,
     setUserPosts,
-
-    activeComment,
-    setActiveComment,
-    backendComments,
-    setBackendComments,
-    getReplies,
-    addComment,
-    deleteComment,
-    updateComment,
-    rootComments,
   };
 };
 

@@ -11,7 +11,7 @@ router.get("/getposts", fetchUser, async (req, res) => {
   try {
     Post.find()
       .populate("user", "_id username name about")
-      // .populate("comments.user", "_id username name")
+      .populate("comments.user", "_id username name")
       .sort("-createdAt")
       .then((posts) => {
         sucess = true;
@@ -181,28 +181,34 @@ router.put("/unlike", fetchUser, (req, res) => {
 });
 
 router.put("/comment", fetchUser, (req, res) => {
-  const comment = {
+  let success = false;
+  const comm = {
     text: req.body.text,
-    postedBy: req.user._id,
+    user: req.user.id,
   };
-  Post.findByIdAndUpdate(
+  console.log(req.user.id);
+  const p = Post.findByIdAndUpdate(
     req.body.postId,
     {
-      $push: { comments: comment },
+      $push: { comments: comm },
     },
     {
       new: true,
     }
   )
-    .populate("comments.postedBy", "_id name")
-    .populate("postedBy", "_id name")
-    .exec((err, result) => {
-      if (err) {
-        return res.status(422).json({ error: err });
-      } else {
-        res.json(result);
-      }
-    });
+  .populate("comments.user", "_id username name")
+  .populate("user", "_id username name")
+  .exec((err, result) => {
+    if (err) {
+      console.log("Error in comment route:", err);
+      return res.json({ success, error: err, status: 422 });
+    } else {
+      success = true;
+      console.log(result);
+      res.json({ success, result, status: 200 });
+    }
+  });
 });
+
 
 module.exports = router;

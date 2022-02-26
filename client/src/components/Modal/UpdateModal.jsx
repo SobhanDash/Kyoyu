@@ -19,7 +19,7 @@ const UpdateModal = ({ ushow, setUShow, post }) => {
   useEffect(() => {
     if (cap) {
       // console.log(cap);
-      fetch(`http://localhost:5000/api/posts/updatepost/${post._id}`, {
+      fetch(`/api/posts/updatepost/${post._id}`, {
         method: "put",
         headers: {
           "Content-Type": "application/json",
@@ -80,7 +80,7 @@ const UpdateModal = ({ ushow, setUShow, post }) => {
 
   const updateDetails = (e) => {
     try {
-      setCap(cap)
+      setCap(cap);
       setUShow(false);
     } catch (err) {
       console.log(err);

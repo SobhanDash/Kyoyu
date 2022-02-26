@@ -1,22 +1,56 @@
+/* eslint-disable eqeqeq */
 import { useState } from "react";
 import css from "./form.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 const cancelIcon = <FontAwesomeIcon icon={faTimes} />;
 const CommentForm = ({
-  handleSubmit,
   submitLabel,
   hasCancelButton = false,
   handleCancel,
   initialText = "",
+  post,
+  userposts,
+  setUserPosts,
 }) => {
   const [text, setText] = useState(initialText);
   const isTextareaDisabled = text.length === 0;
-  const onSubmit = (event) => {
-    event.preventDefault();
-    handleSubmit(text);
+
+  const addComment = (text, postId) => {
+    fetch("/api/posts/comment", {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        "auth-token": localStorage.getItem("token"),
+      },
+      body: JSON.stringify({
+        postId,
+        text,
+      }),
+    })
+      .then((res) => res.json())
+      .then((result) => {
+        console.log("result, userposts", result, userposts);
+        // const newData = userposts.map((item) => {
+        //   if (item._id == result._id) {
+        //     return result;
+        //   } else {
+        //     return item;
+        //   }
+        // });
+        // setUserPosts(newData);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const onSubmit = (e) => {
+    e.preventDefault();
+    addComment(text, post._id);
     setText("");
   };
+
   return (
     <form onSubmit={onSubmit} className={css.cinputdiv}>
       <textarea
@@ -38,17 +72,6 @@ const CommentForm = ({
         </button>
       )}
     </form>
-    // <form className={css.cinputdiv}>
-    //           <input
-    //             type="text"
-    //             placeholder="Write Your comment Here"
-    //             className={css.cip}
-    //             name="comment"
-    //             id="comment"
-    //             onChange={handleComment}
-    //           />
-    //           <button className={css.cpost}>Post</button>
-    //         </form>
   );
 };
 

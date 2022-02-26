@@ -19,7 +19,7 @@ const UserProfile = () => {
   }, []);
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/posts/getsubpost", {
+    fetch("/api/posts/getsubpost", {
       method: "GET",
       headers: {
         "auth-token": localStorage.getItem("token"),

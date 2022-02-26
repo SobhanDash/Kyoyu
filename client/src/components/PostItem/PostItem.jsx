@@ -11,7 +11,7 @@ import {
 import FeatModal from "../Modal/FeatModal";
 import { Link } from "react-router-dom";
 import Modal from "../Modal/Modal";
-import UpdateModal from "../Modal/UpdateModal"
+import UpdateModal from "../Modal/UpdateModal";
 import useForm from "../../services/useForm";
 import { UserContext } from "../../App";
 
@@ -29,7 +29,7 @@ const PostItem = ({ post, postid, username, caption, dp, pic, userid }) => {
 
   useEffect(() => {
     const getPost = async () => {
-      const userpost = await fetch("http://localhost:5000/api/posts/getposts", {
+      const userpost = await fetch("/api/posts/getposts", {
         method: "GET",
         headers: {
           "auth-token": localStorage.getItem("token"),
@@ -42,14 +42,14 @@ const PostItem = ({ post, postid, username, caption, dp, pic, userid }) => {
       setUserPosts(posts);
     };
     getPost();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   function handleModalClose() {
     setFShow(!fshow);
   }
   const likePost = (id) => {
-    fetch("http://localhost:5000/api/posts/like", {
+    fetch("/api/posts/like", {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -76,7 +76,7 @@ const PostItem = ({ post, postid, username, caption, dp, pic, userid }) => {
   };
 
   const unlikePost = (id) => {
-    fetch("http://localhost:5000/api/posts/unlike", {
+    fetch("/api/posts/unlike", {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",

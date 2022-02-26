@@ -24,10 +24,9 @@ const FeatModal = ({ id, fshow, fn, setUShow, userid }) => {
       const postConfig = {
         "auth-token": localStorage.getItem("token"),
       };
-      const res = await axios.delete(
-        `http://localhost:5000/api/posts/deletepost/${id}`,
-        { headers: postConfig }
-      );
+      const res = await axios.delete(`/api/posts/deletepost/${id}`, {
+        headers: postConfig,
+      });
       const newData = userposts.filter((item) => {
         return item._id !== res._id;
       });
