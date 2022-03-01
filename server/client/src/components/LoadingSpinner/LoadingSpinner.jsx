@@ -2,7 +2,7 @@ import React from "react";
 
 import Loading_Spinner from "../../images/spinner.svg"
 
-import styles from "./loadingSpinner.module.css";
+import styles from "./loader.module.css";
 
 const LoadingSpinner = () => {
   return (
