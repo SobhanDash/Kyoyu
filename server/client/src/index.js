@@ -4,11 +4,18 @@ import "./styles/index.css";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 import { BrowserRouter } from "react-router-dom";
+import LoadingSpinner from "./components/LoadingSpinner/LoadingSpinner";
 
 ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
-      <Suspense fallback={<div>Loading... </div>}>
+      <Suspense
+        fallback={
+          <div className="center">
+            <LoadingSpinner />
+          </div>
+        }
+      >
         <App />
       </Suspense>
     </BrowserRouter>
