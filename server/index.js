@@ -6,7 +6,7 @@ const authRoutes = require("./routes/auth");
 const postRoutes = require("./routes/posts");
 const connectToMongo = require("./db");
 const app = express();
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 5001;
 
 connectToMongo();
 // app.use(cors());

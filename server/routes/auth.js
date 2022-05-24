@@ -17,7 +17,7 @@ router.post(
     body("username", "Enter a valid username").isLength({ min: 5 }),
     body("name", "Enter a valid name").isLength({ min: 3 }),
     body("email", "Enter a valid email").isEmail(),
-    body("phone", "Enter a valid phone number").isLength({ min: 10 }),
+
     body("password", "Enter a valid password")
       .isLength({ min: 8 })
       .matches(/^[a-zA-Z0-9!@#$%^&*]{6,16}$/),
@@ -27,8 +27,10 @@ router.post(
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       success = false;
-      console.log(`Error in register route: Body is empty ${errors}`);
-      return res.json({ success, errors: errors.array(), status: 400 });
+      console.log(
+        `Error in register route: Body is empty ${errors.array()[0].msg}`
+      );
+      return res.json({ success, errors: errors.array()[0].msg, status: 400 });
     }
     try {
       let userEmail = await User.findOne({ email: req.body.email });
@@ -51,23 +53,12 @@ router.post(
         });
       }
 
-      let userPhone = await User.findOne({ phone: req.body.phone });
-      if (userPhone) {
-        success = false;
-        return res.json({
-          success,
-          error: "Phone is associated to another account",
-          status: 400,
-        });
-      }
-
       const salt = await bcrypt.genSalt(10);
       const securePassword = await bcrypt.hash(req.body.password, salt);
-      user = await User.create({
+      let user = await User.create({
         username: req.body.username,
         name: req.body.name,
         email: req.body.email,
-        phone: req.body.phone,
         password: securePassword,
       });
 
@@ -82,10 +73,10 @@ router.post(
       return res.json({ success, authToken, status: 200 });
     } catch (err) {
       success = false;
-      console.log(`Error in registering user: ${err}`);
-      res.send({
+      console.log(`Error in registering user: ${err.message}`);
+      return res.json({
         success,
-        error: `Internal Server Error`,
+        error: err.message,
         status: 500,
       });
     }
@@ -104,7 +95,9 @@ router.post(
     const errors = validationResult(req.body);
     if (!errors.isEmpty()) {
       success = false;
-      console.log(`Error in login route: Body is empty ${errors}`);
+      console.log(
+        `Error in login route: Body is empty ${errors.array()[0].msg}`
+      );
       return res.json({ success, error: errors.array()[0].msg, status: 400 });
     }
 
@@ -138,8 +131,8 @@ router.post(
       return res.json({ success, authToken, status: 200 });
     } catch (err) {
       success = false;
-      console.log(`Error in login route: ${err}`);
-      res.send({ success, error: `Internal Server Error`, status: 500 });
+      console.log(`Error in login route: ${err.message}`);
+      return res.json({ success, error: err.message, status: 500 });
     }
   }
 );
@@ -149,202 +142,262 @@ router.get("/profile", fetchUser, async (req, res) => {
   let success = false;
   try {
     const userId = req.user.id;
-    const user = await User.findById(userId);
+    const user = await User.findById(userId).populate(
+      "posts",
+      "_id image caption likes comments"
+    );
     // TODO: Might add followers and following
     success = true;
     return res.json({ success, user, status: 200 });
   } catch (err) {
     success = false;
-    console.log(`Error in profile route: ${err}`);
-    return res.json({ success, error: `Internal Server Error`, status: 500 });
+    console.log(`Error in profile route: ${err.message}`);
+    return res.json({ success, error: err.message, status: 500 });
   }
 });
 
-// ROUTE-4: Add following using: PUT "/api/auth/addfollowing". Require Login
-router.put(
-  "/follow",
-  [body("adduser", "Enter a valid User").exists()],
-  fetchUser,
-  async (req, res) => {
-    let success = false;
-    try {
-      const userId = req.user.id;
-      const user = await User.findById(userId);
-      const followedUser = await User.findById(req.body.adduser);
+// ROUTE-4: Follow a user account using PUT "/api/auth/follow/:id". Login required
+router.put("/follow/:id", fetchUser, async (req, res) => {
+  let success = false;
+  const userId = req.user.id;
+  const followeduserId = req.params.id;
 
-      if (userId === req.body.adduser) {
-        success = false;
-        console.log("Trying to follow self");
-        res.send({ success, error: "You can't follow yourself", status: 405 });
-      } else {
-        if (!user.following.includes(req.body.adduser)) {
-          user.following.push(req.body.adduser);
-          const savedUser = await user.save();
-          followeduser.followers.push(userId);
-          const savedFollower = await followeduser.save();
-          success = true;
-          res.send({ success, savedUser, status: 200 });
-        } else {
-          success = false;
-          res.send({ success, error: "Already Following", status: 401 });
-        }
-      }
-    } catch (err) {
+  try {
+    let user = await User.findById(userId);
+    if (!user) {
       success = false;
-      console.log(`Error in follow route: ${err}`);
-      return res.json({ success, error: `Internal Server Error`, status: 500 });
+      return res.json({ success, error: "User not found!", status: 404 });
     }
-  }
-);
 
-// ROUTE-5: Remove following using: PUT "/api/auth/unfollow". Require Login
-router.put(
-  "/unfollow",
-  [body("removeuser", "Enter a valid User").exists()],
-  fetchUser,
-  async (req, res) => {
-    let success = false;
-    try {
-      const userId = req.user.id;
-      const user = await user.findById(userId);
-      const followedUser = await User.findById(req.body.removeuser);
-      if (user.following.includes(req.body.removeuser)) {
-        const savedUser = await user.updateOne({
-          $pull: { following: req.body.removeuser },
-        });
-        const savedFollower = await followedUser.updateOne({
-          $pull: { followers: userId },
-        });
-        success = true;
-        res.send({ success, savedUser, status: 200 });
-      } else {
-        success = false;
-        res.send({ success, error: "Not following this user!", status: 400 });
-      }
-    } catch (err) {
+    let followeduser = await User.findById(followeduserId);
+    if (!followeduser) {
       success = false;
-      console.log(`Error in unfollow route: ${err}`);
-      res.send({ success, error: `Internal server Error`, status: 500 });
+      return res.json({ success, error: "User not found!", status: 404 });
     }
+
+    if (!user.following.includes(followeduser._id)) {
+      user = await User.findByIdAndUpdate(
+        userId,
+        { $push: { following: followeduser } },
+        { new: true }
+      );
+    } else {
+      success = false;
+      return res.json({
+        success,
+        error: "You are already following this user!",
+        status: 400,
+      });
+    }
+
+    if (!followeduser.followers.includes(user._id)) {
+      followeduser = await User.findByIdAndUpdate(
+        followeduserId,
+        { $push: { followers: user } },
+        { new: true }
+      );
+    } else {
+      success = false;
+      return res.json({
+        success,
+        error: "You are already following this user!",
+        status: 400,
+      });
+    }
+
+    user = await User.findById(userId)
+      .populate("followers", "_id name username profilepic")
+      .populate("following", "_id name username profilepic")
+      .populate("posts", "_id images caption");
+
+    success = true;
+    return res.json({ success, user, status: 200 });
+  } catch (error) {
+    success = false;
+    return res.json({ success, error: error.message, status: 500 });
   }
-);
+});
+
+// ROUTE-5: Unfollow a user account using PUT "/api/auth/unfollow/:id". Login required
+router.put("/unfollow/:id", fetchUser, async (req, res) => {
+  let success = false;
+  const userId = req.user.id;
+  const followeduserId = req.params.id;
+
+  try {
+    let user = await User.findById(userId);
+    if (!user) {
+      success = false;
+      return res.json({ success, error: "User not found!", status: 404 });
+    }
+
+    let followeduser = await User.findById(followeduserId);
+    if (!followeduser) {
+      success = false;
+      return res.json({ success, error: "User not found!", status: 404 });
+    }
+
+    if (user.following.includes(followeduser._id)) {
+      user = await User.findByIdAndUpdate(
+        userId,
+        { $pull: { following: followeduser._id } },
+        { new: true }
+      );
+    } else {
+      success = false;
+      return res.json({
+        success,
+        error: "You are not following this user!",
+        status: 400,
+      });
+    }
+
+    if (followeduser.followers.includes(user._id)) {
+      followeduser = await User.findByIdAndUpdate(
+        followeduserId,
+        { $pull: { followers: user._id } },
+        { new: true }
+      );
+    } else {
+      success = false;
+      return res.json({
+        success,
+        error: "You are not following this user!",
+        status: 400,
+      });
+    }
+
+    user = await User.findById(userId)
+      .populate("followers", "_id name username profilepic")
+      .populate("following", "_id name username profilepic")
+      .populate("posts", "_id images caption");
+
+    success = true;
+    return res.json({ success, user, status: 200 });
+  } catch (error) {
+    success = false;
+    return res.json({ success, error: error.message, status: 500 });
+  }
+});
+
 // ROUTE-6: Get user suggestion: GET "/api/auth/getSuggestion". Require Login
 router.get("/getSuggestion", fetchUser, async (req, res) => {
   let success = false;
+  const userId = req.user.id;
+
   try {
-    const userId = req.user.id;
-    const user = await User.findById(userId);
-    const suggestedUsers = [];
-    const allUsers = await User.find({});
-    allUsers.map((suggest) => {
-      if (!user.about.following.includes(suggest)) {
-        suggestedUsers.push(suggest);
-      }
+    let user = await User.findById(userId);
+    if (!user) {
+      success = false;
+      return res.json({ success, error: "User not found!", status: 400 });
+    }
+
+    let suggestions = await User.find({
+      _id: { $ne: userId },
+      followers: { $ne: userId },
     });
-    return res.json(suggestedUsers);
-  } catch (err) {
+
+    success = true;
+    return res.json({ success, suggestions, status: 200 });
+  } catch (error) {
     success = false;
-    console.log(`Error in getSugesstion route: ${err}`);
-    res.send({ success, error: "Internal Server Error", status: 500 });
+    return res.json({ success, error: error.message, status: 500 });
   }
 });
 
 // ROUTE-7: Edit user details using: PUT "/api/auth/editProfile". Require Login
 router.put(
   "/editProfile",
-  [
-    body("username", "Enter a valid username").isLength({ min: 5 }),
-    body("name", "Enter a valid name").isLength({ min: 3 }),
-    body("email", "Enter a valid email").isEmail(),
-    body("phone", "Enter a valid phone number").isLength({ min: 10 }),
-  ],
   fetchUser,
+  [
+    body("name", "Name cannot be less than 5 characters!").isLength({ min: 5 }),
+    body("username", "Username cannot be less than 5 characters!").isLength({
+      min: 5,
+    }),
+    body("email", "Enter a valid email!").isEmail(),
+  ],
   async (req, res) => {
     let success = false;
+    const userId = req.user.id;
+    const { name, username, email, profilepic, bio } = req.body;
+
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      success = false;
+      return res.json({ success, error: errors.array()[0].msg, status: 400 });
+    }
+
     try {
-      const userId = req.user.id;
       let user = await User.findById(userId);
-      let userEmail = await User.findOne({ email: req.body.email });
-      if (userEmail && userEmail._id.toString() !== userId) {
-        success = false;
-        return res.json({
-          success,
-          error: "This email is associated to another account",
-          status: 400,
-        });
-      }
-
-      let userUsername = await User.findOne({ username: req.body.username });
-      if (userUsername && userUsername._id.toString() !== userId) {
-        success = false;
-        return res.json({
-          success,
-          error: "Username taken",
-          status: 400,
-        });
-      }
-
-      let userPhone = await User.findOne({ phone: req.body.phone });
-      if (userPhone && userPhone._id.toString() !== userId) {
-        success = false;
-        return res.json({
-          success,
-          error: "Phone is associated to another account",
-          status: 400,
-        });
-      }
-
-      let { username, name, email, phone } = req.body;
-
-      let newuser = {
-        profilepic: "",
-        username: "",
-        name: "",
-        email: "",
-        phone: "",
-      };
-
-      if (req.body.profilepic) {
-        newuser.profilepic = req.body.profilepic;
-      }
-
-      if (req.body.username) {
-        newuser.username = username;
-      }
-
-      if (req.body.name) {
-        newuser.name = name;
-      }
-
-      if (req.body.email) {
-        newuser.email = email;
-      }
-
-      if (req.body.phone) {
-        newuser.phone = phone;
-      }
-
       if (!user) {
         success = false;
-        return res.send({ success, error: "Not Found", status: 404 });
+        return res.json({ success, error: "User not found!", status: 400 });
       }
 
-      if (user._id.toString() !== req.user.id) {
+      let updateduser = {
+        name: name,
+        username: username,
+        email: email,
+        profilepic: user.profilepic,
+        bio: user.bio,
+      };
+
+      if (profilepic && profilepic !== user.profilepic) {
+        updateduser.profilepic = profilepic;
+      }
+
+      if (bio && bio !== user.bio) {
+        updateduser.bio = bio;
+      }
+
+      let userUsername = null;
+      let userEmail = null;
+
+      if (username !== user.username) {
+        userUsername = await User.findOne({ username: updateduser.username });
+      }
+
+      if (email !== user.email) {
+        userEmail = await User.findOne({ email: updateduser.email });
+      }
+
+      if (userUsername) {
         success = false;
-        return res.send({ success, error: "Unauthorized", status: 401 });
+        return res.json({
+          success,
+          error: "This username is already taken!",
+          status: 400,
+        });
+      }
+
+      if (userEmail) {
+        success = false;
+        return res.json({
+          success,
+          error: "This email is associated to another account!",
+          status: 400,
+        });
       }
 
       user = await User.findByIdAndUpdate(
         userId,
-        { $set: newuser },
+        {
+          name: updateduser.name,
+          username: updateduser.username,
+          email: updateduser.email,
+          profilepic: updateduser.profilepic,
+          bio: updateduser.bio,
+        },
         { new: true }
-      );
+      )
+        .populate("followers", "_id name username profilepic")
+        .populate("following", "_id name username profilepic")
+        .populate("posts", "_id images caption");
       success = true;
-      res.send({ success, user, status: 200 });
-    } catch (err) {
+      return res.json({ success, user, status: 200 });
+    } catch (error) {
       success = false;
-      console.log(`Error in editProfile route: ${err}`);
-      res.send({ success, error: "Internal Server Error", status: 500 });
+      return res.json({ success, error: error.message, status: 500 });
     }
   }
 );
@@ -356,34 +409,90 @@ router.put(
   fetchUser,
   async (req, res) => {
     let success = false;
+    const errors = validationResult(req.body);
+    if (!errors.isEmpty()) {
+      success = false;
+      console.log(
+        `Error in adddp route: Body is empty ${errors.array()[0].msg}`
+      );
+      return res.json({ success, error: errors.array()[0].msg, status: 400 });
+    }
     try {
-      const userId = req.user.id;
       let user = await User.findById(userId);
       if (!user) {
         success = false;
-        res.send({ success, error: "Not Found", status: 404 });
-      }
-      if (user._id.toString() != req.user.id) {
-        success = false;
-        res.send({ success, error: "Unauthorized", status: 401 });
-      }
-      let { image } = req.body;
-      let profilePic = "";
-
-      if (req.body.image) {
-        profilePic = image;
+        return res.json({ success, error: "User not found!", status: 404 });
       }
 
-      user.about.profilepic = profilePic;
-      const savedUser = await user.save();
+      user = await User.findByIdAndUpdate(
+        userId,
+        { profilepic: image },
+        { new: true }
+      )
+        .populate("followers", "_id name username profilepic")
+        .populate("following", "_id name username profilepic")
+        .populate("posts", "_id images caption");
       success = true;
-      res.end({ success, savedUser, status: 200 });
-    } catch (err) {
+      return res.json({ success, user, status: 200 });
+    } catch (error) {
       success = false;
-      console.log(`Error in adddp route: ${err}`);
-      res.send({ success, error: "Internal Server Error", status: 500 });
+      return res.json({ success, error: error.message, status: 500 });
     }
   }
 );
+
+// ROUTE-9: Search for users by their name using: GET "/api/auth/users/${name}". Require Login
+router.get("/users/:name", fetchUser, async (req, res) => {
+  let success = false;
+  try {
+    const userId = req.user.id;
+    let user = await User.findById(userId);
+    if (!user) {
+      success = false;
+      res.send({ success, error: "Not Found", status: 404 });
+    }
+
+    const name = req.params.name;
+    let users = await User.find({ name: new RegExp(name, "i") });
+
+    success = true;
+    return res.json({ success, users, status: 200 });
+  } catch (err) {
+    success = false;
+    console.log(`Error in adddp route: ${err}`);
+    res.send({ success, error: "Internal Server Error", status: 500 });
+  }
+});
+
+// ROUTE-10: Get other user profile using: GET "/api/auth/users/:id". Require Login
+router.get("/user/:id", fetchUser, async (req, res) => {
+  let success = false;
+  try {
+    const otherId = req.params.id;
+    const userId = req.user.id;
+
+    let user = await User.findById(userId);
+    if (!user) {
+      success = false;
+      return res.json({ success, error: "Not Found", status: 404 });
+    }
+
+    let otherUser = await User.findById(otherId)
+      .populate("followers", "_id name username about")
+      .populate("following", "_id name username about")
+      .populate("posts", "_id image caption");
+
+    if (!otherUser) {
+      success = false;
+      return res.json({ success, error: "Not Found", status: 404 });
+    }
+
+    success = true;
+    return res.json({ success, otherUser, status: 200 });
+  } catch (error) {
+    success = false;
+    return res.json({ success, error: error.message, status: 500 });
+  }
+});
 
 module.exports = router;
