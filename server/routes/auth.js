@@ -17,7 +17,6 @@ router.post(
     body("username", "Enter a valid username").isLength({ min: 5 }),
     body("name", "Enter a valid name").isLength({ min: 3 }),
     body("email", "Enter a valid email").isEmail(),
-
     body("password", "Enter a valid password")
       .isLength({ min: 8 })
       .matches(/^[a-zA-Z0-9!@#$%^&*]{6,16}$/),
@@ -142,11 +141,11 @@ router.get("/profile", fetchUser, async (req, res) => {
   let success = false;
   try {
     const userId = req.user.id;
-    const user = await User.findById(userId).populate(
-      "posts",
-      "_id image caption likes comments"
-    );
-    // TODO: Might add followers and following
+    const user = await User.findById(userId)
+      .populate("posts", "_id image caption likes comments")
+      .populate("followers", "_id name username about")
+      .populate("following", "_id name username about");
+
     success = true;
     return res.json({ success, user, status: 200 });
   } catch (err) {
@@ -206,14 +205,15 @@ router.put("/follow/:id", fetchUser, async (req, res) => {
     }
 
     user = await User.findById(userId)
-      .populate("followers", "_id name username profilepic")
-      .populate("following", "_id name username profilepic")
+      .populate("followers", "_id name username about")
+      .populate("following", "_id name username about")
       .populate("posts", "_id images caption");
 
     success = true;
     return res.json({ success, user, status: 200 });
   } catch (error) {
     success = false;
+    console.log(`Error in follow/:id route: ${error.message}`);
     return res.json({ success, error: error.message, status: 500 });
   }
 });
@@ -268,14 +268,15 @@ router.put("/unfollow/:id", fetchUser, async (req, res) => {
     }
 
     user = await User.findById(userId)
-      .populate("followers", "_id name username profilepic")
-      .populate("following", "_id name username profilepic")
+      .populate("followers", "_id name username about")
+      .populate("following", "_id name username about")
       .populate("posts", "_id images caption");
 
     success = true;
     return res.json({ success, user, status: 200 });
   } catch (error) {
     success = false;
+    console.log(`Error in unfollow/:id route: ${error.message}`);
     return res.json({ success, error: error.message, status: 500 });
   }
 });
@@ -301,6 +302,7 @@ router.get("/getSuggestion", fetchUser, async (req, res) => {
     return res.json({ success, suggestions, status: 200 });
   } catch (error) {
     success = false;
+    console.log(`Error in getSuggestion route: ${error.message}`);
     return res.json({ success, error: error.message, status: 500 });
   }
 });
@@ -338,8 +340,8 @@ router.put(
         name: name,
         username: username,
         email: email,
-        profilepic: user.profilepic,
-        bio: user.bio,
+        profilepic: profilepic,
+        bio: bio,
       };
 
       if (profilepic && profilepic !== user.profilepic) {
@@ -385,8 +387,10 @@ router.put(
           name: updateduser.name,
           username: updateduser.username,
           email: updateduser.email,
-          profilepic: updateduser.profilepic,
-          bio: updateduser.bio,
+          about: {
+            profilepic: updateduser.profilepic,
+            bio: updateduser.bio,
+          },
         },
         { new: true }
       )
@@ -397,6 +401,7 @@ router.put(
       return res.json({ success, user, status: 200 });
     } catch (error) {
       success = false;
+      console.log(`Error in editprofile route: ${error.message}`);
       return res.json({ success, error: error.message, status: 500 });
     }
   }
@@ -409,6 +414,9 @@ router.put(
   fetchUser,
   async (req, res) => {
     let success = false;
+    const userId = req.user.id;
+    const image = req.body.image;
+
     const errors = validationResult(req.body);
     if (!errors.isEmpty()) {
       success = false;
@@ -426,7 +434,7 @@ router.put(
 
       user = await User.findByIdAndUpdate(
         userId,
-        { profilepic: image },
+        { about: { profilepic: image } },
         { new: true }
       )
         .populate("followers", "_id name username profilepic")
@@ -436,6 +444,7 @@ router.put(
       return res.json({ success, user, status: 200 });
     } catch (error) {
       success = false;
+      console.log(`Error in adddp route: ${error.message}`);
       return res.json({ success, error: error.message, status: 500 });
     }
   }
@@ -459,7 +468,7 @@ router.get("/users/:name", fetchUser, async (req, res) => {
     return res.json({ success, users, status: 200 });
   } catch (err) {
     success = false;
-    console.log(`Error in adddp route: ${err}`);
+    console.log(`Error in users/:name route: ${err}`);
     res.send({ success, error: "Internal Server Error", status: 500 });
   }
 });
@@ -491,6 +500,7 @@ router.get("/user/:id", fetchUser, async (req, res) => {
     return res.json({ success, otherUser, status: 200 });
   } catch (error) {
     success = false;
+    console.log(`Error in user/:id route: ${error.message}`);
     return res.json({ success, error: error.message, status: 500 });
   }
 });
