@@ -23,7 +23,7 @@ const UpdateModal = ({ ushow, setUShow, post }) => {
         method: "put",
         headers: {
           "Content-Type": "application/json",
-          "auth-token": localStorage.getItem("token"),
+          "auth-token": sessionStorage.getItem("token"),
         },
         body: JSON.stringify({
           caption: cap,

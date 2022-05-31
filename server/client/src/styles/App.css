@@ -5,8 +5,9 @@
 
   --ternary-1: #001220;
   --ternary-2: #5416a5;
-  --ternary-3: #ec1010;
-  --ternary-4: #fda3fc;
+  --ternary-3: #fda3fc;
+
+  --danger: #ec1010;
 
   --black-1: #15161c;
   --black-2: #1e1e2a;
@@ -34,4 +35,9 @@
 body {
   width: 100%;
   height: 100vh;
+}
+
+button,
+a {
+  cursor: pointer;
 }

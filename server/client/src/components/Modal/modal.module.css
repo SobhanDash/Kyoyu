@@ -38,7 +38,7 @@
 }
 
 .delete {
-  color: var(--ternary-3);
+  color: var(--danger);
 }
 .update {
   width: 100%;

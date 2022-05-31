@@ -22,7 +22,7 @@ const FeatModal = ({ id, fshow, fn, setUShow, userid }) => {
   const handleDeletebtn = async () => {
     try {
       const postConfig = {
-        "auth-token": localStorage.getItem("token"),
+        "auth-token": sessionStorage.getItem("token"),
       };
       const res = await axios.delete(`/api/posts/deletepost/${id}`, {
         headers: postConfig,

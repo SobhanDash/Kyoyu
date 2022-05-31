@@ -12,12 +12,13 @@ export const register =
     });
 
     try {
-      const res = await axios.post("/api/auth/register", {
+      const res = await axios.post("http://localhost:5000/api/auth/register", {
         username,
         name,
         email,
         password,
       });
+      console.log(res);
       if (res.data.success) {
         sessionStorage.setItem("kyoyu_token", res.data.authToken);
         toast.success("Hello There!", {
@@ -86,7 +87,7 @@ export const login =
     });
 
     try {
-      const res = await axios.post("/api/auth/login", {
+      const res = await axios.post("http://localhost:5000/api/auth/login", {
         email,
         password,
       });
@@ -158,7 +159,7 @@ export const getProfile = () => async (dispatch) => {
 
   const token = sessionStorage.getItem("kyoyu_token");
   try {
-    const res = await axios.get("/api/auth/profile", {
+    const res = await axios.get("http://localhost:5000/api/auth/profile", {
       headers: { "auth-token": token },
     });
     // console.log(res.data);
@@ -222,7 +223,7 @@ export const editProfile =
     const token = sessionStorage.getItem("kyoyu_token");
     try {
       const res = await axios.put(
-        "/api/auth/editProfile",
+        "http://localhost:5000/api/auth/editProfile",
         { username, name, email, profilepic, bio },
         { headers: { "auth-token": token } }
       );
@@ -290,7 +291,7 @@ export const follow = (id) => async (dispatch) => {
   const token = sessionStorage.getItem("kyoyu_token");
   try {
     const res = await axios.put(
-      `/api/auth/follow/${id}`,
+      `http://localhost:5000/api/auth/follow/${id}`,
       {},
       { headers: { "auth-token": token } }
     );
@@ -358,7 +359,7 @@ export const unfollow = (id) => async (dispatch) => {
   const token = sessionStorage.getItem("kyoyu_token");
   try {
     const res = await axios.put(
-      `/api/auth/unfollow/${id}`,
+      `http://localhost:5000/api/auth/unfollow/${id}`,
       {},
       { headers: { "auth-token": token } }
     );
@@ -425,9 +426,12 @@ export const unfollow = (id) => async (dispatch) => {
 export const getSuggestion = () => async (dispatch) => {
   const token = sessionStorage.getItem("kyoyu_token");
   try {
-    const res = await axios.get("/api/auth/getSuggestion", {
-      headers: { "auth-token": token },
-    });
+    const res = await axios.get(
+      "http://localhost:5000/api/auth/getSuggestion",
+      {
+        headers: { "auth-token": token },
+      }
+    );
 
     if (res.data.success) {
       sessionStorage.setItem(
@@ -482,7 +486,7 @@ export const addDp = (image) => async (dispatch) => {
   const token = sessionStorage.getItem("kyoyu_token");
   try {
     const res = await axios.put(
-      "/api/auth/adddp",
+      "http://localhost:5000/api/auth/adddp",
       { image: url },
       { headers: { "auth-token": token } }
     );
@@ -553,9 +557,12 @@ export const searchUsers = (name) => async (dispatch) => {
 
   const token = sessionStorage.getItem("kyoyu_token");
   try {
-    const res = await axios.get(`/api/auth/users/${name}`, {
-      headers: { "auth-token": token },
-    });
+    const res = await axios.get(
+      `http://localhost:5000/api/auth/users/${name}`,
+      {
+        headers: { "auth-token": token },
+      }
+    );
 
     if (res.data.success) {
       sessionStorage.removeItem("kyoyu_error");
@@ -595,7 +602,7 @@ export const getUser = (id) => async (dispatch) => {
 
   const token = sessionStorage.getItem("kyoyu_token");
   try {
-    const res = await axios.get(`/api/auth/user/${id}`, {
+    const res = await axios.get(`http://localhost:5000/api/auth/user/${id}`, {
       headers: { "auth-token": token },
     });
 
@@ -644,7 +651,7 @@ export const getPosts = () => async (dispatch) => {
 
   const token = sessionStorage.getItem("kyoyu_token");
   try {
-    const res = await axios.get("/api/posts/getposts", {
+    const res = await axios.get("http://localhost:5000/api/posts/getposts", {
       headers: { "auth-token": token },
     });
 
@@ -696,7 +703,7 @@ export const fetchPost = (id) => async (dispatch) => {
 
   const token = sessionStorage.getItem("kyoyu_token");
   try {
-    const res = await axios.get(`/api/posts/${id}`, {
+    const res = await axios.get(`http://localhost:5000/api/posts/${id}`, {
       headers: { "auth-token": token },
     });
     // console.log(res.data);
@@ -739,7 +746,7 @@ export const addPost = (image, caption) => async (dispatch) => {
   const token = sessionStorage.getItem("kyoyu_token");
   try {
     const res = await axios.post(
-      "/api/posts/addpost",
+      "http://localhost:5000/api/posts/addpost",
       { image, caption },
       { headers: { "auth-token": token } }
     );
@@ -815,7 +822,7 @@ export const updatePost =
     const token = sessionStorage.getItem("kyoyu_token");
     try {
       const res = await axios.put(
-        `/api/posts/updatepost/${id}`,
+        `http://localhost:5000/api/posts/updatepost/${id}`,
         { image, caption },
         { headers: { "auth-token": token } }
       );
@@ -904,9 +911,12 @@ export const deletePost = (id) => async (dispatch) => {
 
   const token = sessionStorage.getItem("kyoyu_token");
   try {
-    const res = await axios.delete(`/api/posts/deletepost/${id}`, {
-      headers: { "auth-token": token },
-    });
+    const res = await axios.delete(
+      `http://localhost:5000/api/posts/deletepost/${id}`,
+      {
+        headers: { "auth-token": token },
+      }
+    );
 
     if (res.data.success) {
       sessionStorage.setItem("kyoyu_profile", JSON.stringify(res.data.user));
@@ -986,7 +996,7 @@ export const likePost = (id) => async (dispatch) => {
   const token = sessionStorage.getItem("kyoyu_token");
   try {
     const res = await axios.put(
-      `/api/posts/like/${id}`,
+      `http://localhost:5000/api/posts/like/${id}`,
       {},
       { headers: { "auth-token": token } }
     );
@@ -1032,7 +1042,7 @@ export const unlikePost = (id) => async (dispatch) => {
   const token = sessionStorage.getItem("kyoyu_token");
   try {
     const res = await axios.put(
-      `/api/posts/unlike/${id}`,
+      `http://localhost:5000/api/posts/unlike/${id}`,
       {},
       { headers: { "auth-token": token } }
     );
@@ -1073,9 +1083,12 @@ export const unlikePost = (id) => async (dispatch) => {
 export const getComments = (id) => async (dispatch) => {
   const token = sessionStorage.getItem("kyoyu_token");
   try {
-    const res = await axios.get(`/api/comments/post/${id}`, {
-      headers: { "auth-token": token },
-    });
+    const res = await axios.get(
+      `http://localhost:5000/api/comments/post/${id}`,
+      {
+        headers: { "auth-token": token },
+      }
+    );
 
     if (res.data.success) {
       sessionStorage.removeItem("kyoyu_error");
@@ -1116,7 +1129,7 @@ export const addComment = (id, text) => async (dispatch) => {
   const token = sessionStorage.getItem("kyoyu_token");
   try {
     const res = await axios.post(
-      `/api/comments/addcomment/${id}`,
+      `http://localhost:5000/api/comments/addcomment/${id}`,
       { comment: text },
       { headers: { "auth-token": token } }
     );
@@ -1188,9 +1201,12 @@ export const getConversations = () => async (dispatch) => {
 
   const token = sessionStorage.getItem("kyoyu_token");
   try {
-    const res = await axios.get("/api/message/conversations", {
-      headers: { "auth-token": token },
-    });
+    const res = await axios.get(
+      "http://localhost:5000/api/message/conversations",
+      {
+        headers: { "auth-token": token },
+      }
+    );
 
     if (res.data.success) {
       sessionStorage.setItem(
@@ -1233,9 +1249,12 @@ export const getMessages = (receiverId, senderId) => async (dispatch) => {
   const token = sessionStorage.getItem("kyoyu_token");
   try {
     // console.log(senderId);
-    const res = await axios.get(`/api/message/msg/${senderId}/${receiverId}`, {
-      headers: { "auth-token": token },
-    });
+    const res = await axios.get(
+      `http://localhost:5000/api/message/msg/${senderId}/${receiverId}`,
+      {
+        headers: { "auth-token": token },
+      }
+    );
     if (res.data.success) {
       // console.log(res.data);
       dispatch({
@@ -1274,9 +1293,12 @@ export const receiveMessages = (receiverId, senderId) => async (dispatch) => {
 
   const token = sessionStorage.getItem("kyoyu_token");
   try {
-    const res = await axios.get(`/api/message/msg/${senderId}/${receiverId}`, {
-      headers: { "auth-token": token },
-    });
+    const res = await axios.get(
+      `http://localhost:5000/api/message/msg/${senderId}/${receiverId}`,
+      {
+        headers: { "auth-token": token },
+      }
+    );
     if (res.data.success) {
       // console.log(res.data);
       dispatch({
@@ -1320,7 +1342,7 @@ export const sendMessage =
       // console.log("Sender: ",senderId);
       // console.log("Receiver: ",receiverId);
       const res = await axios.post(
-        `/api/message/${senderId}/${receiverId}`,
+        `http://localhost:5000/api/message/${senderId}/${receiverId}`,
         { text, images },
         { headers: { "auth-token": token } }
       );

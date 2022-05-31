@@ -22,7 +22,7 @@ const ProfilePage = () => {
     fetch("/api/posts/getsubpost", {
       method: "GET",
       headers: {
-        "auth-token": localStorage.getItem("token"),
+        "auth-token": sessionStorage.getItem("token"),
       },
     })
       .then((res) => res.json())

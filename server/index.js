@@ -1,17 +1,17 @@
-// const path = require("path");
-// require("dotenv").config({ path: path.resolve(__dirname, "./.env") });
+const path = require("path");
+require("dotenv").config({ path: path.resolve(__dirname, "./.env") });
 const express = require("express");
-// const cors = require("cors");
+const cors = require("cors");
 const authRoutes = require("./routes/auth");
 const postRoutes = require("./routes/posts");
 const commentRoutes = require("./routes/comment");
 const messageRoutes = require("./routes/message");
 const connectToMongo = require("./db");
 const app = express();
-const port = process.env.PORT || 5001;
+const port = process.env.PORT || 5000;
 
 connectToMongo();
-// app.use(cors());
+app.use(cors());
 
 require("./models/User");
 require("./models/Post");

@@ -13,7 +13,7 @@ export default function validation(values) {
 
   // Confirm Password
   if (values.password !== values.confirmPassword) {
-    errors.confirmPassword = "password must match";
+    errors.confirmPassword = "Password must match";
   }
 
   return errors;

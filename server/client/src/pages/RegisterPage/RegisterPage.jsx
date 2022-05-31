@@ -6,7 +6,7 @@ import Registerform from "../../components/Form/Register";
 const LoginPage = () => {
   const history = useHistory();
 
-  if (localStorage.getItem("token")) {
+  if (sessionStorage.getItem("token")) {
     history.push("/");
   }
 

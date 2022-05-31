@@ -27,23 +27,23 @@ const PostItem = ({ post, postid, username, caption, dp, pic, userid }) => {
   // eslint-disable-next-line no-unused-vars
   const { state, dispatch } = useContext(UserContext);
 
-  useEffect(() => {
-    const getPost = async () => {
-      const userpost = await fetch("/api/posts/getposts", {
-        method: "GET",
-        headers: {
-          "auth-token": localStorage.getItem("token"),
-        },
-      });
+  // useEffect(() => {
+  //   const getPost = async () => {
+  //     const userpost = await fetch("/api/posts/getposts", {
+  //       method: "GET",
+  //       headers: {
+  //         "auth-token": sessionStorage.getItem("token"),
+  //       },
+  //     });
 
-      const json = await userpost.json();
+  //     const json = await userpost.json();
 
-      const { posts } = json;
-      setUserPosts(posts);
-    };
-    getPost();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  //     const { posts } = json;
+  //     setUserPosts(posts);
+  //   };
+  //   getPost();
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, []);
 
   function handleModalClose() {
     setFShow(!fshow);
@@ -53,7 +53,7 @@ const PostItem = ({ post, postid, username, caption, dp, pic, userid }) => {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
-        "auth-token": localStorage.getItem("token"),
+        "auth-token": sessionStorage.getItem("token"),
       },
       body: JSON.stringify({ postid: id }),
     })
@@ -79,7 +79,7 @@ const PostItem = ({ post, postid, username, caption, dp, pic, userid }) => {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
-        "auth-token": localStorage.getItem("token"),
+        "auth-token": sessionStorage.getItem("token"),
       },
       body: JSON.stringify({ postid: id }),
     })

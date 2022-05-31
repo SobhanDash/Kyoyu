@@ -29,16 +29,6 @@ const EditProfileForm = () => {
               onChange={handleRegisterChange}
             />
           </div>
-          <div className={css.mobileNo}>
-            <label htmlFor="Mobile No">Mobile No.</label>
-            <input
-              type="text"
-              placeholder="Enter Your Mobile No."
-              id="mobile"
-              name="mobile"
-              onChange={handleRegisterChange}
-            />
-          </div>
           <div className={css.email}>
             <label htmlFor="Email address">Email Address</label>
             <input

@@ -1,10 +1,77 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import css from "./form.module.css";
-import useForm from "../../services/useForm";
-import validation from "../../utils/validation";
+import { shallowEqual, useDispatch, useSelector } from "react-redux";
+import { actionCreators } from "../../redux";
+import { useHistory } from "react-router-dom";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+toast.configure();
 
 const Register = () => {
-  const { handleRegisterChange, handleRegister } = useForm(validation);
+  const { user, isLoading } = useSelector(
+    (state) => state.userReducer,
+    shallowEqual
+  );
+  const dispatch = useDispatch();
+  const history = useHistory();
+  const [isError, setIsError] = useState({ status: false, message: "" });
+  const [rvalues, setRvalues] = useState({
+    username: "",
+    name: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+  });
+
+  const handleRegisterChange = (e) => {
+    e.preventDefault();
+    const { name, value } = e.target;
+    setRvalues({
+      ...rvalues,
+      [name]: value,
+    });
+  };
+
+  const onRegister = (e) => {
+    e.preventDefault();
+    if (
+      rvalues.username === "" ||
+      rvalues.name === "" ||
+      rvalues.email === "" ||
+      rvalues.password === "" ||
+      rvalues.confirmPassword === ""
+    ) {
+      toast.error("Enter All Fields", {
+        position: "top-right",
+        autoClose: 2500,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+    } else if (rvalues.password === rvalues.confirmPassword) {
+      dispatch(actionCreators.register(rvalues));
+      setRvalues({
+        username: "",
+        name: "",
+        email: "",
+        password: "",
+        confirmPassword: "",
+      });
+    } else {
+      setIsError({
+        status: true,
+        message: "Password and confirm password must be same!",
+      });
+    }
+  };
+
+  useEffect(() => {
+    if (!isLoading && user) {
+      history.push("/");
+    }
+  }, [user, isLoading, history]);
 
   return (
     <>
@@ -31,16 +98,6 @@ const Register = () => {
               placeholder="Enter Your Name"
               id="name"
               name="name"
-              onChange={handleRegisterChange}
-            />
-          </div>
-          <div className={css.mobileNo}>
-            <label htmlFor="Mobile No">Mobile No.</label>
-            <input
-              type="text"
-              placeholder="Enter Your Mobile No."
-              id="mobile"
-              name="mobile"
               onChange={handleRegisterChange}
             />
           </div>
@@ -74,9 +131,12 @@ const Register = () => {
               onChange={handleRegisterChange}
             />
           </div>
-          <button className={css.register_btn} onClick={handleRegister}>
+          <button className={css.register_btn} onClick={onRegister}>
             Register
           </button>
+          {isError.status === true && (
+            <h4 className={css.errorMsg}>{isError.message}</h4>
+          )}
         </main>
         <footer className={css.register_form_footer}>
           <div>

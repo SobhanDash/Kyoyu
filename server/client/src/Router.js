@@ -18,6 +18,9 @@ const CommentsPage = React.lazy(() =>
 const UserProfilePage = React.lazy(() => {
   import("./pages/ProfilePage/UserProfile");
 });
+// const MsgPage = React.lazy(() => import("./pages/MessagePage/MessagePage"));
+// const Following = React.lazy(() => import("./pages/FollowList/Following"));
+// const Followers = React.lazy(() => import("./pages/FollowList/Followers"));
 
 const IndexComponent = WithPageTitle({
   component: IndexPage,
@@ -48,19 +51,35 @@ const CommentsComponent = WithPageTitle({
   component: CommentsPage,
   title: "Edit Profile",
 });
+
 const UserProfileComponent = WithPageTitle({
   component: UserProfilePage,
   title: "User Profile",
 });
+
+// const MsgPageComponent = WithPageTitle({
+//   component: MsgPage,
+//   title: "Message",
+// });
+
+// const FollowingComponent = WithPageTitle({
+//   component: Following,
+//   title: "Following",
+// });
+
+// const FollowersComponent = WithPageTitle({
+//   component: Followers,
+//   title: "Followers",
+// });
 
 const RouteConfig = ({ UserContext }) => {
   const history = useHistory();
   // eslint-disable-next-line no-unused-vars
   const { state, dispatch } = useContext(UserContext);
   const tokenFetch = async () => {
-    const token = window.localStorage.getItem("token");
+    const token = window.sessionStorage.getItem("token");
     if (token) {
-      const res = await axios.get("/api/auth/profile", {
+      const res = await axios.get("http://localhost:5000/api/auth/profile", {
         headers: { "auth-token": token },
       });
       if (res.data.user) {
@@ -83,7 +102,14 @@ const RouteConfig = ({ UserContext }) => {
       <Route exact path="/profile" component={ProfileComponent} />
       <Route exact path="/editProfile" component={EditProfileComponent} />
       <Route exact path="/post/:postid" component={CommentsComponent} />
-      <Route exact path="/profile/:userid" component={UserProfileComponent} />
+      <Route
+        exact
+        path="/userprofile/:userid"
+        component={UserProfileComponent}
+      />
+      {/* <Route exact path="/following" component={FollowingComponent} />
+      <Route exact path="/followers" component={FollowersComponent} />
+      <Route exact path="/message" component={MsgPageComponent} /> */}
     </Switch>
   );
 };

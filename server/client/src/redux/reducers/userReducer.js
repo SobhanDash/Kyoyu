@@ -38,96 +38,75 @@ const initState = {
 };
 
 const userReducer = (state = initState, action) => {
-
   if (action.type === "user-loading") {
     return {
       ...state,
       isLoading: true,
     };
-  } 
-  
-  else if (action.type === "register") {
+  } else if (action.type === "register") {
     const { user, error } = action.payload;
     if (error) {
       return { ...state, error: error, isLoading: false };
     } else {
       return { ...state, user: user, isLoading: false, error: null };
     }
-  } 
-  
-  else if (action.type === "login") {
+  } else if (action.type === "login") {
     const { user, error } = action.payload;
     if (error) {
       return { ...state, error: error, isLoading: false };
     } else {
       return { ...state, user: user, isLoading: false, error: null };
     }
-  } 
-  
-  else if (action.type === "profile") {
+  } else if (action.type === "profile") {
     const { profile, error } = action.payload;
     if (error) {
       return { ...state, error: error, isLoading: false };
     } else {
       return { ...state, profile: profile, isLoading: false, error: null };
     }
-  } 
-  
-  else if (action.type === "edit-profile") {
+  } else if (action.type === "edit-profile") {
     const { profile, error } = action.payload;
     if (error) {
       return { ...state, error: error, isLoading: false };
     } else {
       return { ...state, profile: profile, isLoading: false, error: null };
     }
-  } 
-  
-  else if (action.type === "follow") {
+  } else if (action.type === "follow") {
     const { profile, error } = action.payload;
     if (error) {
       return { ...state, error: error, isLoading: false };
     } else {
       return { ...state, profile: profile, isLoading: false, error: null };
     }
-  } 
-  
-  else if (action.type === "unfollow") {
+  } else if (action.type === "unfollow") {
     const { profile, error } = action.payload;
     if (error) {
       return { ...state, error: error, isLoading: false };
     } else {
       return { ...state, profile: profile, isLoading: false, error: null };
     }
-  } 
-  
-  else if (action.type === "add-dp") {
+  } else if (action.type === "add-dp") {
     const { profile, error } = action.payload;
     if (error) {
       return { ...state, error: error, isLoading: false };
     } else {
       return { ...state, profile: profile, isLoading: false, error: null };
     }
-  } 
-  
-  else if (action.type === "add-post") {
+  } else if (action.type === "add-post") {
     const { profile, error } = action.payload;
     if (error) {
       return { ...state, error: error, isLoading: false };
     } else {
       return { ...state, profile: profile, isLoading: false, error: null };
     }
-  } 
-  
-  else if (action.type === "delete-post") {
+  } else if (action.type === "delete-post") {
     const { profile, error } = action.payload;
     if (error) {
       return { ...state, error: error, isLoading: false };
     } else {
       return { ...state, profile: profile, isLoading: false, error: null };
     }
-  } 
-  
-  else if (action.type === "get-suggestion") {
+  } else if (action.type === "get-suggestion") {
     const { suggestions, error } = action.payload;
     if (error) {
       return { ...state, error: error, isLoading: false };
@@ -139,18 +118,14 @@ const userReducer = (state = initState, action) => {
         error: null,
       };
     }
-  } 
-  
-  else if (action.type === "get-user") {
+  } else if (action.type === "get-user") {
     const { otherUser, error } = action.payload;
     if (error) {
       return { ...state, error: error, isLoading: false };
     } else {
       return { ...state, otherUser: otherUser, isLoading: false, error: null };
     }
-  } 
-  
-  else if (action.type === "search-user") {
+  } else if (action.type === "search-user") {
     const { searchedUsers, error } = action.payload;
     if (error) {
       return { ...state, error: error, isLoading: false };
@@ -162,9 +137,23 @@ const userReducer = (state = initState, action) => {
         error: null,
       };
     }
-  } 
-  
-  else if (action.type === "logout") {
+  } else if (action.type === "remove") {
+    const { profile, error } = action.payload;
+    if (error) {
+      return {
+        ...state,
+        error: error,
+        isLoading: false,
+      };
+    } else {
+      return {
+        ...state,
+        profile: profile,
+        isLoading: false,
+        error: null,
+      };
+    }
+  } else if (action.type === "logout") {
     return {
       ...state,
       user: null,
@@ -173,9 +162,7 @@ const userReducer = (state = initState, action) => {
       error: null,
       isLoading: false,
     };
-  } 
-  
-  else {
+  } else {
     return state;
   }
 };

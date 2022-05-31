@@ -19,11 +19,11 @@ const Modal = ({ show, setShow }) => {
   // --------------ADD POST--------
   useEffect(() => {
     if (url) {
-      fetch("/api/posts/addpost", {
+      fetch("http://localhost:5000/api/posts/addpost", {
         method: "post",
         headers: {
           "Content-Type": "application/json",
-          "auth-token": localStorage.getItem("token"),
+          "auth-token": sessionStorage.getItem("token"),
         },
         body: JSON.stringify({
           image: url,

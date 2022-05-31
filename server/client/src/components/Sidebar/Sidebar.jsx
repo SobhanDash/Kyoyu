@@ -31,7 +31,7 @@ const Sidebar = ({ setShow, isProfile }) => {
   }, []);
 
   const onLogout = () => {
-    localStorage.clear();
+    sessionStorage.clear();
     dispatch({ type: "CLEAR" });
     history.push("/login");
   };

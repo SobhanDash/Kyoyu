@@ -39,7 +39,7 @@
   z-index: -1;
   background: linear-gradient(
     60deg,
-    var(--ternary-4),
+    var(--ternary-3),
     var(--primary),
     var(--ternary-2),
     var(--secondary-1)

@@ -14,24 +14,24 @@ const CommentsPage = () => {
     useForm();
   const { postid } = useParams();
 
-  useEffect(() => {
-    const getPost = async () => {
-      const userpost = await fetch("/api/posts/getposts", {
-        method: "GET",
-        headers: {
-          "auth-token": localStorage.getItem("token"),
-        },
-      });
+  // useEffect(() => {
+  //   const getPost = async () => {
+  //     const userpost = await fetch("/api/posts/getposts", {
+  //       method: "GET",
+  //       headers: {
+  //         "auth-token": sessionStorage.getItem("token"),
+  //       },
+  //     });
 
-      const json = await userpost.json();
+  //     const json = await userpost.json();
 
-      const { posts } = json;
-      setUserPosts(posts);
-    };
-    getProfile();
-    getPost();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  //     const { posts } = json;
+  //     setUserPosts(posts);
+  //   };
+  //   getProfile();
+  //   getPost();
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, []);
   const filterData = userposts.filter((item) => {
     return item._id === postid;
   });
