@@ -1,73 +1,100 @@
-import React, { useEffect, useState } from "react";
-import useForm from "../../services/useForm";
+import React, { useEffect } from "react";
 import Sidebar from "../../components/Sidebar/Sidebar";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTh, faCamera } from "@fortawesome/free-solid-svg-icons";
 import nodpImg from "../../images/nodp.jpg";
 import css from "./profile.module.css";
+import { useDispatch, useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
+import { actionCreators } from "../../redux";
+import LoadingSpinner from "../../components/LoadingSpinner/LoadingSpinner";
 
 const feed = <FontAwesomeIcon icon={faTh} />;
 const camera = <FontAwesomeIcon icon={faCamera} />;
 
 const ProfilePage = () => {
   // eslint-disable-next-line no-unused-vars
-  const [isProfile, setIsProfile] = useState(true);
-  const { getProfile, profile, userposts, setUserPosts } = useForm();
+  const history = useHistory();
+  const dispatch = useDispatch();
+  const { user, profile, isLoading } = useSelector(
+    (state) => state.userReducer
+  );
+
+  const redirectToPost = (id) => {
+    history.push(`/post/${id}`);
+  };
+  const onEditClick = (e) => {
+    e.preventDefault();
+    history.push("/editprofile");
+  };
 
   useEffect(() => {
-    getProfile();
-  }, []);
+    if (!user) {
+      history.push("/login");
+    } else {
+      dispatch(actionCreators.getProfile());
+    }
+  }, [dispatch, history, user]);
 
-  useEffect(() => {
-    fetch("/api/posts/getsubpost", {
-      method: "GET",
-      headers: {
-        "auth-token": sessionStorage.getItem("token"),
-      },
-    })
-      .then((res) => res.json())
-      .then((result) => {
-        setUserPosts(result.posts);
-      });
-  }, [setUserPosts]);
+  if (isLoading) {
+    return <LoadingSpinner />;
+  }
 
   return (
     <section className={css.profileContainer}>
       <div>
-        <Sidebar isProfile={isProfile} />
+        <Sidebar isProfile={profile} />
       </div>
       <div className={css.profileData}>
         {/* Profile Image */}
         <div className={css.profile}>
           <div className={css.profileImg}>
-            {profile.profilePic !== null ? (
-              <img src={profile.profilePic} alt="" />
+            {profile.about.profilepic !== null ? (
+              <img src={profile.about.profilepic} alt="" />
             ) : (
               <img src={nodpImg} alt={profile.username} />
             )}
-            {/* <img src={nodpImg} alt={profile.username} /> */}
           </div>
-          <div className={css.name}>
-            <h1>{profile.name}</h1>
+          <div className={css.details}>
+            <div className={css.pbtns}>
+              <div className={css.uname}>
+                <h1>@{profile.username}</h1>
+              </div>
+
+              <button className={css.epl} onClick={onEditClick}>
+                Edit Profile
+              </button>
+            </div>
+            <div className={css.about}>
+              <h2 className={css.name}>{profile.name}</h2>
+              <p className={css.about__text}>{profile.about.bio}</p>
+            </div>
           </div>
-          <span>@{profile.username}</span>
         </div>
 
-        {/* About */}
-        <div className={css.about}>
-          <div className={css.box}>
+        {/* Numbers */}
+        <ul className={css.numbers}>
+          <li className={css.box} aria-label=" posts ">
             <h3>{profile.posts.length}</h3>
             <span>Posts</span>
-          </div>
-          <div className={css.box}>
+          </li>
+          <li
+            className={css.box}
+            aria-label=" followers "
+            onClick={() => history.push("/followers")}
+          >
             <h3>{profile.followers.length}</h3>
             <span>Followers</span>
-          </div>
-          <div className={css.box}>
+          </li>
+          <li
+            className={css.box}
+            aria-label=" following "
+            onClick={() => history.push("/following")}
+          >
             <h3>{profile.following.length}</h3>
             <span>Following</span>
-          </div>
-        </div>
+          </li>
+        </ul>
 
         {/* Posts */}
         <div className={css.posts}>
@@ -76,10 +103,20 @@ const ProfilePage = () => {
           </h4>
           <div className={css.postContainer}>
             {profile.posts.length !== 0 &&
-              userposts.map((post) => {
+              profile.posts.map((post) => {
+                // const timeDif = (new Date().getTime() - post.createdAt);
                 return (
-                  <div className={css.card} key={post._id}>
+                  <div
+                    className={css.card}
+                    key={post._id}
+                    onClick={() => redirectToPost(post._id)}
+                  >
                     <img src={post.image} alt={post.caption} />
+                    {/* {timeDif < 60000 && <p>{((new Date().getTime() - post.createdAt) / 1000).toFixed(0)} seconds ago</p>}
+                    {(timeDif >= 60000 && timeDif < 3.6e+6) && <p>{((new Date().getTime() - post.createdAt) / 60000).toFixed(0)} minutes ago</p>}
+                    {(timeDif >= 3.6e+6 && timeDif < 8.64e+7) && <p>{((new Date().getTime() - post.createdAt) / 3.6e+6).toFixed(0)} hours ago</p>}
+                    {(timeDif >= 8.64e+7 && timeDif < 6.048e+8) && <p>{((new Date().getTime() - post.createdAt) / 8.64e+7).toFixed(0)} days ago</p>}
+                    {timeDif >= 6.048e+8 && <p>{((new Date().getTime() - post.createdAt) / 6.048e+8).toFixed(0)} weeks ago</p>} */}
                   </div>
                 );
               })}

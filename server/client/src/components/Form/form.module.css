@@ -75,7 +75,8 @@
 .mobileNo,
 .email,
 .password,
-.confirmPassword {
+.confirmPassword,
+.bio {
   padding: 0.55rem;
 }
 
@@ -161,6 +162,32 @@
 .comment_form_cancel_button {
   margin-left: 10px;
   width: 2rem !important;
+}
+
+.img__wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
+.dpchange {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 130px;
+  height: 130px;
+  border-radius: 50%;
+  border: 2px solid var(--primary);
+  cursor: pointer;
+}
+
+.dp {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: center;
 }
 
 @media screen and (max-width: 1000px) {

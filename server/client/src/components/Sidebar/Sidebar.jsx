@@ -1,4 +1,4 @@
-import React, { useEffect, useContext } from "react";
+import React, { useState } from "react";
 import { Link, useHistory, useLocation } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -6,50 +6,61 @@ import {
   faPlus,
   faUser,
   faSignOutAlt,
-  faCog,
+  faMessage,
 } from "@fortawesome/free-solid-svg-icons";
 import css from "./Sidebar.module.css";
-import useForm from "../../services/useForm";
 import nodpImg from "../../images/nodp.jpg";
 import logo from "../../images/logo2.svg";
-import { UserContext } from "../../App";
+import { shallowEqual, useDispatch, useSelector } from "react-redux";
+import { actionCreators } from "../../redux";
+import Modal from "../Modal/Modal";
+// import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
 
 const feed = <FontAwesomeIcon icon={faTh} />;
 const addPostIcon = <FontAwesomeIcon icon={faPlus} />;
 const profileIcon = <FontAwesomeIcon icon={faUser} />;
 const logout = <FontAwesomeIcon icon={faSignOutAlt} />;
-const editProfileIcon = <FontAwesomeIcon icon={faCog} />;
+const messageIcon = <FontAwesomeIcon icon={faMessage} />;
 
-const Sidebar = ({ setShow, isProfile }) => {
-  const { state, dispatch } = useContext(UserContext);
+const Sidebar = () => {
+  const [show, setShow] = useState(false);
+  const dispatch = useDispatch();
+  const { profile } = useSelector((state) => state.userReducer, shallowEqual);
   const history = useHistory();
   const location = useLocation();
-  const { getProfile, profile } = useForm();
-
-  useEffect(() => {
-    getProfile();
-  }, []);
 
   const onLogout = () => {
-    sessionStorage.clear();
-    dispatch({ type: "CLEAR" });
+    dispatch(actionCreators.logout());
     history.push("/login");
   };
+
+  // useEffect(()=> {
+  //   dispatch(actionCreators.getProfile());
+  // },[dispatch]);
+
+  // console.log(isLoading);
+  // if(isLoading) {
+  //   return <LoadingSpinner />
+  // }
+
+  if (show) {
+    return <Modal show={show} setShow={setShow} />;
+  }
 
   return (
     <>
       <div className={css.sidebar}>
         <div className={css.logo}>
-          <img src={logo} alt="logo" />
+          {/* <img src={logo} alt="logo" /> */}
         </div>
         {/* profile details */}
-        {!isProfile && (
+        {profile.length !== {} && (
           <div className={css.sideProf}>
             {/* profile img */}
             <div className={css.profile}>
               <div className={css.profile_img}>
-                {profile.profilePic !== null ? (
-                  <img src={profile.profilePic} alt={profile.username} />
+                {profile.about.profilepic !== null ? (
+                  <img src={profile.about.profilepic} alt={profile.username} />
                 ) : (
                   <img src={nodpImg} alt={profile.username} />
                 )}
@@ -64,15 +75,23 @@ const Sidebar = ({ setShow, isProfile }) => {
             </div>
             {/* about */}
             <div className={css.about}>
-              <div className={css.box}>
+              <div className={css.box} aria-label=" posts ">
                 <h3>{profile.posts.length}</h3>
                 <span>Posts</span>
               </div>
-              <div className={css.box}>
+              <div
+                className={css.box}
+                aria-label=" followers "
+                onClick={() => history.push("/followers")}
+              >
                 <h3>{profile.followers.length}</h3>
                 <span>Followers</span>
               </div>
-              <div className={css.box}>
+              <div
+                className={css.box}
+                aria-label=" following "
+                onClick={() => history.push("/following")}
+              >
                 <h3>{profile.following.length}</h3>
                 <span>Following</span>
               </div>
@@ -93,14 +112,14 @@ const Sidebar = ({ setShow, isProfile }) => {
             <div className={css.icon_func}>Profile</div>
           </Link>
           <Link
-            to="/editProfile"
-            className={location.pathname === "/editProfile" ? css.active : ""}
+            to="/message"
+            className={location.pathname === "/message" ? css.active : ""}
           >
-            <span className={css.icon}>{editProfileIcon}</span>
-            <div className={css.icon_func}>Edit Profile</div>
+            <span className={css.icon}>{messageIcon}</span>
+            <div className={css.icon_func}>Message</div>
           </Link>
-          {!isProfile && (
-            <Link to={location.pathname} onClick={() => setShow(true)}>
+          {profile && (
+            <Link to="" onClick={() => setShow(true)}>
               <span className={css.icon}>{addPostIcon}</span>
               <div className={css.icon_func}>Add Post</div>
             </Link>

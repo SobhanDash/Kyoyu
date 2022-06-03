@@ -5,12 +5,20 @@ import "react-toastify/dist/ReactToastify.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCloudUploadAlt, faImages } from "@fortawesome/free-solid-svg-icons";
 import css from "./modal.module.css";
+import axios from "axios";
+import { shallowEqual, useDispatch, useSelector } from "react-redux";
+import { actionCreators } from "../../redux";
 
 toast.configure();
 const cloud = <FontAwesomeIcon icon={faCloudUploadAlt} />;
 const imgIcon = <FontAwesomeIcon icon={faImages} />;
 
 const Modal = ({ show, setShow }) => {
+  const dispatch = useDispatch();
+  const { error, isLoading } = useSelector(
+    (state) => state.postReducer,
+    shallowEqual
+  );
   const [image, setImage] = useState("");
   const [cap, setCap] = useState("");
   const [url, setUrl] = useState("");
@@ -18,51 +26,23 @@ const Modal = ({ show, setShow }) => {
 
   // --------------ADD POST--------
   useEffect(() => {
-    if (url) {
-      fetch("http://localhost:5000/api/posts/addpost", {
-        method: "post",
-        headers: {
-          "Content-Type": "application/json",
-          "auth-token": sessionStorage.getItem("token"),
-        },
-        body: JSON.stringify({
-          image: url,
-          caption: cap,
-        }),
-      })
-        .then((res) => res.json())
-        .then((data) => {
-          console.log(data);
-          if (data.error) {
-            toast.error(data.error, {
-              position: "top-right",
-              autoClose: 2500,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-            });
-          } else {
-            toast.success("Created post Successfully", {
-              position: "top-right",
-              autoClose: 2500,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-            });
-            setTimeout(() => {
-              window.location.reload();
-            }, 3000);
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+    if (url !== "") {
+      dispatch(actionCreators.addPost(url, cap));
+      setUrl("");
     }
-  }, [url, cap]);
+
+    if (error && !isLoading) {
+      toast.error(error, {
+        position: "top-right",
+        autoClose: 2500,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+    }
+  }, [url, cap, dispatch, error, image, isLoading]);
 
   if (!show) {
     return null;
@@ -80,25 +60,17 @@ const Modal = ({ show, setShow }) => {
     imagediv.appendChild(newimg);
   };
 
-  const postDetails = () => {
+  const postDetails = async () => {
     const data = new FormData();
     data.append("file", image);
     data.append("upload_preset", "kyoyu-cloudinary");
     data.append("cloud_name", "kyoyu");
-    fetch("https://api.cloudinary.com/v1_1/kyoyu/image/upload", {
-      method: "post",
-      body: data,
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        setUrl(data.url);
-        // setCap(data.caption);
-        // addPost(data.url, cap);
-        setShow(false);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    const res = await axios.post(
+      "https://api.cloudinary.com/v1_1/kyoyu/image/upload",
+      data
+    );
+    setUrl(res.data.secure_url);
+    setShow(false);
   };
   // --------------
 

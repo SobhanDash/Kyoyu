@@ -180,6 +180,32 @@ input[type="file"] {
   display: contents;
 }
 
+.imagePreview {
+  margin: 2rem 0;
+  position: relative;
+  height: 16vw;
+  width: 16vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 0.2rem dashed var(--grey-4);
+  border-radius: 0.7rem;
+}
+
+.deletebtn {
+  position: absolute;
+  top: 0.6rem;
+  right: 0.8rem;
+  color: red;
+}
+
+.dimage {
+  width: 100%;
+  height: 100%;
+  border: none;
+  border-radius: 0.7rem;
+}
+
 @media screen and (max-width: 1000px) {
   .modal {
     min-width: 80vw;

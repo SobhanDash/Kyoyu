@@ -1,4 +1,4 @@
-.profileContainer,
+/* .profileContainer,
 .editProfileContainer {
   min-height: 100vh;
   display: grid;
@@ -121,13 +121,6 @@
   background: transparent;
 }
 
-/* .maincontainer {
-  width: 30%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: relative;
-} */
 .editProfileContainer {
   width: 100vw;
   display: grid;
@@ -148,5 +141,267 @@
   }
   .maincontainer {
     width: 100%;
+  }
+} */
+
+/*  */
+
+.profileContainer,
+.editProfileContainer {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 1fr 4fr;
+  background-color: var(--black-2);
+}
+
+.profileData {
+  color: var(--white-1);
+  text-align: center;
+  margin-top: 5vh;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.details {
+  display: -webkit-box;
+  display: flex;
+  flex-direction: column;
+  /* margin: 0 0 0 1rem; */
+  width: 70%;
+  margin-left: 1rem;
+}
+
+.profile {
+  display: flex;
+  width: 75%;
+}
+
+.profileImg {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  border: 2px solid var(--primary);
+  cursor: pointer;
+}
+
+.profileImg img {
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.profile span {
+  font-size: 1.3rem;
+}
+
+.uname {
+  display: flex;
+  margin: 1rem 1rem 0.7rem 0;
+}
+
+/* .uname h1 {
+  font-weight: normal;
+} */
+
+.pbtns,
+.upbtns {
+  display: flex;
+  align-items: flex-start;
+}
+
+.epl {
+  padding: 0.5rem;
+  border-radius: 0.3rem;
+  width: 6rem;
+  margin: 1rem 0 0.7rem 1rem;
+  border: none;
+  outline: none;
+  background: linear-gradient(150deg, var(--primary), var(--secondary-1));
+  color: var(--white-2);
+  font-size: 1rem;
+}
+
+.epl:hover {
+  background: linear-gradient(150deg, var(--primary), var(--secondary-1));
+}
+
+.about {
+  display: flex;
+  flex-direction: column;
+  text-align: start;
+  /* flex-flow: row wrap; */
+}
+
+.name {
+  font-weight: 500;
+  font-size: 1.2rem;
+  opacity: 0.9;
+}
+
+.about__text {
+  font-size: 1.1rem;
+  word-wrap: break-word;
+}
+
+.numbers {
+  width: 75%;
+  display: flex;
+  justify-content: space-around;
+  padding: 1rem;
+  border-bottom: 1px solid var(--grey-4);
+  list-style: none;
+}
+
+.box {
+  text-align: center;
+}
+
+.icon {
+  margin: 0.5rem;
+  font-size: 1.2rem;
+}
+
+.iconCamera {
+  font-size: 5vw;
+}
+
+.posts {
+  margin-top: 8vh;
+  margin-bottom: 5vh;
+  width: 75%;
+}
+
+.posts h4 {
+  font-weight: normal;
+  margin-bottom: 3vh;
+}
+
+.postContainer {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1.5fr 1.5fr 1.5fr;
+  /* grid-column-gap: 1rem;
+  grid-row-gap: 1rem; */
+}
+
+.card {
+  height: 17.5vw;
+  width: 17.5vw;
+  margin-bottom: 2.5vh;
+  cursor: pointer;
+}
+
+.card:hover {
+  opacity: 0.7;
+}
+
+.card img {
+  height: 17.5vw;
+  width: 17.5vw;
+  object-fit: cover;
+  object-position: center;
+}
+
+.noPost {
+  font-size: 1.7rem;
+}
+
+.cameraContainer {
+  width: 9.5vw;
+  margin: auto;
+  padding: 1vw;
+  border: 0.2vw solid white;
+  border-radius: 50%;
+  background: transparent;
+}
+
+/* .maincontainer {
+  width: 30%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+} */
+
+.editProfileContainer {
+  width: 100vw;
+  display: grid;
+  grid-template-columns: 1fr 4fr;
+}
+
+li[aria-label=" following "],
+li[aria-label=" followers "] {
+  cursor: pointer;
+}
+
+li[aria-label=" following "]:hover,
+li[aria-label=" followers "]:hover,
+li[aria-label=" posts "]:hover {
+  transform: scale(1.02);
+  color: var(--white-2);
+}
+
+@media screen and (max-width: 1200px) {
+  .profileContainer,
+  .editProfileContainer {
+    min-height: 100vh;
+    width: 100%;
+    display: grid;
+    grid-template-columns: none;
+  }
+  .profileData {
+    margin-top: none;
+    min-height: 100vh;
+  }
+  .maincontainer {
+    width: 100%;
+  }
+
+  .profileImg {
+    width: 77px;
+    height: 77px;
+  }
+  .profileImg img {
+    width: 67px;
+    height: 67px;
+  }
+
+  .profile {
+    width: 100%;
+    flex-wrap: wrap;
+  }
+}
+
+@media screen and (min-width: 500px) and (max-width: 1200px) {
+  .profile {
+    justify-content: center;
+  }
+}
+
+@media screen and (max-width: 650px) {
+  .upbtns {
+    flex-direction: column;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .details {
+    width: 100%;
+  }
+
+  .profileImg {
+    margin: 0 0 0 1rem;
+  }
+}
+
+@media screen and (max-width: 300px) {
+  .profile {
+    flex-wrap: wrap;
   }
 }
