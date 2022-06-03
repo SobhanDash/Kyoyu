@@ -9,7 +9,7 @@ import css from "./index.module.css";
 import LoadingSpinner from "../../components/LoadingSpinner/LoadingSpinner";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import { actionCreators } from "../../redux";
-// import Suggestions from "../../components/Suggestions/Suggestions";
+import Suggestions from "../../components/Suggestions/Suggestions";
 
 const Index = () => {
   const history = useHistory();
@@ -46,9 +46,9 @@ const Index = () => {
           <div className={css.feed}>
             <Feed />
           </div>
-          {/* <div className={css.suggest}>
+          <div className={css.suggest}>
             <Suggestions />
-          </div> */}
+          </div>
         </div>
       )}
     </>
