@@ -93,7 +93,7 @@
   right: 0;
   width: 4px;
   height: 20px;
-  background-image: linear-gradient(var(--ternary-2), var(--secondary-1));
+   background-image: linear-gradient(var(--ternary-2), var(--secondary-1));
 }
 
 .menu a:hover,
@@ -105,6 +105,18 @@
   display: flex;
   justify-content: space-around;
   margin-left: 4vh;
+}
+
+div[aria-label=" following "],
+div[aria-label=" followers "] {
+  cursor: pointer;
+}
+
+div[aria-label=" following "]:hover,
+div[aria-label=" followers "]:hover,
+div[aria-label=" posts "]:hover {
+  transform: scale(1.02);
+  color: var(--white-2);
 }
 
 @media screen and (max-width: 1200px) {
