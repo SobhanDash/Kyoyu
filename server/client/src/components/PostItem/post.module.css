@@ -7,7 +7,7 @@
 
 .post_container {
   width: 580px;
-  height: 620px;
+  height: 650px;
   padding: 1rem;
   margin-top: 1.5rem;
   margin-bottom: 4.5rem;
@@ -41,8 +41,18 @@
 
 .username {
   display: flex;
-  padding: 0.5rem 0.5rem;
+  font-size: 1.1rem;
+}
+
+.username > a {
+  display: flex;
+  text-decoration: none;
   color: var(--white-1);
+  padding: 0.5rem 0.5rem;
+}
+
+.username > a:hover {
+  text-decoration: underline;
 }
 
 .post {
@@ -78,37 +88,35 @@
 
 .post_icons {
   width: 95%;
+  padding: 10px;
   display: flex;
-  align-self: start;
-  padding: 0 0.5rem 0.5rem;
+  align-items: center;
 }
 
 .post_icons button {
   border: none;
   background: none;
   cursor: pointer;
-  margin: 0;
-  padding: 10px;
+  padding-right: 25px;
   color: var(--white-2);
 }
 
 .post_icons a {
   color: var(--white-2);
   text-decoration: none;
-  padding-top: 0.5rem;
 }
 
 .post_icons .post_icon a {
   color: var(--white-2);
   text-decoration: none;
-  padding-top: 0.5rem;
-  padding-left: 1rem;
+  /* padding-top: 0.5rem; */
+  /* padding-left: 1rem; */
 }
 
 .icon {
   font-size: 20px;
   color: var(--white-2);
-  padding-right: 0.3rem;
+  /* padding-right: 0.3rem; */
   text-align: center;
 }
 
@@ -142,4 +150,11 @@
 .ispan {
   padding-left: 0.5rem;
   font-size: 15px;
+}
+
+.timeago {
+  width: 95%;
+  padding-left: 1.2rem;
+  margin: auto;
+  color: white;
 }

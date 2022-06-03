@@ -1,5 +1,5 @@
 /* eslint-disable eqeqeq */
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState } from "react";
 import css from "./post.module.css";
 import nodpImg from "../../images/nodp.jpg";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -12,93 +12,37 @@ import FeatModal from "../Modal/FeatModal";
 import { Link } from "react-router-dom";
 import Modal from "../Modal/Modal";
 import UpdateModal from "../Modal/UpdateModal";
-import useForm from "../../services/useForm";
-import { UserContext } from "../../App";
+import { useDispatch, useSelector } from "react-redux";
+import { actionCreators } from "../../redux";
+import TimeAgo from "javascript-time-ago";
+import en from "javascript-time-ago/locale/en";
+TimeAgo.addDefaultLocale(en);
 
 const likeHeart = <FontAwesomeIcon icon={faHeart} />;
 const commentIcon = <FontAwesomeIcon icon={faComment} />;
 const more = <FontAwesomeIcon icon={faEllipsisV} />;
 
 const PostItem = ({ post, postid, username, caption, dp, pic, userid }) => {
+  // const history = useHistory();
+  const timeAgo = new TimeAgo("en-US");
+  const dispatch = useDispatch();
+  const { profile } = useSelector((state) => state.userReducer);
   const [show, setShow] = useState(false);
   const [fshow, setFShow] = useState(false);
   const [ushow, setUShow] = useState(false);
-  const { userposts, setUserPosts } = useForm();
-  // eslint-disable-next-line no-unused-vars
-  const { state, dispatch } = useContext(UserContext);
-
-  // useEffect(() => {
-  //   const getPost = async () => {
-  //     const userpost = await fetch("/api/posts/getposts", {
-  //       method: "GET",
-  //       headers: {
-  //         "auth-token": sessionStorage.getItem("token"),
-  //       },
-  //     });
-
-  //     const json = await userpost.json();
-
-  //     const { posts } = json;
-  //     setUserPosts(posts);
-  //   };
-  //   getPost();
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, []);
+  // const timeDif = (new Date().getTime() - post.createdAt);
 
   function handleModalClose() {
     setFShow(!fshow);
   }
-  const likePost = (id) => {
-    fetch("/api/posts/like", {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        "auth-token": sessionStorage.getItem("token"),
-      },
-      body: JSON.stringify({ postid: id }),
-    })
-      .then((res) => res.json())
-      .then((result) => {
-        const newData = userposts.map((item) => {
-          if (item._id == result._id) {
-            return result;
-          } else {
-            return item;
-          }
-        });
-        setUserPosts(newData);
-        window.location.reload();
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+  const likePost = () => {
+    dispatch(actionCreators.likePost(postid));
   };
 
-  const unlikePost = (id) => {
-    fetch("/api/posts/unlike", {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        "auth-token": sessionStorage.getItem("token"),
-      },
-      body: JSON.stringify({ postid: id }),
-    })
-      .then((res) => res.json())
-      .then((result) => {
-        const newData = userposts.map((item) => {
-          if (item._id == result._id) {
-            return result;
-          } else {
-            return item;
-          }
-        });
-        setUserPosts(newData);
-        window.location.reload();
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+  const unlikePost = () => {
+    dispatch(actionCreators.unlikePost(postid));
   };
+
   return (
     <>
       <Modal show={show} setShow={setShow} />
@@ -113,7 +57,13 @@ const PostItem = ({ post, postid, username, caption, dp, pic, userid }) => {
             )}
           </div>
           <div className={css.username}>
-            <span>{username}</span>
+            {/* <span>{username}</span> */}
+            {/* {console.log(post.user._id, "post")} */}
+            {post.user._id === userid ? (
+              <Link to={`/profile`}>{username}</Link>
+            ) : (
+              <Link to={`/userprofile/${post.user._id}`}>{username}</Link>
+            )}
           </div>
         </div>
         <div className={css.post}>
@@ -123,25 +73,13 @@ const PostItem = ({ post, postid, username, caption, dp, pic, userid }) => {
           </figcaption>
           <div className={css.post_icons}>
             <div className={css.post_icon}>
-              {post.likes.includes(state._id) ? (
-                <button
-                  type="button"
-                  onClick={() => {
-                    unlikePost(postid);
-                  }}
-                  className={css.icon}
-                >
+              {post.likes.includes(profile._id) ? (
+                <button type="button" onClick={unlikePost} className={css.icon}>
                   <i className={css.active}>{likeHeart}</i>
                   <span className={css.ispan}>{post.likes.length}</span>
                 </button>
               ) : (
-                <button
-                  type="button"
-                  onClick={() => {
-                    likePost(postid);
-                  }}
-                  className={css.icon}
-                >
+                <button type="button" onClick={likePost} className={css.icon}>
                   <i>{likeHeart}</i>
                   <span className={css.ispan}>{post.likes.length}</span>
                 </button>
@@ -154,6 +92,7 @@ const PostItem = ({ post, postid, username, caption, dp, pic, userid }) => {
             <span className={css.icon} onClick={() => setFShow(!fshow)}>
               {more}
               <FeatModal
+                post={post}
                 id={postid}
                 userid={userid}
                 fshow={fshow}
@@ -163,6 +102,7 @@ const PostItem = ({ post, postid, username, caption, dp, pic, userid }) => {
             </span>
           </div>
         </div>
+        <p className={css.timeago}>{timeAgo.format(post.createdAt)}</p>
       </section>
     </>
   );
