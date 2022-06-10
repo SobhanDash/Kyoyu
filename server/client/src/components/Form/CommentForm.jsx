@@ -3,6 +3,9 @@ import { useState } from "react";
 import css from "./form.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
+import { shallowEqual, useDispatch, useSelector } from "react-redux";
+import { actionCreators } from "../../redux";
+import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
 const cancelIcon = <FontAwesomeIcon icon={faTimes} />;
 const CommentForm = ({
   submitLabel,
@@ -10,46 +13,24 @@ const CommentForm = ({
   handleCancel,
   initialText = "",
   post,
-  userposts,
-  setUserPosts,
 }) => {
+  const dispatch = useDispatch();
+  const isLoading = useSelector(
+    (state) => state.postReducer.isLoading,
+    shallowEqual
+  );
   const [text, setText] = useState(initialText);
   const isTextareaDisabled = text.length === 0;
 
-  const addComment = (text, postId) => {
-    fetch("/api/posts/comment", {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        "auth-token": sessionStorage.getItem("token"),
-      },
-      body: JSON.stringify({
-        postId,
-        text,
-      }),
-    })
-      .then((res) => res.json())
-      .then((result) => {
-        const newData = userposts.map((item) => {
-          if (item._id == result._id) {
-            return result;
-          } else {
-            return item;
-          }
-        });
-        setUserPosts(newData);
-        window.location.reload();
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-
   const onSubmit = (e) => {
     e.preventDefault();
-    addComment(text, post._id);
+    dispatch(actionCreators.addComment(post._id, text));
     setText("");
   };
+
+  if (isLoading) {
+    return <LoadingSpinner />;
+  }
 
   return (
     <form onSubmit={onSubmit} className={css.cinputdiv}>

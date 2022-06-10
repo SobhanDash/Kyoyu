@@ -55,13 +55,13 @@
   font-size: 1rem;
 }
 
-.cpost{
+.cpost {
   padding: 0.5rem;
   border-radius: 0.3rem;
   width: 6rem;
   border: none;
   outline: none;
-  background: linear-gradient(150deg, var(--primary), var(--ternary-2));
+  background: linear-gradient(150deg, var(--primary), var(--secondary-2));
   color: var(--white-2);
   font-size: 1rem;
 }
@@ -88,8 +88,8 @@
     width: 80vw;
   }
   .cip {
-  display: block;
-  width: 65%;
+    display: block;
+    width: 65%;
   }
 }
 
