@@ -4,23 +4,32 @@ import WithPageTitle from "./services/WithPageTitle";
 import axios from "axios";
 
 const LoginPage = React.lazy(() => import("./pages/LoginPage/LoginPage"));
+
 const RegisterPage = React.lazy(() =>
   import("./pages/RegisterPage/RegisterPage")
 );
+
 const IndexPage = React.lazy(() => import("./pages/Index/Index"));
+
 const ProfilePage = React.lazy(() => import("./pages/ProfilePage/ProfilePage"));
+
 const EditProfilePage = React.lazy(() =>
   import("./pages/ProfilePage/EditProfile")
 );
+
 const CommentsPage = React.lazy(() =>
   import("./pages/CommentsPage/CommentsPage")
 );
-const UserProfilePage = React.lazy(() => {
-  import("./pages/ProfilePage/UserProfile");
-});
+
+const UserProfilePage = React.lazy(() =>
+  import("./pages/ProfilePage/UserProfile")
+);
+
 // const MsgPage = React.lazy(() => import("./pages/MessagePage/MessagePage"));
-// const Following = React.lazy(() => import("./pages/FollowList/Following"));
-// const Followers = React.lazy(() => import("./pages/FollowList/Followers"));
+
+const Following = React.lazy(() => import("./pages/FollowList/Following"));
+
+const Followers = React.lazy(() => import("./pages/FollowList/Followers"));
 
 const IndexComponent = WithPageTitle({
   component: IndexPage,
@@ -62,15 +71,15 @@ const UserProfileComponent = WithPageTitle({
 //   title: "Message",
 // });
 
-// const FollowingComponent = WithPageTitle({
-//   component: Following,
-//   title: "Following",
-// });
+const FollowingComponent = WithPageTitle({
+  component: Following,
+  title: "Following",
+});
 
-// const FollowersComponent = WithPageTitle({
-//   component: Followers,
-//   title: "Followers",
-// });
+const FollowersComponent = WithPageTitle({
+  component: Followers,
+  title: "Followers",
+});
 
 const RouteConfig = ({ UserContext }) => {
   const history = useHistory();
@@ -107,9 +116,9 @@ const RouteConfig = ({ UserContext }) => {
         path="/userprofile/:userid"
         component={UserProfileComponent}
       />
-      {/* <Route exact path="/following" component={FollowingComponent} />
+       <Route exact path="/following" component={FollowingComponent} />
       <Route exact path="/followers" component={FollowersComponent} />
-      <Route exact path="/message" component={MsgPageComponent} /> */}
+      {/*<Route exact path="/message" component={MsgPageComponent} /> */}
     </Switch>
   );
 };
