@@ -1,7 +1,7 @@
-import css from "./comments.module.css";
+import React from "react";
 import nodpImg from "../../images/nodp.jpg";
 
-
+import css from "./comments.module.css";
 
 const Comment = ({ comment, currentUserId }) => {
   // const canDelete = currentUserId === comment.user._id;
@@ -26,7 +26,7 @@ const Comment = ({ comment, currentUserId }) => {
         <div className={css.comment_content}>
           <div className={css.comment_author}>{comment.user.username}</div>
         </div>
-        <div className={css.comment_text}>{comment.text}</div>
+        <div className={css.comment_text}>{comment.comment}</div>
         {/* <div className={css.comment_actions}>
           {canDelete && (
             <div

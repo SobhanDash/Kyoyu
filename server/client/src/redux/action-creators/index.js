@@ -839,15 +839,6 @@ export const updatePost =
           progress: undefined,
         });
         sessionStorage.removeItem("kyoyu_error");
-        toast.success("Post Updated", {
-          position: "top-right",
-          autoClose: 2500,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-        });
         dispatch({
           type: "update-post",
           payload: {
