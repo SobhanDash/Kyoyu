@@ -463,7 +463,7 @@ router.get("/users/:name", fetchUser, async (req, res) => {
 
     const name = req.params.name;
     let users = await User.find({ name: new RegExp(name, "i") });
-
+    
     success = true;
     return res.json({ success, users, status: 200 });
   } catch (err) {

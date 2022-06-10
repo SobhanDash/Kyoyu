@@ -125,7 +125,7 @@ const userReducer = (state = initState, action) => {
     } else {
       return { ...state, otherUser: otherUser, isLoading: false, error: null };
     }
-  } else if (action.type === "search-user") {
+  } else if (action.type === "search-users") {
     const { searchedUsers, error } = action.payload;
     if (error) {
       return { ...state, error: error, isLoading: false };
