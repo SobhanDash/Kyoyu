@@ -1,10 +1,11 @@
 const mongoose = require("mongoose");
 const { MONGO_URI } = require("./config/keys");
-const mongoURI = MONGO_URI || "mongodb://localhost:27017/kyōyū";
+// const mongoURI = MONGO_URI || "mongodb://localhost:27017/kyōyū";
+const mongoURI = "mongodb://localhost:27017/kyōyū";
 
-const connectToMongo = () => {
+const connectToMongo = async () => {
   try {
-    mongoose.connect(
+    await mongoose.connect(
       mongoURI,
       { useNewUrlParser: true, useUnifiedTopology: true },
       () => {
@@ -13,6 +14,7 @@ const connectToMongo = () => {
     );
   } catch (error) {
     console.log(`MongoDb Connection error: ${error}`);
+    process.exit(1);
   }
 };
 
