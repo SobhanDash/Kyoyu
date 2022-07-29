@@ -4,7 +4,14 @@
 Live Demo:
 
 ![LiveDemo]()
-
+<div style="position: relative; width: 100%; height: 0; padding-top: 56.2500%;
+ padding-bottom: 48px; box-shadow: 0 2px 8px 0 rgba(63,69,81,0.16); margin-top: 1.6em; margin-bottom: 0.9em; overflow: hidden;
+ border-radius: 8px; will-change: transform;">
+  <iframe loading="lazy" style="position: absolute; width: 100%; height: 100%; top: 0; left: 0; border: none; padding: 0;margin: 0;"
+    src="https:&#x2F;&#x2F;www.canva.com&#x2F;design&#x2F;DAFH0TkKOvE&#x2F;watch?embed" allowfullscreen="allowfullscreen" allow="fullscreen">
+  </iframe>
+</div>
+<a href="https:&#x2F;&#x2F;www.canva.com&#x2F;design&#x2F;DAFH0TkKOvE&#x2F;watch?utm_content=DAFH0TDashkKOvE&amp;utm_campaign=designshare&amp;utm_medium=embeds&amp;utm_source=link" target="_blank" rel="noopener">Design</a> by Sobhan 
 <p align="center">Kyōyū stands for sharing in Japanese. I chose this name because of the nature of the app.<strong></strong></p>
 
 <br>
@@ -21,39 +28,39 @@ Live Demo:
 
 <p align="center"><strong>Login Page</strong></p>
 
-![Login Page]()
+![Login Page](https://github.com/SobhanDash/Kyoyu/blob/master/server/client/src/images/Images%20for%20Kyoyu%20Readme/Login.png)
 
 <p align="center"><strong>Register Page</strong></p>
 
-![Register Page]()
+![Register Page](https://github.com/SobhanDash/Kyoyu/blob/master/server/client/src/images/Images%20for%20Kyoyu%20Readme/Register.png)
 
 <p align="center"><strong>Home Page</strong></p>
 
-![Home Page]()
+![Home Page](https://github.com/SobhanDash/Kyoyu/blob/master/server/client/src/images/Images%20for%20Kyoyu%20Readme/Homepage.png)
 
 <p align="center"><strong>Add Post Modal</strong></p>
 
-![Add Post Modal]()
+![Add Post Modal](https://github.com/SobhanDash/Kyoyu/blob/master/server/client/src/images/Images%20for%20Kyoyu%20Readme/AddPost.png)
 
 <p align="center"><strong>Profile Page</strong></p>
 
-![Profile Page]()
+![Profile Page](https://github.com/SobhanDash/Kyoyu/blob/master/server/client/src/images/Images%20for%20Kyoyu%20Readme/ProfilePage.png)
 
 <p align="center"><strong>Edit Profile Page</strong></p>
 
-![Edit Profile Page]()
+![Edit Profile Page](https://github.com/SobhanDash/Kyoyu/blob/master/server/client/src/images/Images%20for%20Kyoyu%20Readme/EditProfile.png)
 
 <p align="center"><strong>Message Page</strong></p>
 
-![Message Page]()
+![Message Page](https://github.com/SobhanDash/Kyoyu/blob/master/server/client/src/images/Images%20for%20Kyoyu%20Readme/MessagePage.png)
 
 <p align="center"><strong>Following Page</strong></p>
 
-![Following Page]()
+![Following Page](https://github.com/SobhanDash/Kyoyu/blob/master/server/client/src/images/Images%20for%20Kyoyu%20Readme/FollowingPage.png)
 
 <p align="center"><strong>Followers Page</strong></p>
 
-![Followers Page]()
+![Followers Page](https://github.com/SobhanDash/Kyoyu/blob/master/server/client/src/images/Images%20for%20Kyoyu%20Readme/FollowersPage.png)
 
 <br>
 
