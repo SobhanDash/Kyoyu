@@ -22,93 +22,156 @@ const initState = {
 };
 
 const postReducer = (state = initState, action) => {
-
   if (action.type === "set-loading") {
-    return { ...state, isLoading: true };
-  } 
-  
-  else if (action.type === "get-posts") {
+    return {
+      ...state,
+      isLoading: true,
+    };
+  } else if (action.type === "get-posts") {
     const { posts, error } = action.payload;
     if (error) {
-      return { ...state, error: error, isLoading: false };
+      return {
+        ...state,
+        error: error,
+        isLoading: false,
+      };
     } else {
-      return { ...state, posts: posts, isLoading: false, error: null };
+      return {
+        ...state,
+        posts: posts,
+        isLoading: false,
+        error: null,
+      };
     }
-  } 
-  
-  else if (action.type === "add-post") {
-    const { posts, error } = action.payload;
-    if (error) {
-      return { ...state, error: error, isLoading: false };
-    } else {
-      return { ...state, posts: posts, isLoading: false, error: null };
-    }
-  } 
-  
-  else if (action.type === "update-post") {
-    const { posts, error } = action.payload;
-    if (error) {
-      return { ...state, error: error, isLoading: false };
-    } else {
-      return { ...state, posts: posts, isLoading: false, error: null };
-    }
-  } 
-  
-  else if (action.type === "delete-post") {
-    const { posts, error } = action.payload;
-    if (error) {
-      return { ...state, error: error, isLoading: false };
-    } else {
-      return { ...state, posts: posts, isLoading: false, error: null };
-    }
-  } 
-  
-  else if (action.type === "like-post") {
-    const { posts, error } = action.payload;
-    if (error) {
-      return { ...state, error: error, isLoading: false };
-    } else {
-      return { ...state, posts: posts, isLoading: false, error: null };
-    }
-  } 
-  
-  else if (action.type === "unlike-post") {
-    const { posts, error } = action.payload;
-    if (error) {
-      return { ...state, error: error, isLoading: false };
-    } else {
-      return { ...state, posts: posts, isLoading: false, error: null };
-    }
-  } 
-  
-  else if (action.type === "fetch-post") {
+  } else if (action.type === "fetch-post") {
     const { post, error } = action.payload;
     if (error) {
-      return { ...state, error: error, isLoading: false };
+      return {
+        ...state,
+        error: error,
+        isLoading: false,
+      };
     } else {
-      return { ...state, post: post, isLoading: false, error: null };
+      return {
+        ...state,
+        post: post,
+        isLoading: false,
+        error: null,
+      };
     }
-  } 
-  
-  else if (action.type === "add-comment") {
+  } else if (action.type === "add-post") {
     const { posts, error } = action.payload;
     if (error) {
-      return { ...state, error: error, isLoading: false };
+      return {
+        ...state,
+        error: error,
+        isLoading: false,
+      };
     } else {
-      return { ...state, posts: posts, isLoading: false, error: null };
+      return {
+        ...state,
+        posts: posts,
+        isLoading: false,
+        error: null,
+      };
     }
-  } 
-  
-  else if (action.type === "get-comments") {
+  } else if (action.type === "update-post") {
+    const { posts, error } = action.payload;
+    if (error) {
+      return {
+        ...state,
+        error: error,
+        isLoading: false,
+      };
+    } else {
+      return {
+        ...state,
+        posts: posts,
+        isLoading: false,
+        error: null,
+      };
+    }
+  } else if (action.type === "delete-post") {
+    const { posts, error } = action.payload;
+    if (error) {
+      return {
+        ...state,
+        error: error,
+        isLoading: false,
+      };
+    } else {
+      return {
+        ...state,
+        posts: posts,
+        isLoading: false,
+        error: null,
+      };
+    }
+  } else if (action.type === "like-post") {
+    const { posts, error } = action.payload;
+    if (error) {
+      return {
+        ...state,
+        error: error,
+        isLoading: false,
+      };
+    } else {
+      return {
+        ...state,
+        posts: posts,
+        isLoading: false,
+        error: null,
+      };
+    }
+  } else if (action.type === "unlike-post") {
+    const { posts, error } = action.payload;
+    if (error) {
+      return {
+        ...state,
+        error: error,
+        isLoading: false,
+      };
+    } else {
+      return {
+        ...state,
+        posts: posts,
+        isLoading: false,
+        error: null,
+      };
+    }
+  } else if (action.type === "add-comment") {
+    const { posts, error } = action.payload;
+    if (error) {
+      return {
+        ...state,
+        error: error,
+        isLoading: false,
+      };
+    } else {
+      return {
+        ...state,
+        posts: posts,
+        isLoading: false,
+        error: null,
+      };
+    }
+  } else if (action.type === "get-comments") {
     const { comments, error } = action.payload;
     if (error) {
-      return { ...state, error: error, isLoading: false };
+      return {
+        ...state,
+        error: error,
+        isLoading: false,
+      };
     } else {
-      return { ...state, comments: comments, isLoading: false, error: null };
+      return {
+        ...state,
+        comments: comments,
+        isLoading: false,
+        error: null,
+      };
     }
-  } 
-  
-  else {
+  } else {
     return state;
   }
 };

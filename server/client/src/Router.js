@@ -2,6 +2,8 @@ import React, { useEffect, useContext } from "react";
 import { Switch, Route, useHistory } from "react-router-dom";
 import WithPageTitle from "./services/WithPageTitle";
 import axios from "axios";
+import { shallowEqual, useDispatch, useSelector } from "react-redux";
+import { actionCreators } from "../../redux";
 
 const LoginPage = React.lazy(() => import("./pages/LoginPage/LoginPage"));
 
@@ -81,21 +83,24 @@ const FollowersComponent = WithPageTitle({
   title: "Followers",
 });
 
-const RouteConfig = ({ UserContext }) => {
+const RouteConfig = () => {
   const history = useHistory();
-  // eslint-disable-next-line no-unused-vars
-  const { state, dispatch } = useContext(UserContext);
+  const dispatch = useDispatch();
+  const { user } = useSelector((state) => state.userReducer, shallowEqual);
+  // const url =
+  //   process.env.NODE_ENV === "development" ? "http://localhost:5000" : "";
   const tokenFetch = async () => {
     const token = window.sessionStorage.getItem("token");
     if (token) {
-      const res = await axios.get("http://localhost:5000/api/auth/profile", {
-        headers: { "auth-token": token },
-      });
-      if (res.data.user) {
-        dispatch({ type: "USER", payload: res.data.user });
-      } else {
-        if (!history.location.pathname.startsWith("/reset"))
+      // const res = await axios.get(`${url}/api/auth/profile`, {
+      //   headers: { "auth-token": token },
+      // });
+      dispatch(actionCreators.getProfile());
+
+      if (!user) {
+        if (!history.location.pathname.startsWith("/reset")) {
           history.push("/login");
+        }
       }
     }
   };
@@ -116,7 +121,7 @@ const RouteConfig = ({ UserContext }) => {
         path="/userprofile/:userid"
         component={UserProfileComponent}
       />
-       <Route exact path="/following" component={FollowingComponent} />
+      <Route exact path="/following" component={FollowingComponent} />
       <Route exact path="/followers" component={FollowersComponent} />
       {/*<Route exact path="/message" component={MsgPageComponent} /> */}
     </Switch>

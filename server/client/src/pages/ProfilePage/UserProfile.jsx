@@ -39,6 +39,12 @@ const UserProfile = () => {
     dispatch(actionCreators.unfollow(id));
   };
 
+  const redirect = (e) => {
+    e.preventDefault();
+    dispatch(actionCreators.newCnv(profile._id, userid));
+    history.push("/message");
+  };
+
   useEffect(() => {
     dispatch(actionCreators.getUser(userid));
   }, [dispatch, userid, profile.following.length]);
@@ -96,7 +102,9 @@ const UserProfile = () => {
                   </button>
                 )}
 
-                <button className={css.epl}>Message</button>
+                <button className={css.epl} onClick={redirect}>
+                  Message
+                </button>
               </div>
             </div>
             <div className={css.about}>

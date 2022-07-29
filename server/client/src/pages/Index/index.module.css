@@ -18,3 +18,9 @@
     grid-template-columns: none;
   }
 }
+
+@media screen and (min-width: 1001px) and (max-width: 1500px) {
+  .index_container {
+    grid-template-columns: 1fr 2fr 1fr;
+  }
+}

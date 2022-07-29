@@ -12,7 +12,9 @@ export const register =
     });
 
     try {
-      const res = await axios.post("http://localhost:5000/api/auth/register", {
+      const url =
+        process.env.NODE_ENV === "development" ? "http://localhost:5000" : "";
+      const res = await axios.post(`${url}/api/auth/register`, {
         username,
         name,
         email,
@@ -87,7 +89,9 @@ export const login =
     });
 
     try {
-      const res = await axios.post("http://localhost:5000/api/auth/login", {
+      const url =
+        process.env.NODE_ENV === "development" ? "http://localhost:5000" : "";
+      const res = await axios.post(`${url}/api/auth/login`, {
         email,
         password,
       });
@@ -159,7 +163,9 @@ export const getProfile = () => async (dispatch) => {
 
   const token = sessionStorage.getItem("kyoyu_token");
   try {
-    const res = await axios.get("http://localhost:5000/api/auth/profile", {
+    const url =
+      process.env.NODE_ENV === "development" ? "http://localhost:5000" : "";
+    const res = await axios.get(`${url}/api/auth/profile`, {
       headers: { "auth-token": token },
     });
     // console.log(res.data);
@@ -222,8 +228,10 @@ export const editProfile =
 
     const token = sessionStorage.getItem("kyoyu_token");
     try {
+      const url =
+        process.env.NODE_ENV === "development" ? "http://localhost:5000" : "";
       const res = await axios.put(
-        "http://localhost:5000/api/auth/editProfile",
+        `${url}/api/auth/editProfile`,
         { username, name, email, profilepic, bio },
         { headers: { "auth-token": token } }
       );
@@ -290,8 +298,10 @@ export const editProfile =
 export const follow = (id) => async (dispatch) => {
   const token = sessionStorage.getItem("kyoyu_token");
   try {
+    const url =
+      process.env.NODE_ENV === "development" ? "http://localhost:5000" : "";
     const res = await axios.put(
-      `http://localhost:5000/api/auth/follow/${id}`,
+      `${url}/api/auth/follow/${id}`,
       {},
       { headers: { "auth-token": token } }
     );
@@ -358,8 +368,10 @@ export const follow = (id) => async (dispatch) => {
 export const unfollow = (id) => async (dispatch) => {
   const token = sessionStorage.getItem("kyoyu_token");
   try {
+    const url =
+      process.env.NODE_ENV === "development" ? "http://localhost:5000" : "";
     const res = await axios.put(
-      `http://localhost:5000/api/auth/unfollow/${id}`,
+      `${url}/api/auth/unfollow/${id}`,
       {},
       { headers: { "auth-token": token } }
     );
@@ -423,15 +435,88 @@ export const unfollow = (id) => async (dispatch) => {
   }
 };
 
+export const remove = (id) => async (dispatch) => {
+  // dispatch({
+  //     type: "user-loading"
+  // });
+
+  const token = sessionStorage.getItem("kyoyu_token");
+  try {
+    const url =
+      process.env.NODE_ENV === "development" ? "http://localhost:5000" : "";
+    const res = await axios.put(
+      `${url}/api/auth/remove/${id}`,
+      {},
+      { headers: { "auth-token": token } }
+    );
+
+    if (res.data.success) {
+      sessionStorage.setItem("kyoyu_profile", JSON.stringify(res.data.user));
+      toast.success("User Removed", {
+        position: "top-right",
+        autoClose: 2500,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+      sessionStorage.removeItem("kyoyu_error");
+      dispatch({
+        type: "remove",
+        payload: {
+          profile: res.data.user,
+          error: null,
+        },
+      });
+    }
+
+    if (res.data.error) {
+      sessionStorage.setItem("kyoyu_error", res.data.error);
+      toast.error("Could not remove user: Try Again", {
+        position: "top-right",
+        autoClose: 2500,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+      dispatch({
+        type: "remove",
+        payload: {
+          error: res.data.error,
+        },
+      });
+    }
+  } catch (error) {
+    // console.log(error.message);
+    toast.error("Could not remove user", {
+      position: "top-right",
+      autoClose: 2500,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    });
+    dispatch({
+      type: "remove",
+      payload: {
+        error: error.message,
+      },
+    });
+  }
+};
+
 export const getSuggestion = () => async (dispatch) => {
   const token = sessionStorage.getItem("kyoyu_token");
   try {
-    const res = await axios.get(
-      "http://localhost:5000/api/auth/getSuggestion",
-      {
-        headers: { "auth-token": token },
-      }
-    );
+    const url =
+      process.env.NODE_ENV === "development" ? "http://localhost:5000" : "";
+    const res = await axios.get(`${url}/api/auth/getSuggestion`, {
+      headers: { "auth-token": token },
+    });
 
     if (res.data.success) {
       sessionStorage.setItem(
@@ -485,8 +570,10 @@ export const addDp = (image) => async (dispatch) => {
 
   const token = sessionStorage.getItem("kyoyu_token");
   try {
+    const backend_url =
+      process.env.NODE_ENV === "development" ? "http://localhost:5000" : "";
     const res = await axios.put(
-      "http://localhost:5000/api/auth/adddp",
+      `${backend_url}/api/auth/adddp`,
       { image: url },
       { headers: { "auth-token": token } }
     );
@@ -557,12 +644,11 @@ export const searchUsers = (name) => async (dispatch) => {
 
   const token = sessionStorage.getItem("kyoyu_token");
   try {
-    const res = await axios.get(
-      `http://localhost:5000/api/auth/users/${name}`,
-      {
-        headers: { "auth-token": token },
-      }
-    );
+    const url =
+      process.env.NODE_ENV === "development" ? "http://localhost:5000" : "";
+    const res = await axios.get(`${url}/api/auth/users/${name}`, {
+      headers: { "auth-token": token },
+    });
 
     if (res.data.success) {
       sessionStorage.removeItem("kyoyu_error");
@@ -602,7 +688,9 @@ export const getUser = (id) => async (dispatch) => {
 
   const token = sessionStorage.getItem("kyoyu_token");
   try {
-    const res = await axios.get(`http://localhost:5000/api/auth/user/${id}`, {
+    const url =
+      process.env.NODE_ENV === "development" ? "http://localhost:5000" : "";
+    const res = await axios.get(`${url}/api/auth/user/${id}`, {
       headers: { "auth-token": token },
     });
 
@@ -635,6 +723,54 @@ export const getUser = (id) => async (dispatch) => {
   }
 };
 
+export const getOnlineUsers = (users) => async (dispatch) => {
+  dispatch({
+    type: "user-loading",
+  });
+
+  const token = sessionStorage.getItem("kyoyu_token");
+  try {
+    const url =
+      process.env.NODE_ENV === "development" ? "http://localhost:5000" : "";
+    const res = await axios.put(
+      `${url}/api/auth/onlineusers/`,
+      {
+        users: users,
+      },
+      {
+        headers: { "auth-token": token },
+      }
+    );
+
+    if (res.data.success) {
+      dispatch({
+        type: "get-online-users",
+        payload: {
+          onlineUsers: res.data.onlineUsers,
+          error: null,
+        },
+      });
+    }
+
+    if (res.data.error) {
+      sessionStorage.setItem("kyoyu_error", res.data.error);
+      dispatch({
+        type: "get-online-users",
+        payload: {
+          error: res.data.error,
+        },
+      });
+    }
+  } catch (error) {
+    dispatch({
+      type: "get-online-users",
+      payload: {
+        error: error.message,
+      },
+    });
+  }
+};
+
 export const logout = () => async (dispatch) => {
   sessionStorage.clear();
   dispatch({
@@ -651,7 +787,9 @@ export const getPosts = () => async (dispatch) => {
 
   const token = sessionStorage.getItem("kyoyu_token");
   try {
-    const res = await axios.get("http://localhost:5000/api/posts/getposts", {
+    const url =
+      process.env.NODE_ENV === "development" ? "http://localhost:5000" : "";
+    const res = await axios.get(`${url}/api/posts/getposts`, {
       headers: { "auth-token": token },
     });
 
@@ -703,7 +841,9 @@ export const fetchPost = (id) => async (dispatch) => {
 
   const token = sessionStorage.getItem("kyoyu_token");
   try {
-    const res = await axios.get(`http://localhost:5000/api/posts/${id}`, {
+    const url =
+      process.env.NODE_ENV === "development" ? "http://localhost:5000" : "";
+    const res = await axios.get(`${url}/api/posts/${id}`, {
       headers: { "auth-token": token },
     });
     // console.log(res.data);
@@ -745,8 +885,10 @@ export const addPost = (image, caption) => async (dispatch) => {
 
   const token = sessionStorage.getItem("kyoyu_token");
   try {
+    const url =
+      process.env.NODE_ENV === "development" ? "http://localhost:5000" : "";
     const res = await axios.post(
-      "http://localhost:5000/api/posts/addpost",
+      `${url}/api/posts/addpost`,
       { image, caption },
       { headers: { "auth-token": token } }
     );
@@ -821,8 +963,10 @@ export const updatePost =
 
     const token = sessionStorage.getItem("kyoyu_token");
     try {
+      const url =
+        process.env.NODE_ENV === "development" ? "http://localhost:5000" : "";
       const res = await axios.put(
-        `http://localhost:5000/api/posts/updatepost/${id}`,
+        `${url}/api/posts/updatepost/${id}`,
         { image, caption },
         { headers: { "auth-token": token } }
       );
@@ -902,26 +1046,17 @@ export const deletePost = (id) => async (dispatch) => {
 
   const token = sessionStorage.getItem("kyoyu_token");
   try {
-    const res = await axios.delete(
-      `http://localhost:5000/api/posts/deletepost/${id}`,
-      {
-        headers: { "auth-token": token },
-      }
-    );
+    const url =
+      process.env.NODE_ENV === "development" ? "http://localhost:5000" : "";
+    const res = await axios.delete(`${url}/api/posts/deletepost/${id}`, {
+      headers: { "auth-token": token },
+    });
 
     if (res.data.success) {
       sessionStorage.setItem("kyoyu_profile", JSON.stringify(res.data.user));
-      toast.success("Post Deleted Successfully", {
-        position: "top-right",
-        autoClose: 2500,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      });
       sessionStorage.setItem("kyoyu_posts", JSON.stringify(res.data.posts));
       sessionStorage.removeItem("kyoyu_error");
+      
       toast.success("Post Deleted", {
         position: "top-right",
         autoClose: 2500,
@@ -986,8 +1121,10 @@ export const likePost = (id) => async (dispatch) => {
 
   const token = sessionStorage.getItem("kyoyu_token");
   try {
+    const url =
+      process.env.NODE_ENV === "development" ? "http://localhost:5000" : "";
     const res = await axios.put(
-      `http://localhost:5000/api/posts/like/${id}`,
+      `${url}/api/posts/like/${id}`,
       {},
       { headers: { "auth-token": token } }
     );
@@ -1032,8 +1169,10 @@ export const unlikePost = (id) => async (dispatch) => {
 
   const token = sessionStorage.getItem("kyoyu_token");
   try {
+    const url =
+      process.env.NODE_ENV === "development" ? "http://localhost:5000" : "";
     const res = await axios.put(
-      `http://localhost:5000/api/posts/unlike/${id}`,
+      `${url}/api/posts/unlike/${id}`,
       {},
       { headers: { "auth-token": token } }
     );
@@ -1074,12 +1213,11 @@ export const unlikePost = (id) => async (dispatch) => {
 export const getComments = (id) => async (dispatch) => {
   const token = sessionStorage.getItem("kyoyu_token");
   try {
-    const res = await axios.get(
-      `http://localhost:5000/api/comments/post/${id}`,
-      {
-        headers: { "auth-token": token },
-      }
-    );
+    const url =
+      process.env.NODE_ENV === "development" ? "http://localhost:5000" : "";
+    const res = await axios.get(`${url}/api/comments/post/${id}`, {
+      headers: { "auth-token": token },
+    });
 
     if (res.data.success) {
       sessionStorage.removeItem("kyoyu_error");
@@ -1119,8 +1257,10 @@ export const addComment = (id, text) => async (dispatch) => {
 
   const token = sessionStorage.getItem("kyoyu_token");
   try {
+    const url =
+      process.env.NODE_ENV === "development" ? "http://localhost:5000" : "";
     const res = await axios.post(
-      `http://localhost:5000/api/comments/addcomment/${id}`,
+      `${url}/api/comments/addcomment/${id}`,
       { comment: text },
       { headers: { "auth-token": token } }
     );
@@ -1192,12 +1332,11 @@ export const getConversations = () => async (dispatch) => {
 
   const token = sessionStorage.getItem("kyoyu_token");
   try {
-    const res = await axios.get(
-      "http://localhost:5000/api/message/conversations",
-      {
-        headers: { "auth-token": token },
-      }
-    );
+    const url =
+      process.env.NODE_ENV === "development" ? "http://localhost:5000" : "";
+    const res = await axios.get(`${url}/api/message/conversations`, {
+      headers: { "auth-token": token },
+    });
 
     if (res.data.success) {
       sessionStorage.setItem(
@@ -1239,9 +1378,11 @@ export const getMessages = (receiverId, senderId) => async (dispatch) => {
 
   const token = sessionStorage.getItem("kyoyu_token");
   try {
+    const url =
+      process.env.NODE_ENV === "development" ? "http://localhost:5000" : "";
     // console.log(senderId);
     const res = await axios.get(
-      `http://localhost:5000/api/message/msg/${senderId}/${receiverId}`,
+      `${url}/api/message/msg/${senderId}/${receiverId}`,
       {
         headers: { "auth-token": token },
       }
@@ -1284,8 +1425,10 @@ export const receiveMessages = (receiverId, senderId) => async (dispatch) => {
 
   const token = sessionStorage.getItem("kyoyu_token");
   try {
+    const url =
+      process.env.NODE_ENV === "development" ? "http://localhost:5000" : "";
     const res = await axios.get(
-      `http://localhost:5000/api/message/msg/${senderId}/${receiverId}`,
+      `${url}/api/message/msg/${senderId}/${receiverId}`,
       {
         headers: { "auth-token": token },
       }
@@ -1330,10 +1473,12 @@ export const sendMessage =
 
     const token = sessionStorage.getItem("kyoyu_token");
     try {
+      const url =
+        process.env.NODE_ENV === "development" ? "http://localhost:5000" : "";
       // console.log("Sender: ",senderId);
       // console.log("Receiver: ",receiverId);
       const res = await axios.post(
-        `http://localhost:5000/api/message/${senderId}/${receiverId}`,
+        `${url}/api/message/${senderId}/${receiverId}`,
         { text, images },
         { headers: { "auth-token": token } }
       );
@@ -1361,6 +1506,55 @@ export const sendMessage =
     } catch (error) {
       dispatch({
         type: "send-msg",
+        payload: {
+          error: error.message,
+        },
+      });
+    }
+  };
+
+  export const newCnv = (senderId, receiverId) => async (dispatch) => {
+    dispatch({
+      type: "convo-loading",
+    });
+
+    const token = sessionStorage.getItem("kyoyu_token");
+    try {
+      const url =
+        process.env.NODE_ENV === "development" ? "http://localhost:5000" : "";
+      const res = await axios.post(
+        `${url}/api/message/newcnv/${senderId}/${receiverId}`,
+        {},
+        { headers: { "auth-token": token } }
+      );
+
+      if (res.data.success) {
+        sessionStorage.setItem(
+          "kyoyu_conversations",
+          JSON.stringify(res.data.conversations)
+        );
+        dispatch({
+          type: "new-cnv",
+          payload: {
+            cnv: res.data.conversations,
+            msgs: res.data.messages,
+            error: null,
+          },
+        });
+      }
+
+      if (res.data.error) {
+        sessionStorage.setItem("kyoyu_error", res.data.error);
+        dispatch({
+          type: "new-cnv",
+          payload: {
+            error: res.data.error,
+          },
+        });
+      }
+    } catch (error) {
+      dispatch({
+        type: "new-cnv",
         payload: {
           error: error.message,
         },

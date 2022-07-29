@@ -35,6 +35,7 @@ const initState = {
   suggestions: isSuggestions,
   otherUser: null,
   searchedUsers: [],
+  onlineUsers: [],
 };
 
 const userReducer = (state = initState, action) => {
@@ -46,70 +47,155 @@ const userReducer = (state = initState, action) => {
   } else if (action.type === "register") {
     const { user, error } = action.payload;
     if (error) {
-      return { ...state, error: error, isLoading: false };
+      return {
+        ...state,
+        error: error,
+        isLoading: false,
+      };
     } else {
-      return { ...state, user: user, isLoading: false, error: null };
+      return {
+        ...state,
+        user: user,
+        isLoading: false,
+        error: null,
+      };
     }
   } else if (action.type === "login") {
     const { user, error } = action.payload;
     if (error) {
-      return { ...state, error: error, isLoading: false };
+      return {
+        ...state,
+        error: error,
+        isLoading: false,
+      };
     } else {
-      return { ...state, user: user, isLoading: false, error: null };
+      return {
+        ...state,
+        user: user,
+        isLoading: false,
+        error: null,
+      };
     }
   } else if (action.type === "profile") {
     const { profile, error } = action.payload;
     if (error) {
-      return { ...state, error: error, isLoading: false };
+      return {
+        ...state,
+        error: error,
+        isLoading: false,
+      };
     } else {
-      return { ...state, profile: profile, isLoading: false, error: null };
+      return {
+        ...state,
+        profile: profile,
+        isLoading: false,
+        error: null,
+      };
     }
   } else if (action.type === "edit-profile") {
     const { profile, error } = action.payload;
     if (error) {
-      return { ...state, error: error, isLoading: false };
+      return {
+        ...state,
+        error: error,
+        isLoading: false,
+      };
     } else {
-      return { ...state, profile: profile, isLoading: false, error: null };
+      return {
+        ...state,
+        profile: profile,
+        isLoading: false,
+        error: null,
+      };
     }
   } else if (action.type === "follow") {
     const { profile, error } = action.payload;
     if (error) {
-      return { ...state, error: error, isLoading: false };
+      return {
+        ...state,
+        error: error,
+        isLoading: false,
+      };
     } else {
-      return { ...state, profile: profile, isLoading: false, error: null };
+      return {
+        ...state,
+        profile: profile,
+        isLoading: false,
+        error: null,
+      };
     }
   } else if (action.type === "unfollow") {
     const { profile, error } = action.payload;
     if (error) {
-      return { ...state, error: error, isLoading: false };
+      return {
+        ...state,
+        error: error,
+        isLoading: false,
+      };
     } else {
-      return { ...state, profile: profile, isLoading: false, error: null };
+      return {
+        ...state,
+        profile: profile,
+        isLoading: false,
+        error: null,
+      };
     }
   } else if (action.type === "add-dp") {
     const { profile, error } = action.payload;
     if (error) {
-      return { ...state, error: error, isLoading: false };
+      return {
+        ...state,
+        error: error,
+        isLoading: false,
+      };
     } else {
-      return { ...state, profile: profile, isLoading: false, error: null };
+      return {
+        ...state,
+        profile: profile,
+        isLoading: false,
+        error: null,
+      };
     }
   } else if (action.type === "add-post") {
     const { profile, error } = action.payload;
     if (error) {
-      return { ...state, error: error, isLoading: false };
+      return {
+        ...state,
+        error: error,
+        isLoading: false,
+      };
     } else {
-      return { ...state, profile: profile, isLoading: false, error: null };
+      return {
+        ...state,
+        profile: profile,
+        isLoading: false,
+        error: null,
+      };
     }
   } else if (action.type === "delete-post") {
     const { profile, error } = action.payload;
     if (error) {
-      return { ...state, error: error, isLoading: false };
+      return {
+        ...state,
+        error: error,
+        isLoading: false,
+      };
     } else {
-      return { ...state, profile: profile, isLoading: false, error: null };
+      return {
+        ...state,
+        profile: profile,
+        isLoading: false,
+        error: null,
+      };
     }
   } else if (action.type === "get-suggestion") {
     const { suggestions, error } = action.payload;
     if (error) {
-      return { ...state, error: error, isLoading: false };
+      return {
+        ...state,
+        error: error,
+        isLoading: false,
+      };
     } else {
       return {
         ...state,
@@ -121,14 +207,27 @@ const userReducer = (state = initState, action) => {
   } else if (action.type === "get-user") {
     const { otherUser, error } = action.payload;
     if (error) {
-      return { ...state, error: error, isLoading: false };
+      return {
+        ...state,
+        error: error,
+        isLoading: false,
+      };
     } else {
-      return { ...state, otherUser: otherUser, isLoading: false, error: null };
+      return {
+        ...state,
+        otherUser: otherUser,
+        isLoading: false,
+        error: null,
+      };
     }
   } else if (action.type === "search-users") {
     const { searchedUsers, error } = action.payload;
     if (error) {
-      return { ...state, error: error, isLoading: false };
+      return {
+        ...state,
+        error: error,
+        isLoading: false,
+      };
     } else {
       return {
         ...state,
@@ -149,6 +248,22 @@ const userReducer = (state = initState, action) => {
       return {
         ...state,
         profile: profile,
+        isLoading: false,
+        error: null,
+      };
+    }
+  } else if (action.type === "get-online-users") {
+    const { onlineUsers, error } = action.payload;
+    if (error) {
+      return {
+        ...state,
+        error: error,
+        isLoading: false,
+      };
+    } else {
+      return {
+        ...state,
+        onlineUsers: onlineUsers,
         isLoading: false,
         error: null,
       };

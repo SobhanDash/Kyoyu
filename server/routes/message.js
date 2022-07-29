@@ -1,3 +1,5 @@
+// This file will contain code that will manage all functionalities related to messages
+
 const express = require("express");
 const fetchUser = require("../middleware/fetchUser");
 const Conversation = require("../models/Conversation");
@@ -14,11 +16,12 @@ router.get("/msg/:senderId/:receiverId", fetchUser, async (req, res) => {
   const receiverId = req.params.receiverId;
   const senderId = req.params.senderId;
   try {
-    let user = User.findById(userId);
+    let user = await User.findById(userId);
     if (!user) {
       success = false;
       return res.json({ success, error: "User not found!", status: 404 });
     }
+
     if (receiverId === senderId) {
       success = false;
       return res.json({
@@ -77,8 +80,6 @@ router.post("/:senderId/:receiverId", fetchUser, async (req, res) => {
   const receiverId = req.params.receiverId;
   const senderId = req.params.senderId;
   const { text, images } = req.body;
-  // console.log("senderid: ",senderId);
-  // console.log("receiverid: ",receiverId);
   try {
     let user = await User.findById(userId);
     if (!user) {
@@ -153,10 +154,14 @@ router.post("/:senderId/:receiverId", fetchUser, async (req, res) => {
       .populate("receiver", "_id name username about")
       .sort("-createdAt");
 
-    const messages = await Message.find()
+    const messages = await Message.find({
+      $or: [
+        { $and: [{ sender: senderId }, { receiver: receiverId }] },
+        { $and: [{ sender: receiverId }, { receiver: senderId }] },
+      ],
+    })
       .populate("sender", "_id name username about")
       .populate("receiver", "_id name username about");
-    // .sort("-createdAt");
 
     success = true;
     return res.json({ success, messages, message, status: 200 });
@@ -203,6 +208,31 @@ router.post("/newcnv/:senderId/:receiverId", fetchUser, async (req, res) => {
       });
     }
 
+    const convo = await Conversation.findOne({
+      $or: [
+        { recipients: [sender._id, receiver._id] },
+        { recipients: [receiver._id, sender._id] },
+      ],
+    });
+
+    if (convo) {
+      const conversations = await Conversation.find()
+        .populate("recipients", "_id name username about")
+        .sort("-updatedAt");
+
+      const messages = await Message.find({
+        $or: [
+          { $and: [{ sender: senderId }, { receiver: receiverId }] },
+          { $and: [{ sender: receiverId }, { receiver: senderId }] },
+        ],
+      })
+        .populate("sender", "_id name username about")
+        .populate("receiver", "_id name username about");
+
+      success = true;
+      return res.json({ success, messages, conversations, status: 200 });
+    }
+
     const newConversation = await Coversation.findOneAndUpdate(
       {
         $or: [
@@ -221,10 +251,14 @@ router.post("/newcnv/:senderId/:receiverId", fetchUser, async (req, res) => {
       .populate("recipients", "_id name username about")
       .sort("-updatedAt");
 
-    const messages = await Message.find()
+    const messages = await Message.find({
+      $or: [
+        { $and: [{ sender: senderId }, { receiver: receiverId }] },
+        { $and: [{ sender: receiverId }, { receiver: senderId }] },
+      ],
+    })
       .populate("sender", "_id name username about")
       .populate("receiver", "_id name username about");
-    // .sort("-createdAt");
 
     success = true;
     return res.json({ success, messages, conversations, status: 200 });

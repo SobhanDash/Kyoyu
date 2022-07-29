@@ -20,7 +20,7 @@ const Comment = ({ comment, currentUserId }) => {
   return (
     <div key={comment.id} className={css.comment}>
       <div className={css.comment_image_container}>
-        <img src={nodpImg} alt="" />
+        <img src={currentUserId.about.profilepic} alt="User Profile Pic" />
       </div>
       <div className={css.comment_right_part}>
         <div className={css.comment_content}>

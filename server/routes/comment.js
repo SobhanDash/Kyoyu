@@ -50,7 +50,7 @@ router.post(
       let user = await User.findById(userId);
       if (!user) {
         success = false;
-        return res.json({ success, error: "Not Found", status: 404 });
+        return res.json({ success, error: "User not found", status: 404 });
       }
 
       let post = await Post.findById(postId);
@@ -165,7 +165,7 @@ router.delete(
       let user = await User.findById(userId);
       if (!user) {
         success = false;
-        return res.json({ success, error: "Not Found", status: 404 });
+        return res.json({ success, error: "User not found", status: 404 });
       }
 
       let post = await Post.findById(postId);
@@ -248,6 +248,7 @@ router.put("/likecomment/:commentId", fetchUser, async (req, res) => {
 router.put("/unlikecomment/:commentId", fetchUser, async (req, res) => {
   let success = false;
   const userId = req.user.id;
+  const postId = req.params.postId;
   const commentId = req.params.commentId;
 
   try {

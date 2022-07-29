@@ -21,42 +21,67 @@ const initState = {
 };
 
 let messageReducer = (state = initState, action) => {
-  
   if (action.type === "msg-loading") {
-    return { ...state, isLoading: true };
-  } 
-  
-  else if (action.type === "get-msgs") {
+    return {
+      ...state,
+      isLoading: true,
+    };
+  } else if (action.type === "get-msgs") {
     const { msgs, error } = action.payload;
     if (error) {
-      return { ...state, error: error, isLoading: false };
+      return {
+        ...state,
+        error: error,
+        isLoading: false,
+      };
     } else {
-      return { ...state, messages: msgs, isLoading: false, error: null };
+      return {
+        ...state,
+        messages: msgs,
+        isLoading: false,
+        error: null,
+      };
     }
-  } 
-  
-  else if (action.type === "send-msg") {
+  } else if (action.type === "send-msg") {
     const { msgs, error } = action.payload;
     if (error) {
-      return { ...state, error: error, isLoading: false };
+      return {
+        ...state,
+        error: error,
+        isLoading: false,
+      };
     } else {
-      return { ...state, messages: msgs, isLoading: false, error: null };
+      return {
+        ...state,
+        messages: msgs,
+        isLoading: false,
+        error: null,
+      };
     }
-  } 
-  
-  else if (action.type === "get-cnvs") {
+  } else if (action.type === "get-cnvs") {
     const { cnvs, error } = action.payload;
     if (error) {
-      return { ...state, error: error, isLoading: false };
+      return {
+        ...state,
+        error: error,
+        isLoading: false,
+      };
     } else {
-      return { ...state, conversations: cnvs, isLoading: false, error: null };
+      return {
+        ...state,
+        conversations: cnvs,
+        isLoading: false,
+        error: null,
+      };
     }
-  } 
-  
-  else if (action.type === "add-cnv") {
+  } else if (action.type === "add-cnv") {
     const { cnv, error } = action.payload;
     if (error) {
-      return { ...state, error: error, isLoading: false };
+      return {
+        ...state,
+        error: error,
+        isLoading: false,
+      };
     } else {
       return {
         ...state,
@@ -65,9 +90,7 @@ let messageReducer = (state = initState, action) => {
         error: null,
       };
     }
-  } 
-  
-  else if (action.type === "logout") {
+  } else if (action.type === "logout") {
     return {
       ...state,
       conversations: [],
@@ -75,9 +98,7 @@ let messageReducer = (state = initState, action) => {
       isLoading: false,
       error: null,
     };
-  }
-  
-  else {
+  } else {
     return state;
   }
 };

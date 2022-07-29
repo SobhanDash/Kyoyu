@@ -53,7 +53,7 @@ const Followers = () => {
                   </div>
                   <div className={css.user_info}>
                     <Link
-                      to={`/users/${user?._id}/${user?.username}`}
+                      to={`/userprofile/${user?._id}`}
                       className={css.user_name}
                     >
                       {user?.username}

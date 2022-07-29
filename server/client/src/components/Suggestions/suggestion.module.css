@@ -54,3 +54,9 @@
 .follow:hover {
   background: linear-gradient(150deg, var(--primary), var(--secondary-1));
 }
+
+@media screen and (min-width: 1001px) and (max-width: 1200px) {
+  .suggest {
+    width: 18rem;
+  }
+}

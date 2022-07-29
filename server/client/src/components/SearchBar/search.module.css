@@ -119,17 +119,38 @@
 }
 
 .li__details:hover {
-  background-color: var(--secondary-3);
+  background-color: var(--secondary-2);
   
   transition: 0.2s all ease-in;
 }
 
-@media screen and (max-width: 600px) {
+@media only screen and (min-width: 350px) and (max-width: 430px) {
   .wrapper {
-    max-width: 70%;
+    max-width: 85%;
+  }
+  .search_text {
+    min-width: 85%;
+  }
+}
+
+@media screen and (min-width: 431px) and (max-width: 600px) {
+  .wrapper {
+    max-width: 75%;
+  }
+  .searchbar {
+    padding: 0.3rem 1.5rem;
   }
   .search_text {
     min-width: 88%;
+  }
+}
+
+@media screen and (min-width: 601px) and (max-width: 1200px) {
+  .wrapper {
+    max-width: 75%;
+  }
+  .search_text {
+    min-width: 90%;
   }
 }
 
@@ -138,3 +159,4 @@
     max-height: 10em;
   }
 }
+

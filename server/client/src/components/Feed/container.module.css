@@ -153,3 +153,12 @@
     width: 80vw;
   }
 }
+
+@media screen and (min-width: 1000px) and (max-width: 1150px) {
+  .feed {
+    margin: auto;
+  }
+  .post img {
+    width: 80vw;
+  }
+}
