@@ -3,7 +3,7 @@
 <h1 align="center">Introduction 👩🏻‍💻👨🏻‍💻 </h1>
 Live Demo:
 
-![LiveDemo](https://www.canva.com/design/DAFH0TkKOvE/watch)
+![LiveDemo](https://github.com/SobhanDash/Kyoyu/blob/master/server/client/src/images/Images%20for%20Kyoyu%20Readme/Devkyoyu%202.0.gif)
 
 <p align="center">Kyōyū stands for sharing in Japanese. I chose this name because of the nature of the app.<strong></strong></p>
 
