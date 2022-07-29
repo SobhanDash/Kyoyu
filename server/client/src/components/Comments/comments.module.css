@@ -151,3 +151,34 @@
   transform: scale(1.1);
   transition: 0.2s ease-in-out;
 }
+
+@media only screen and (max-width: 380px) {
+  .commentSection {
+    width: 390px;
+    margin-top: -0.5rem;
+  }
+}
+@media only screen and (min-width: 381px) and (max-width: 480px) {
+  .commentSection {
+    width: 396px;
+    margin-top: -1.5rem;
+  }
+}
+@media only screen and (min-width: 481px) and (max-width: 600px) {
+  .commentSection {
+    width: 490px;
+    margin-top: -1.5rem;
+  }
+}
+@media only screen and (min-width: 601px) and (max-width: 720px) {
+  .commentSection {
+    width: 500px;
+    margin-top: -1.5rem;
+  }
+}
+@media only screen and (min-width: 721px) and (max-width: 1200px) {
+  .commentSection {
+    width: 590px;
+    margin-top: -1.5rem;
+  }
+}

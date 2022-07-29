@@ -3,7 +3,7 @@ import { Switch, Route, useHistory } from "react-router-dom";
 import WithPageTitle from "./services/WithPageTitle";
 import axios from "axios";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
-import { actionCreators } from "../../redux";
+import { actionCreators } from "./redux";
 
 const LoginPage = React.lazy(() => import("./pages/LoginPage/LoginPage"));
 
@@ -27,7 +27,7 @@ const UserProfilePage = React.lazy(() =>
   import("./pages/ProfilePage/UserProfile")
 );
 
-// const MsgPage = React.lazy(() => import("./pages/MessagePage/MessagePage"));
+const MsgPage = React.lazy(() => import("./pages/MessagePage/MessagePage"));
 
 const Following = React.lazy(() => import("./pages/FollowList/Following"));
 
@@ -68,10 +68,10 @@ const UserProfileComponent = WithPageTitle({
   title: "User Profile",
 });
 
-// const MsgPageComponent = WithPageTitle({
-//   component: MsgPage,
-//   title: "Message",
-// });
+const MsgPageComponent = WithPageTitle({
+  component: MsgPage,
+  title: "Message",
+});
 
 const FollowingComponent = WithPageTitle({
   component: Following,
@@ -123,7 +123,7 @@ const RouteConfig = () => {
       />
       <Route exact path="/following" component={FollowingComponent} />
       <Route exact path="/followers" component={FollowersComponent} />
-      {/*<Route exact path="/message" component={MsgPageComponent} /> */}
+      <Route exact path="/message" component={MsgPageComponent} />
     </Switch>
   );
 };

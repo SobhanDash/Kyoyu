@@ -11,60 +11,6 @@
 .pcontainer::-webkit-scrollbar {
   display: none;
 }
-.commentSection {
-  display: flex;
-  justify-content: flex-start;
-  width: 590px;
-  padding: 1rem;
-  margin-top: -3.5rem;
-  margin-bottom: 4.5rem;
-  border-radius: 10px;
-  flex-direction: column;
-}
-
-.cname {
-  color: var(--white-1);
-  font-size: 1.5rem;
-  font-weight: 500;
-  text-align: left;
-  margin-bottom: 1.5rem;
-}
-
-.cinputdiv {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-}
-
-.cip {
-  display: block;
-  width: 80%;
-  padding: 0.5rem;
-  outline: none;
-  background: transparent;
-  border: 10px solid;
-  border-radius: 1rem;
-  border-image-slice: 1 !important;
-  border-width: 2px;
-  border-image-source: linear-gradient(
-    to left,
-    var(--primary),
-    var(--secondary-1)
-  );
-  color: var(--white-1);
-  font-size: 1rem;
-}
-
-.cpost {
-  padding: 0.5rem;
-  border-radius: 0.3rem;
-  width: 6rem;
-  border: none;
-  outline: none;
-  background: linear-gradient(150deg, var(--primary), var(--secondary-2));
-  color: var(--white-2);
-  font-size: 1rem;
-}
 
 @media screen and (max-width: 1000px) {
   .pcontainer {
