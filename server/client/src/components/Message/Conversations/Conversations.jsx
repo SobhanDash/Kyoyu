@@ -10,7 +10,7 @@ const oncircle = <FontAwesomeIcon icon={faCircle} />;
 
 const Conversations = ({profile,setClick,setReceiver,onlineUsers,setSender}) => {
   const dispatch = useDispatch();
-  const { conversations, messages } = useSelector((state) => state.messagereducer,shallowEqual);
+  const { conversations, messages } = useSelector((state) => state.messageReducer,shallowEqual);
   
   const myconvos =
     conversations &&

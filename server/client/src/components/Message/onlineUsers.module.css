@@ -39,7 +39,7 @@
 .online_wrap .user_list .onlineUser img {
   width: 3rem;
   height: 3rem;
-  border: 0.1rem solid var(--ternary-3);
+  border: 0.1rem solid var(--primary);
   border-radius: 50%;
 }
 

@@ -19,7 +19,7 @@ const CurrentChat = ({
 }) => {
   const dispatch = useDispatch();
   const messages = useSelector(
-    (state) => state.messagereducer.messages,
+    (state) => state.messageReducer.messages,
     shallowEqual
   );
   // const isLoading = useSelector(
